@@ -10,17 +10,21 @@ public class PlayerShip : MonoBehaviour {
 
     //instance of PlayerShip for other scripts to access
     public static PlayerShip instance;
+    public GameObject leftthruster;
+    public GameObject rightthruster;
+    public float MAXTHRUST = 40;
 
-	// Use this for initialization
-	void Start ()
+    void Awake ()
     {
         instance = this;
+    }
+
+	void Start ()
+    {
 	}
 	
-	// Update is called once per frame
 	void Update ()
-    {
-	
+    {   
 	}
 
     public void DebugMoveForward()
