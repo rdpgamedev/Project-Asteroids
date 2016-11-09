@@ -1,32 +1,15 @@
 fileFormatVersion: 2
 guid: 453c8724d3cd9f742ac23758c5af5533
-timeCreated: 1478596213
+timeCreated: 1478673648
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
-    100000: Body
-    100002: Cockpit
-    100004: Engine
-    100006: //RootNode
-    100008: Wing
-    400000: Body
-    400002: Cockpit
-    400004: Engine
-    400006: //RootNode
-    400008: Wing
-    2300000: Body
-    2300002: Cockpit
-    2300004: Engine
-    2300006: Wing
-    3300000: Body
-    3300002: Cockpit
-    3300004: Engine
-    3300006: Wing
-    4300000: Engine
-    4300002: Wing
-    4300004: Body
-    4300006: Cockpit
+    100000: //RootNode
+    400000: //RootNode
+    2300000: //RootNode
+    3300000: //RootNode
+    4300000: Ship
     7400000: Default Take
     9500000: //RootNode
   materials:

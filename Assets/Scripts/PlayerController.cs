@@ -8,6 +8,10 @@ using UnityEngine;
 using System.Collections;
 
 public class PlayerController : MonoBehaviour {
+    public static float xaxisleft;
+    public static float yaxisleft;
+    public static float xaxisright;
+    public static float yaxisright;
 
     private KeyCode[] keys;
     private PlayerShip player;
@@ -27,7 +31,12 @@ public class PlayerController : MonoBehaviour {
 	void Update ()
     {
         if (Input.anyKeyDown) CheckInput();
-	}
+        //smooth input axes axis = axis + delta * 0.3
+        xaxisleft = xaxisleft + (Input.GetAxis("Left Horizontal") - xaxisleft) * Time.deltaTime * 4;
+        yaxisleft = yaxisleft + (Input.GetAxis("Left Vertical") - yaxisleft) * Time.deltaTime * 4;
+        xaxisright = xaxisright + (Input.GetAxis("Right Horizontal") - xaxisright) * Time.deltaTime * 4;
+        yaxisright = yaxisright + (Input.GetAxis("Right Vertical") - yaxisright) * Time.deltaTime * 4;
+    }
 
     void CheckInput()
     {
