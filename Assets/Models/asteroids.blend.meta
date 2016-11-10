@@ -1,0 +1,157 @@
+fileFormatVersion: 2
+guid: 815b2bdd7dc56e649b86a6c11fc4f453
+timeCreated: 1478770863
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Asteroid_B_1_Ice
+    100002: Asteroid_B_1_Rock
+    100004: Asteroid_B_2_Ice
+    100006: Asteroid_B_2_Rock
+    100008: Asteroid_B_3_Ice
+    100010: Asteroid_B_3_Rock
+    100012: Asteroid_B_4_Ice
+    100014: Asteroid_B_4_Rock
+    100016: Asteroid_C_1_Ice
+    100018: Asteroid_C_1_Rock
+    100020: Asteroid_C_2_Ice
+    100022: Asteroid_C_2_Rock
+    100024: Asteroid_C_3_Ice
+    100026: Asteroid_C_3_Rock
+    100028: Asteroid_C_4_Ice
+    100030: Asteroid_C_4_Rock
+    100032: //RootNode
+    100034: Camera_Target
+    400000: Asteroid_B_1_Ice
+    400002: Asteroid_B_1_Rock
+    400004: Asteroid_B_2_Ice
+    400006: Asteroid_B_2_Rock
+    400008: Asteroid_B_3_Ice
+    400010: Asteroid_B_3_Rock
+    400012: Asteroid_B_4_Ice
+    400014: Asteroid_B_4_Rock
+    400016: Asteroid_C_1_Ice
+    400018: Asteroid_C_1_Rock
+    400020: Asteroid_C_2_Ice
+    400022: Asteroid_C_2_Rock
+    400024: Asteroid_C_3_Ice
+    400026: Asteroid_C_3_Rock
+    400028: Asteroid_C_4_Ice
+    400030: Asteroid_C_4_Rock
+    400032: //RootNode
+    400034: Camera_Target
+    2300000: Asteroid_B_1_Ice
+    2300002: Asteroid_B_1_Rock
+    2300004: Asteroid_B_2_Ice
+    2300006: Asteroid_B_2_Rock
+    2300008: Asteroid_B_3_Ice
+    2300010: Asteroid_B_3_Rock
+    2300012: Asteroid_B_4_Ice
+    2300014: Asteroid_B_4_Rock
+    2300016: Asteroid_C_1_Ice
+    2300018: Asteroid_C_1_Rock
+    2300020: Asteroid_C_2_Ice
+    2300022: Asteroid_C_2_Rock
+    2300024: Asteroid_C_3_Ice
+    2300026: Asteroid_C_3_Rock
+    2300028: Asteroid_C_4_Ice
+    2300030: Asteroid_C_4_Rock
+    3300000: Asteroid_B_1_Ice
+    3300002: Asteroid_B_1_Rock
+    3300004: Asteroid_B_2_Ice
+    3300006: Asteroid_B_2_Rock
+    3300008: Asteroid_B_3_Ice
+    3300010: Asteroid_B_3_Rock
+    3300012: Asteroid_B_4_Ice
+    3300014: Asteroid_B_4_Rock
+    3300016: Asteroid_C_1_Ice
+    3300018: Asteroid_C_1_Rock
+    3300020: Asteroid_C_2_Ice
+    3300022: Asteroid_C_2_Rock
+    3300024: Asteroid_C_3_Ice
+    3300026: Asteroid_C_3_Rock
+    3300028: Asteroid_C_4_Ice
+    3300030: Asteroid_C_4_Rock
+    4300000: Asteroid_C_1_Rock
+    4300002: Asteroid_C_2_Rock
+    4300004: Asteroid_C_3_Rock
+    4300006: Asteroid_C_4_Rock
+    4300008: Asteroid_C_4_Ice
+    4300010: Asteroid_C_3_Ice
+    4300012: Asteroid_C_2_Ice
+    4300014: Asteroid_C_1_Ice
+    4300016: Asteroid_B_1_Ice
+    4300018: Asteroid_B_2_Ice
+    4300020: Asteroid_B_3_Ice
+    4300022: Asteroid_B_4_Ice
+    4300024: Asteroid_B_4_Rock
+    4300026: Asteroid_B_3_Rock
+    4300028: Asteroid_B_2_Rock
+    4300030: Asteroid_B_1_Rock
+    7400000: Default Take
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 0
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
