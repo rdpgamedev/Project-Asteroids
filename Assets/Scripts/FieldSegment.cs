@@ -5,21 +5,32 @@ using TrackType = Field.TrackType;
 
 public class FieldSegment : MonoBehaviour
 {
-    private FieldType _fieldtype;
-    private TrackType _tracktype;
+    private FieldType fieldtype;
+    private TrackType tracktype;
+    private Bezier curve;
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-
-    void GenerateSegment(FieldType fieldtype, TrackType tracktype)
+	void Start ()
     {
+        curve = this.GetComponent<Bezier>();
+	}
+	
+	void Update ()
+    {
+	
+	}
+
+    void GenerateSegment(FieldType _fieldtype, TrackType _tracktype)
+    {
+        fieldtype = _fieldtype;
+        tracktype = _tracktype;
+
+        //Create Bezier curve
+
+        //Spawn Landmarks
+
+        //Spawn Linepoints
+
+        //Spawn Asteroids
 
     }
 }

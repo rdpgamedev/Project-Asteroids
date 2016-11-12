@@ -12,7 +12,6 @@ public class Field : MonoBehaviour
     void Awake ()
     {
         instance = this;
-        FieldType field = FieldType.ROCK;
     }
 
 	void Start ()
@@ -24,4 +23,10 @@ public class Field : MonoBehaviour
     {
 	
 	}
+
+    void AddSegment (Vector3 position)
+    {
+
+    }
+
 }
