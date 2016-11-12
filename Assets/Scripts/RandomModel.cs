@@ -3,7 +3,8 @@ using System.Collections;
 
 [System.Serializable]
 
-public class RandomModel : MonoBehaviour {
+public class RandomModel : MonoBehaviour
+{
     public Mesh[] meshes;
     public Material[] materials;
 	// Use this for initialization

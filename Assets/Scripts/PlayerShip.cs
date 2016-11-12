@@ -6,7 +6,8 @@
 using UnityEngine;
 using System.Collections;
 
-public class PlayerShip : MonoBehaviour {
+public class PlayerShip : MonoBehaviour
+{
 
     //instance of PlayerShip for other scripts to access
     public static PlayerShip instance;

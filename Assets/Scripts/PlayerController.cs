@@ -7,7 +7,8 @@
 using UnityEngine;
 using System.Collections;
 
-public class PlayerController : MonoBehaviour {
+public class PlayerController : MonoBehaviour
+{
     public static float xaxisleft;
     public static float yaxisleft;
     public static float xaxisright;

@@ -3,7 +3,6 @@ using System.Collections;
 
 public class VelocityIndicator : MonoBehaviour
 {
-
     PlayerShip ship;
     Rigidbody shipbody;
 
