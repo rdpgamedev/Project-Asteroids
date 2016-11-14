@@ -8,7 +8,8 @@
 using UnityEngine;
 using System.Collections;
 
-public class SpawnTestAsteroids : MonoBehaviour {
+public class SpawnTestAsteroids : MonoBehaviour
+{
     public int NUMBER_OF_ASTEROIDS = 20;
     public GameObject SPHERE;
     public float RADIUS = 50f;
