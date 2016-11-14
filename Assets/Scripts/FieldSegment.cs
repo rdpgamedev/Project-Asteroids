@@ -8,25 +8,37 @@ public class FieldSegment : MonoBehaviour
 {
     public static float MAXLENGTH = 2000f;
     public static float MINLENGTH = 1000f;
-    public static float MAXHEIGHT = 200f;
+    public static float MAXHEIGHT = 1000f;
+    public GameObject LINEPOINT;
+    public GameObject ASTEROID;
 
     private FieldType fieldtype;
     private TrackType tracktype;
     private Bezier curve;
     private float length;
     private float height;
+    private int numpoints; //number of linepoints on curve
+    private float pointdensity = 100;
 
-	void Start ()
+    void Awake ()
     {
         curve = this.GetComponent<Bezier>();
+    }
+
+    void Start ()
+    {
+        
 	}
 	
 	void Update ()
     {
-	
+	    if (numpoints < 0)
+        {
+            Destroy(this);
+        }
 	}
 
-    void GenerateSegment(FieldType _fieldtype, TrackType _tracktype, Vector3 lastControlPoint)
+    public void GenerateSegment(FieldType _fieldtype, TrackType _tracktype, Vector3 lastControlPoint)
     {
         fieldtype = _fieldtype;
         tracktype = _tracktype;
@@ -35,7 +47,7 @@ public class FieldSegment : MonoBehaviour
 
         //Create Bezier curve
         Vector3 p0, p1 ,p2, p3;
-        p0 = transform.position;
+        p0 = p1 = p2 = p3 = transform.position;
         Vector3 forward = p0 - lastControlPoint;
         forward.Normalize();
         //setup bezier points
@@ -50,7 +62,17 @@ public class FieldSegment : MonoBehaviour
                 RandomlyOffset(p3, height);
                 break;
             case TrackType.CURVE:
-                //CREATE END VECTOR WITHIN 90 DEGREES OF FORWARD
+                //CREATE END VECTOR between 30 and 90 DEGREES OF FORWARD
+                float theta = Random.Range(Mathf.PI/6f, Mathf.PI/2f);
+                Vector3 endDirection = RandomlyOffset(-forward, 0.05f, 0.1f);
+                Vector3 end = Vector3.RotateTowards(forward, endDirection, theta, 0f);
+                end.Normalize();
+                p1 = p0 + forward * length / 3;
+                RandomlyOffset(p1, height);
+                p2 = p0 + forward * length / 2 + end * length / 6;
+                RandomlyOffset(p2, height);
+                p3 = p2 + end * length / 3;
+                RandomlyOffset(p3, height);
                 break;
             case TrackType.SLALOM:
                 break;
@@ -60,11 +82,30 @@ public class FieldSegment : MonoBehaviour
             default:
                 break;
         }
+        p2.y /= 3;
+        p3.y /= 3;
+        curve.SetPoints(p0, p1, p2, p3);
+        length = curve.ArcLength();
+        numpoints = (int)(length / pointdensity);
         //Spawn Landmarks
 
         //Spawn Linepoints
-
+        for (int i = 0; i < numpoints; ++i)
+        {
+            float t = (float)i / (float)numpoints;
+            GameObject newLinePoint = Instantiate<GameObject>(LINEPOINT);
+            newLinePoint.transform.position = curve.GetPoint(t);
+        }
         //Spawn Asteroids
+        for (int i = 0; i < 100; ++i)
+        {
+            Vector3 point = curve.GetPoint((float)i / 100f);
+            point = RandomlyOffset(point, 1500f);
+            GameObject asteroid = Instantiate<GameObject>(ASTEROID);
+            asteroid.transform.position = point;
+            asteroid.GetComponent<RandomModel>().ChooseAsteroid(fieldtype);
+            asteroid.transform.localScale *= Random.Range(14f, 30f);
+        }
 
     }
 
