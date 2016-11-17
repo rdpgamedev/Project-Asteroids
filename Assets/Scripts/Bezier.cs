@@ -53,8 +53,6 @@ public class Bezier : MonoBehaviour
                                (points[3] - points[2])).magnitude;
         float linelength = (points[3] - points[0]).magnitude;
         float err = (polygonlength - linelength) / linelength;
-        Debug.Log("plen: " + polygonlength + ", llen: " + linelength);
-        Debug.Log("err: " + err );
         int resolution = (int)(err * RESOLUTION_CONSTANT);
         t1 = (t1 < 0 ? 0 : t1);
         t1 = (t1 > 1 ? 1 : t1);
@@ -69,7 +67,6 @@ public class Bezier : MonoBehaviour
         float lengthsum = 0f;
         float tlength = t2 - t1;
         float step = tlength / resolution;
-        Debug.Log("Resolution: " + resolution);
         for (int i = 1; i < resolution; ++i)
         {
             lengthsum += (GetPoint(t1 + step * i) - 
