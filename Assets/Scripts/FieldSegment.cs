@@ -54,33 +54,66 @@ public class FieldSegment : MonoBehaviour
         switch (tracktype)
         {
             case TrackType.STRAIGHT:
-                p1 = p0 + forward * length / 3;
-                RandomlyOffset(p1, height);
-                p2 = p0 + forward * length * 2 / 3;
-                RandomlyOffset(p2, height);
-                p3 = p0 + forward * length;
-                RandomlyOffset(p3, height);
-                break;
+                {
+                    p1 = p0 + forward * length / 3;
+                    RandomlyOffset(p1, height);
+                    p2 = p0 + forward * length * 2 / 3;
+                    RandomlyOffset(p2, height);
+                    p3 = p0 + forward * length;
+                    RandomlyOffset(p3, height);
+                    break;
+                }
             case TrackType.CURVE:
-                //CREATE END VECTOR between 30 and 90 DEGREES OF FORWARD
-                float theta = Random.Range(Mathf.PI/6f, Mathf.PI/2f);
-                Vector3 endDirection = RandomlyOffset(-forward, 0.05f, 0.1f);
-                Vector3 end = Vector3.RotateTowards(forward, endDirection, theta, 0f);
-                end.Normalize();
-                p1 = p0 + forward * length / 3;
-                RandomlyOffset(p1, height);
-                p2 = p0 + forward * length / 2 + end * length / 6;
-                RandomlyOffset(p2, height);
-                p3 = p2 + end * length / 3;
-                RandomlyOffset(p3, height);
-                break;
+                {
+                    //CREATE END VECTOR between 30 and 90 DEGREES OF FORWARD
+                    float theta = Random.Range(Mathf.PI / 6f, Mathf.PI / 2f);
+                    Vector3 endDirection = RandomlyOffset(-forward, 0.05f, 0.1f);
+                    Vector3 end = Vector3.RotateTowards(
+                        forward, endDirection, theta, 0f);
+                    end.Normalize();
+                    p1 = p0 + forward * length / 3;
+                    RandomlyOffset(p1, height);
+                    p2 = p0 + forward * length / 2 + end * length / 6;
+                    RandomlyOffset(p2, height);
+                    p3 = p2 + end * length / 3;
+                    RandomlyOffset(p3, height);
+                    break;
+                }
             case TrackType.SLALOM:
-                break;
+                {
+                    Vector3 backDirection = RandomlyOffset(-forward, 0.05f, 0.1f);
+                    Vector3 approxNormal = Vector3.RotateTowards(forward, backDirection, Mathf.PI / 2f, 0f);
+                    approxNormal.Normalize();
+                    p1 = p0 + forward * length / 3;
+                    RandomlyOffset(p1, height);
+                    p2 = p0 + forward * length * 2 / 3 + approxNormal * length / 6;
+                    RandomlyOffset(p2, height);
+                    p3 = p0 + forward * length - approxNormal * length / 6;
+                    RandomlyOffset(p3, height);
+                    break;
+                }
             case TrackType.HAIRPIN:
-                //CREATE END VECTOR WITHIN 90 and 180 DEGREES OF FORWARD
-                break;
+                {
+                    //CREATE END VECTOR WITHIN 90 and 180 DEGREES OF FORWARD
+                    float theta = Random.Range(Mathf.PI / 2f, 3f * Mathf.PI / 4f);
+                    Vector3 endDirection = RandomlyOffset(
+                        -forward, 0.05f, 0.1f);
+                    Vector3 end = Vector3.RotateTowards(
+                        forward, endDirection, theta, 0f);
+                    end.Normalize();
+                    p1 = p0 + forward * length / 3;
+                    RandomlyOffset(p1, height);
+                    p2 = p0 + forward * length / 2 + end * length / 6;
+                    RandomlyOffset(p2, height);
+                    p3 = p2 + end * length / 3;
+                    RandomlyOffset(p3, height);
+                    pointdensity *= 0.7f;
+                    break;
+                }
             default:
+                {
                 break;
+                }
         }
         p2.y /= 3;
         p3.y /= 3;
@@ -88,7 +121,14 @@ public class FieldSegment : MonoBehaviour
         length = curve.ArcLength();
         numpoints = (int)(length / pointdensity);
         //Spawn Landmarks
-
+        Vector3 landmarkpoint = curve.GetPoint(0.5f);
+        landmarkpoint = RandomlyOffset(landmarkpoint, 500f);
+        GameObject landmark = Instantiate<GameObject>(ASTEROID);
+        landmark.transform.position = landmarkpoint;
+        landmark.GetComponent<RandomModel>().ChooseAsteroid(fieldtype);
+        landmark.transform.localScale *= Random.Range(300f, 450f);
+        landmark.GetComponent<Rigidbody>().mass *= 1000f;
+        landmark.GetComponent<RandomRotation>().enabled = false;
         //Spawn Linepoints
         for (int i = 0; i < numpoints; ++i)
         {
@@ -97,14 +137,21 @@ public class FieldSegment : MonoBehaviour
             newLinePoint.transform.position = curve.GetPoint(t);
         }
         //Spawn Asteroids
-        for (int i = 0; i < 100; ++i)
+        int unspawnedAsteroids = 
+            Field.instance.MAXASTEROIDS - Field.instance.asteroidCount;
+        for (int i = 0; i < (unspawnedAsteroids)/20; ++i)
         {
             Vector3 point = curve.GetPoint((float)i / 100f);
             point = RandomlyOffset(point, 1500f);
             GameObject asteroid = Instantiate<GameObject>(ASTEROID);
             asteroid.transform.position = point;
             asteroid.GetComponent<RandomModel>().ChooseAsteroid(fieldtype);
-            asteroid.transform.localScale *= Random.Range(14f, 30f);
+            asteroid.transform.localScale *= Random.Range(30f, 45f);
+            asteroid.GetComponent<Rigidbody>().velocity = 
+                new Vector3(Random.Range(-10f, 10f), 
+                            Random.Range(-10f, 10f), 
+                            Random.Range(-10f, 10f));
+            ++Field.instance.asteroidCount;
         }
 
     }
