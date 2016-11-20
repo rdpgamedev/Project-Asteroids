@@ -136,6 +136,7 @@ public class FieldSegment : MonoBehaviour
             float t = (float)i / (float)numpoints;
             GameObject newLinePoint = Instantiate<GameObject>(LINEPOINT);
             newLinePoint.transform.position = curve.GetPoint(t);
+            newLinePoint.transform.parent = transform;
         }
         //Spawn Asteroids
         int unspawnedAsteroids = 
@@ -156,6 +157,7 @@ public class FieldSegment : MonoBehaviour
             {
                 asteroid.transform.position = RandomlyOffset(point, 1500f);
             }
+            asteroid.transform.parent = transform;
             ++Field.instance.asteroidCount;
         }
 
