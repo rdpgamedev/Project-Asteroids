@@ -129,6 +129,7 @@ public class FieldSegment : MonoBehaviour
         landmark.transform.localScale *= Random.Range(300f, 450f);
         landmark.GetComponent<Rigidbody>().mass = 999999f;
         landmark.GetComponent<RandomRotation>().enabled = false;
+        landmark.name = "Landmark";
         //Spawn Linepoints
         for (int i = 0; i < numpoints; ++i)
         {
