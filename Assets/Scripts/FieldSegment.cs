@@ -19,10 +19,12 @@ public class FieldSegment : MonoBehaviour
     private float height;
     private int numpoints; //number of linepoints on curve
     private float pointdensity = 100;
+    private List<GameObject> landmarks;
 
     void Awake ()
     {
         curve = this.GetComponent<Bezier>();
+        landmarks = new List<GameObject>();
     }
 
     void Start ()
@@ -121,15 +123,23 @@ public class FieldSegment : MonoBehaviour
         length = curve.ArcLength();
         numpoints = (int)(length / pointdensity);
         //Spawn Landmarks
-        Vector3 landmarkpoint = curve.GetPoint(0.5f);
-        landmarkpoint = RandomlyOffset(landmarkpoint, 500f);
-        GameObject landmark = Instantiate<GameObject>(ASTEROID);
-        landmark.transform.position = landmarkpoint;
-        landmark.GetComponent<RandomModel>().ChooseAsteroid(fieldtype);
-        landmark.transform.localScale *= Random.Range(300f, 450f);
-        landmark.GetComponent<Rigidbody>().mass = 999999f;
-        landmark.GetComponent<RandomRotation>().enabled = false;
-        landmark.name = "Landmark";
+        if (Random.Range(0, 5) > 3)
+        { 
+            Vector3 landmarkpoint = curve.GetPoint(0.5f);
+            Vector3 tangent1 = curve.GetFirstDeriv(0.5f).normalized;
+            Vector3 tangent2 = curve.GetFirstDeriv(0.5001f).normalized;
+            Vector3 rotationAxis = Vector3.Cross(tangent2, tangent1);
+            Vector3 normal = Quaternion.AngleAxis(90f, rotationAxis) * tangent1;
+            landmarkpoint += normal * Random.Range(400f, 600f);
+            GameObject landmark = Instantiate<GameObject>(ASTEROID);
+            landmark.transform.position = landmarkpoint;
+            landmark.GetComponent<RandomModel>().ChooseAsteroid(fieldtype);
+            landmark.transform.localScale *= Random.Range(300f, 450f);
+            landmark.GetComponent<Rigidbody>().mass = 999999f;
+            landmark.GetComponent<RandomRotation>().enabled = false;
+            landmark.name = "Landmark";
+            landmarks.Add(landmark);
+        }
         //Spawn Linepoints
         for (int i = 0; i < numpoints; ++i)
         {
@@ -145,17 +155,26 @@ public class FieldSegment : MonoBehaviour
         {
             Vector3 point = curve.GetPoint((float)i / 100f);
             GameObject asteroid = Instantiate<GameObject>(ASTEROID);
-            asteroid.transform.position = RandomlyOffset(point, 1500f);
             asteroid.GetComponent<RandomModel>().ChooseAsteroid(fieldtype);
             asteroid.transform.localScale *= Random.Range(30f, 45f);
             asteroid.GetComponent<Rigidbody>().velocity = 
                 new Vector3(Random.Range(-10f, 10f), 
                             Random.Range(-10f, 10f), 
                             Random.Range(-10f, 10f));
-            while (landmark.GetComponent<MeshCollider>().bounds.Intersects(
-                asteroid.GetComponent<MeshCollider>().bounds))
+            bool collided = true;
+            while (collided)
             {
                 asteroid.transform.position = RandomlyOffset(point, 1500f);
+                collided = false;
+                foreach (GameObject lm in landmarks)
+                {
+                    if (lm.GetComponent<MeshCollider>().bounds.Intersects(
+                        asteroid.GetComponent<MeshCollider>().bounds))
+                    {
+                        collided = true;
+                        break;
+                    }
+                }
             }
             asteroid.transform.parent = transform;
             ++Field.instance.asteroidCount;

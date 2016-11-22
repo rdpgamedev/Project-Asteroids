@@ -45,6 +45,23 @@ public class Bezier : MonoBehaviour
                 Mathf.Pow(t, 3) * points[3]);
     }
 
+    public Vector3 GetFirstDeriv(float t)
+    {
+        if (t > 1) t = 1f;
+        if (t < 0) t = 0f;
+        return (3 * Mathf.Pow((1f - t), 2) * (points[1] - points[0]) +
+            6 * (1-t) * t * (points[2] - points[1]) +
+            3 * Mathf.Pow(t, 2) * (points[3] - points[2]));
+    }
+
+    public Vector3 GetSecondDeriv (float t)
+    {
+        if (t > 1) t = 1f;
+        if (t < 0) t = 0f;
+        return (6 * (1-t) * (points[2] - 2 * points[1] + points[0]) +
+            6 * t * (points[3] - 2 * points[2] + points[1]));
+    }
+
     //find arclength from t1 to t2
     public float ArcLength (float t1, float t2)
     {
