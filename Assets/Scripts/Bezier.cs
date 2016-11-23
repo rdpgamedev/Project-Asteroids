@@ -62,6 +62,14 @@ public class Bezier : MonoBehaviour
             6 * t * (points[3] - 2 * points[2] + points[1]));
     }
 
+    public Vector3 GetNormal (float t)
+    {
+        Vector3 tangent1 = GetFirstDeriv(t).normalized;
+        Vector3 tangent2 = GetFirstDeriv(t + 0.0001f).normalized;
+        Vector3 rotationAxis = Vector3.Cross(tangent2, tangent1);
+        return (Quaternion.AngleAxis(90f, rotationAxis) * tangent1);
+    }
+
     //find arclength from t1 to t2
     public float ArcLength (float t1, float t2)
     {
