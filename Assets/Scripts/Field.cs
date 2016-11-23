@@ -6,12 +6,14 @@ public class Field : MonoBehaviour
 {
     public static Field instance;
     public GameObject FIELDSEGMENT;
+    public GameObject CHECKPOINT;
     public int MAXASTEROIDS = 1500;
 
     public int asteroidCount = 0;
     public enum FieldType { ICE, ROCK };
     public enum TrackType { STRAIGHT, CURVE, SLALOM, HAIRPIN };
     List<GameObject> segments;
+    List<GameObject> checkpoints;
 
     void Awake ()
     {
@@ -29,7 +31,10 @@ public class Field : MonoBehaviour
 	
 	void Update ()
     {
-        if ((segments[segments.Count - 1].transform.position - PlayerShip.instance.transform.position).magnitude < FieldSegment.MAXLENGTH * 3)
+        GameObject lastsegment = segments[segments.Count - 1];
+        Vector3 lastSegPos = lastsegment.transform.position;
+        Vector3 shipPos = PlayerShip.instance.transform.position;
+        if ((lastSegPos - shipPos).magnitude < FieldSegment.MAXLENGTH * 3)
         {
             AddSegment();
         }
@@ -51,8 +56,13 @@ public class Field : MonoBehaviour
             lastControlPoint = -Vector3.forward;
             segment.transform.position = transform.position;
         }
-        fieldSegment.GenerateSegment((FieldType)Random.Range(0, 2), RandomTrackType(1f), lastControlPoint);
+        fieldSegment.GenerateSegment((FieldType)Random.Range(0, 2), 
+                                      RandomTrackType(1f), 
+                                      lastControlPoint);
         segments.Add(segment);
+        Vector3 lastBezierPoint = segment.GetComponent<Bezier>().GetControlPoint(3);
+        GameObject checkpoint = Instantiate<GameObject>(CHECKPOINT);
+        checkpoint.transform.position = lastBezierPoint;
     }
 
     TrackType RandomTrackType(float difficulty)

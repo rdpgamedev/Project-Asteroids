@@ -6,8 +6,8 @@ using TrackType = Field.TrackType;
 
 public class FieldSegment : MonoBehaviour
 {
-    public static float MAXLENGTH = 2000f;
-    public static float MINLENGTH = 1000f;
+    public static float MAXLENGTH = 2500f;
+    public static float MINLENGTH = 1500f;
     public static float MAXHEIGHT = 1000f;
     public GameObject LINEPOINT;
     public GameObject ASTEROID;
@@ -130,7 +130,7 @@ public class FieldSegment : MonoBehaviour
             Vector3 tangent2 = curve.GetFirstDeriv(0.5001f).normalized;
             Vector3 rotationAxis = Vector3.Cross(tangent2, tangent1);
             Vector3 normal = Quaternion.AngleAxis(90f, rotationAxis) * tangent1;
-            landmarkpoint += normal * Random.Range(400f, 600f);
+            landmarkpoint += normal * Random.Range(600f, 800f);
             GameObject landmark = Instantiate<GameObject>(ASTEROID);
             landmark.transform.position = landmarkpoint;
             landmark.GetComponent<RandomModel>().ChooseAsteroid(fieldtype);
