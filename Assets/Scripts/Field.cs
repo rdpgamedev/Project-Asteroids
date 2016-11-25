@@ -44,6 +44,7 @@ public class Field : MonoBehaviour
     {
         GameObject segment = Instantiate<GameObject>(FIELDSEGMENT);
         FieldSegment fieldSegment = segment.GetComponent<FieldSegment>();
+        Bezier curve = segment.GetComponent<Bezier>();
         Vector3 lastControlPoint;
         if (segments.Count > 0)
         {
@@ -60,9 +61,12 @@ public class Field : MonoBehaviour
                                       RandomTrackType(1f), 
                                       lastControlPoint);
         segments.Add(segment);
-        Vector3 lastBezierPoint = segment.GetComponent<Bezier>().GetControlPoint(3);
+        Vector3 lastBezierPoint = curve.GetControlPoint(3);
         GameObject checkpoint = Instantiate<GameObject>(CHECKPOINT);
         checkpoint.transform.position = lastBezierPoint;
+        Vector3 forward = curve.GetFirstDeriv(1f);
+        Vector3 up = -curve.GetNormal(1f);
+        checkpoint.transform.rotation = Quaternion.LookRotation(forward, up);
     }
 
     TrackType RandomTrackType(float difficulty)

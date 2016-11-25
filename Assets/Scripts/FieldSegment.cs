@@ -127,7 +127,7 @@ public class FieldSegment : MonoBehaviour
         { 
             Vector3 landmarkpoint = curve.GetPoint(0.5f);
             Vector3 normal = curve.GetNormal(0.5f);
-            landmarkpoint += normal * Random.Range(600f, 800f);
+            landmarkpoint += normal * Random.Range(800f, 1000f);
             GameObject landmark = Instantiate<GameObject>(ASTEROID);
             landmark.transform.position = landmarkpoint;
             landmark.GetComponent<RandomModel>().ChooseAsteroid(fieldtype);
