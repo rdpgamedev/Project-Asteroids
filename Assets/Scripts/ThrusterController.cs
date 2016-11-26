@@ -16,7 +16,7 @@ public class ThrusterController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         float xaxis;
         float yaxis;

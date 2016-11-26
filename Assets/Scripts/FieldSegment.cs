@@ -17,7 +17,7 @@ public class FieldSegment : MonoBehaviour
     private Bezier curve;
     private float length;
     private float height;
-    private int numpoints; //number of linepoints on curve
+    private int numpoints; //number of linepoints on curve; checkpoint is first point
     private float pointdensity = 100f; //more means less linepoints
     private List<GameObject> landmarks;
 
@@ -138,7 +138,7 @@ public class FieldSegment : MonoBehaviour
             landmarks.Add(landmark);
         }
         //Spawn Linepoints
-        for (int i = 0; i < numpoints; ++i)
+        for (int i = 1; i < numpoints; ++i)
         {
             float t = (float)i / (float)numpoints;
             GameObject newLinePoint = Instantiate<GameObject>(LINEPOINT);
