@@ -12,11 +12,11 @@ public class ThrusterController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-
+        MAXTHRUST = PlayerShip.instance.MAXTHRUST;
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         float xaxis;
         float yaxis;

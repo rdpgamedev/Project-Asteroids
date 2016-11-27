@@ -13,7 +13,7 @@ public class PlayerShip : MonoBehaviour
     public static PlayerShip instance;
     public GameObject leftthruster;
     public GameObject rightthruster;
-    public float MAXTHRUST = 40;
+    public float MAXTHRUST = 40f;
 
     void Awake ()
     {

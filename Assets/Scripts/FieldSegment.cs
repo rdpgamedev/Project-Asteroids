@@ -6,8 +6,8 @@ using TrackType = Field.TrackType;
 
 public class FieldSegment : MonoBehaviour
 {
-    public static float MAXLENGTH = 2000f;
-    public static float MINLENGTH = 1000f;
+    public static float MAXLENGTH = 2500f;
+    public static float MINLENGTH = 1500f;
     public static float MAXHEIGHT = 1000f;
     public GameObject LINEPOINT;
     public GameObject ASTEROID;
@@ -17,8 +17,8 @@ public class FieldSegment : MonoBehaviour
     private Bezier curve;
     private float length;
     private float height;
-    private int numpoints; //number of linepoints on curve
-    private float pointdensity = 100;
+    private int numpoints; //number of linepoints on curve; checkpoint is first point
+    private float pointdensity = 100f; //more means less linepoints
     private List<GameObject> landmarks;
 
     void Awake ()
@@ -126,11 +126,8 @@ public class FieldSegment : MonoBehaviour
         if (Random.Range(0, 5) > 3)
         { 
             Vector3 landmarkpoint = curve.GetPoint(0.5f);
-            Vector3 tangent1 = curve.GetFirstDeriv(0.5f).normalized;
-            Vector3 tangent2 = curve.GetFirstDeriv(0.5001f).normalized;
-            Vector3 rotationAxis = Vector3.Cross(tangent2, tangent1);
-            Vector3 normal = Quaternion.AngleAxis(90f, rotationAxis) * tangent1;
-            landmarkpoint += normal * Random.Range(400f, 600f);
+            Vector3 normal = curve.GetNormal(0.5f);
+            landmarkpoint += normal * Random.Range(800f, 1000f);
             GameObject landmark = Instantiate<GameObject>(ASTEROID);
             landmark.transform.position = landmarkpoint;
             landmark.GetComponent<RandomModel>().ChooseAsteroid(fieldtype);
@@ -141,7 +138,7 @@ public class FieldSegment : MonoBehaviour
             landmarks.Add(landmark);
         }
         //Spawn Linepoints
-        for (int i = 0; i < numpoints; ++i)
+        for (int i = 1; i < numpoints; ++i)
         {
             float t = (float)i / (float)numpoints;
             GameObject newLinePoint = Instantiate<GameObject>(LINEPOINT);
