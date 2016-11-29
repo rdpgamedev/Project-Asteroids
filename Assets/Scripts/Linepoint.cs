@@ -5,7 +5,7 @@ public class Linepoint : MonoBehaviour {
     public static float CLOSEDISTANCE = 100f;
     public static float PICKUPDISTANCE = 5f;
     public static float SPEED = 0.25f;
-
+    public FieldSegment fieldSegment;
     private Vector3 scale;
 	// Use this for initialization
 	void Start ()
@@ -16,14 +16,19 @@ public class Linepoint : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
-	    if (CloseToPlayer(CLOSEDISTANCE))
+        bool active = false;
+        if (fieldSegment != null) active = fieldSegment.isActive;
+        if ((fieldSegment == null) || (active))
         {
-            if (CloseToPlayer(PICKUPDISTANCE))
+            if (CloseToPlayer(CLOSEDISTANCE))
             {
-                Destroy(this.gameObject);
+                if (CloseToPlayer(PICKUPDISTANCE))
+                {
+                    Destroy(this.gameObject);
+                }
+                Gravitate();
+                Scale();
             }
-            Gravitate();
-            Scale();
         }
 	}
 
