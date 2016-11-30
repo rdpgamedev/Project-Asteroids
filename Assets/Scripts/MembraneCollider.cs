@@ -18,7 +18,9 @@ public class MembraneCollider : MonoBehaviour {
     {
         if (other.gameObject.CompareTag("Player"))
         {
-
+            GameObject fieldSegment = CHECKPOINT.transform.parent.gameObject;
+            FieldSegment segment = fieldSegment.GetComponent<FieldSegment>();
+            GameManager.instance.SetActiveSegment(segment);
         }
     }
 }

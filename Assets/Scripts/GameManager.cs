@@ -10,13 +10,12 @@ public class GameManager : MonoBehaviour {
     float time;
     float difficulty;
     FieldSegment activeSegment;
-    void awake ()
+    void Awake ()
     {
         instance = this;
     }
 	void Start ()
     {
-	
 	}
 	
 	void Update ()
@@ -26,7 +25,7 @@ public class GameManager : MonoBehaviour {
 
     public void SetActiveSegment (FieldSegment seg)
     {
-        activeSegment.SetActive(false);
+        if (activeSegment != null) Destroy(activeSegment.gameObject); ;
         activeSegment = seg;
         activeSegment.SetActive(true);
     }
