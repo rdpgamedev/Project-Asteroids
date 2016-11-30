@@ -162,9 +162,13 @@ public class FieldSegment : MonoBehaviour
                             Random.Range(-10f, 10f), 
                             Random.Range(-10f, 10f));
             bool collided = true;
+            asteroid.transform.forward = curve.GetFirstDeriv((float)i / 100f);
             while (collided)
             {
-                asteroid.transform.position = RandomlyOffset(point, 1500f);
+                Vector3 offset = RandomlyOffsetXY(point, 1000f) - point;
+                asteroid.transform.position = point;
+                asteroid.transform.position += asteroid.transform.right.normalized * offset.x;
+                asteroid.transform.position += asteroid.transform.up.normalized * offset.y;
                 collided = false;
                 foreach (GameObject lm in landmarks)
                 {
@@ -200,6 +204,16 @@ public class FieldSegment : MonoBehaviour
         Vector3 offset = new Vector3(Random.Range(-deltaX, deltaX),
                                      Random.Range(-deltaH, deltaH),
                                      Random.Range(-deltaX, deltaX));
+        newpoint += offset;
+        return newpoint;
+    }
+
+    Vector3 RandomlyOffsetXY(Vector3 point, float deltaXY)
+    {
+        Vector3 newpoint = point;
+        Vector3 offset = new Vector3(Random.Range(-deltaXY, deltaXY),
+                                     Random.Range(-deltaXY, deltaXY),
+                                     0f);
         newpoint += offset;
         return newpoint;
     }

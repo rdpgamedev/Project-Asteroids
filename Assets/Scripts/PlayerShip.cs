@@ -57,14 +57,4 @@ public class PlayerShip : MonoBehaviour
     {
         Debug.Log("Moving down.");
     }
-
-    public void DebugRollLeft()
-    {
-        Debug.Log("Rotating left.");
-    }
-
-    public void DebugRollRight()
-    {
-        Debug.Log("Rotating right.");
-    }
 }
