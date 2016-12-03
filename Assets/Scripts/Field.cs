@@ -60,7 +60,7 @@ public class Field : MonoBehaviour
             segment.transform.position = transform.position;
         }
         fieldSegment.GenerateSegment((FieldType)Random.Range(0, 2), 
-                                      RandomTrackType(1f), 
+                                      RandomTrackType(GameManager.instance.difficulty), 
                                       lastControlPoint);
         segments.Add(segment);
         Vector3 lastBezierPoint = curve.GetControlPoint(0);

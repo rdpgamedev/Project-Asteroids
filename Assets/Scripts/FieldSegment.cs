@@ -6,8 +6,8 @@ using TrackType = Field.TrackType;
 
 public class FieldSegment : MonoBehaviour
 {
-    public static float MAXLENGTH = 2500f;
-    public static float MINLENGTH = 1500f;
+    public static float MAXLENGTH = 1200f;
+    public static float MINLENGTH = 1000f;
     public static float MAXHEIGHT = 1000f;
     public GameObject LINEPOINT;
     public GameObject ASTEROID;

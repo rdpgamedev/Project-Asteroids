@@ -25,36 +25,9 @@ public class PlayerShip : MonoBehaviour
 	}
 	
 	void Update ()
-    {   
+    {
+        float velocity = GetComponent<Rigidbody>().velocity.magnitude;
+        GameManager.instance.score += (int)(velocity * 
+            Time.deltaTime * GameManager.instance.multiplier);
 	}
-
-    public void DebugMoveForward()
-    {
-        Debug.Log("Moving forward.");
-    }
-
-    public void DebugMoveBackward()
-    {
-        Debug.Log("Moving backward.");
-    }
-
-    public void DebugMoveLeft()
-    {
-        Debug.Log("Moving left.");
-    }
-
-    public void DebugMoveRight()
-    {
-        Debug.Log("Moving right.");
-    }
-
-    public void DebugMoveUp()
-    {
-        Debug.Log("Moving up.");
-    }
-
-    public void DebugMoveDown()
-    {
-        Debug.Log("Moving down.");
-    }
 }
