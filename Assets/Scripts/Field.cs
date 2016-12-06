@@ -34,9 +34,11 @@ public class Field : MonoBehaviour
         GameObject lastsegment = segments[segments.Count - 1];
         Vector3 lastSegPos = lastsegment.transform.position;
         Vector3 shipPos = PlayerShip.instance.transform.position;
-        if ((lastSegPos - shipPos).magnitude < FieldSegment.MAXLENGTH * 3)
+        while ((lastSegPos - shipPos).magnitude < FieldSegment.MAXLENGTH * 3)
         {
             AddSegment();
+            lastsegment = segments[segments.Count - 1];
+            lastSegPos = lastsegment.transform.position;
         }
 	}
 
@@ -58,14 +60,15 @@ public class Field : MonoBehaviour
             segment.transform.position = transform.position;
         }
         fieldSegment.GenerateSegment((FieldType)Random.Range(0, 2), 
-                                      RandomTrackType(1f), 
+                                      RandomTrackType(GameManager.instance.difficulty), 
                                       lastControlPoint);
         segments.Add(segment);
-        Vector3 lastBezierPoint = curve.GetControlPoint(3);
+        Vector3 lastBezierPoint = curve.GetControlPoint(0);
         GameObject checkpoint = Instantiate<GameObject>(CHECKPOINT);
+        checkpoint.transform.parent = segment.transform;
         checkpoint.transform.position = lastBezierPoint;
-        Vector3 forward = curve.GetFirstDeriv(1f);
-        Vector3 up = -curve.GetNormal(1f);
+        Vector3 forward = curve.GetFirstDeriv(0f);
+        Vector3 up = -curve.GetNormal(0f);
         checkpoint.transform.rotation = Quaternion.LookRotation(forward, up);
     }
 

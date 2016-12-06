@@ -6,11 +6,12 @@ using TrackType = Field.TrackType;
 
 public class FieldSegment : MonoBehaviour
 {
-    public static float MAXLENGTH = 2500f;
-    public static float MINLENGTH = 1500f;
+    public static float MAXLENGTH = 1200f;
+    public static float MINLENGTH = 1000f;
     public static float MAXHEIGHT = 1000f;
     public GameObject LINEPOINT;
     public GameObject ASTEROID;
+    public bool isActive;
 
     private FieldType fieldtype;
     private TrackType tracktype;
@@ -20,6 +21,7 @@ public class FieldSegment : MonoBehaviour
     private int numpoints; //number of linepoints on curve; checkpoint is first point
     private float pointdensity = 100f; //more means less linepoints
     private List<GameObject> landmarks;
+    
 
     void Awake ()
     {
@@ -144,6 +146,7 @@ public class FieldSegment : MonoBehaviour
             GameObject newLinePoint = Instantiate<GameObject>(LINEPOINT);
             newLinePoint.transform.position = curve.GetPoint(t);
             newLinePoint.transform.parent = transform;
+            newLinePoint.GetComponent<Linepoint>().fieldSegment = this;
         }
         //Spawn Asteroids
         int unspawnedAsteroids = 
@@ -159,9 +162,13 @@ public class FieldSegment : MonoBehaviour
                             Random.Range(-10f, 10f), 
                             Random.Range(-10f, 10f));
             bool collided = true;
+            asteroid.transform.forward = curve.GetFirstDeriv((float)i / 100f);
             while (collided)
             {
-                asteroid.transform.position = RandomlyOffset(point, 1500f);
+                Vector3 offset = RandomlyOffsetXY(point, 1000f) - point;
+                asteroid.transform.position = point;
+                asteroid.transform.position += asteroid.transform.right.normalized * offset.x;
+                asteroid.transform.position += asteroid.transform.up.normalized * offset.y;
                 collided = false;
                 foreach (GameObject lm in landmarks)
                 {
@@ -199,5 +206,20 @@ public class FieldSegment : MonoBehaviour
                                      Random.Range(-deltaX, deltaX));
         newpoint += offset;
         return newpoint;
+    }
+
+    Vector3 RandomlyOffsetXY(Vector3 point, float deltaXY)
+    {
+        Vector3 newpoint = point;
+        Vector3 offset = new Vector3(Random.Range(-deltaXY, deltaXY),
+                                     Random.Range(-deltaXY, deltaXY),
+                                     0f);
+        newpoint += offset;
+        return newpoint;
+    }
+
+    public void SetActive (bool setting)
+    {
+        isActive = setting;
     }
 }

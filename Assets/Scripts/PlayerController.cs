@@ -31,7 +31,7 @@ public class PlayerController : MonoBehaviour
 	
 	void Update ()
     {
-        if (Input.anyKeyDown) CheckInput();
+        //if (Input.anyKeyDown) CheckInput();
         //smooth input axes axis = axis + delta * 0.3
         xaxisleft = xaxisleft + (Input.GetAxis("Left Horizontal") - xaxisleft) * Time.deltaTime * 4;
         yaxisleft = yaxisleft + (Input.GetAxis("Left Vertical") - yaxisleft) * Time.deltaTime * 4;
@@ -55,48 +55,6 @@ public class PlayerController : MonoBehaviour
             case KeyCode.Escape:
                 //Quit game
                 Application.Quit();
-                break;
-            case KeyCode.Space:
-                //Move up
-                break;
-            case KeyCode.UpArrow:
-                break;
-            case KeyCode.DownArrow:
-                break;
-            case KeyCode.RightArrow:
-                break;
-            case KeyCode.LeftArrow:
-                break;
-            case KeyCode.A:
-                //Move left
-                player.DebugMoveLeft();
-                break;
-            case KeyCode.D:
-                //Move right
-                player.DebugMoveRight();
-                break;
-            case KeyCode.E:
-                //Roll right
-                player.DebugRollRight();
-                break;
-            case KeyCode.P:
-                //Pause
-                break;
-            case KeyCode.Q:
-                //Roll left
-                player.DebugRollLeft();
-                break;
-            case KeyCode.S:
-                //Move backward
-                player.DebugMoveBackward();
-                break;
-            case KeyCode.W:
-                //Move forward
-                player.DebugMoveForward();
-                break;
-            case KeyCode.LeftShift:
-                //Move down
-                player.DebugMoveDown();
                 break;
             default:
                 break;
