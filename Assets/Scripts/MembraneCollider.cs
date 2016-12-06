@@ -24,7 +24,7 @@ public class MembraneCollider : MonoBehaviour {
             GameManager.instance.difficulty += 0.05f;
             ++(GameManager.instance.level);
             GameManager.instance.ResetTime();
-            ThrusterController.MAXTHRUST += 5f;
+            ThrusterController.MAXTHRUST += 1f;
         }
     }
 }
