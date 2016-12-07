@@ -26,6 +26,8 @@ public class Field : MonoBehaviour
         for (int i = 0; i < 5; ++i)
         {
             AddSegment();
+            GameObject firstCheckpoint = segments[0].GetComponent<FieldSegment>().GetCheckpoint();
+            firstCheckpoint.GetComponent<Animator>().enabled = true;
         }
 	}
 	
@@ -70,6 +72,12 @@ public class Field : MonoBehaviour
         Vector3 forward = curve.GetFirstDeriv(0f);
         Vector3 up = -curve.GetNormal(0f);
         checkpoint.transform.rotation = Quaternion.LookRotation(forward, up);
+        fieldSegment.SetCheckpoint(checkpoint);
+        if (segments.Count > 1)
+        {
+            GameObject prevSegment = segments[segments.Count - 2];
+            prevSegment.GetComponent<FieldSegment>().SetNextCheckpoint(checkpoint);
+        }
     }
 
     TrackType RandomTrackType(float difficulty)

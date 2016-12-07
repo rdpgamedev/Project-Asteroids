@@ -37,13 +37,13 @@ public class HUD : MonoBehaviour {
             ++thousands;
         }
         string padding = "";
-        if (score > 9) padding += " ";
-        if (score > 99) padding += " ";
+        if (score < 10) padding += " ";
+        if (score < 100) padding += " ";
         string suffix = "";
         switch (thousands)
         {
             case 0:
-                suffix = "";
+                suffix = " ";
                 break;
             case 1:
                 suffix = "K";

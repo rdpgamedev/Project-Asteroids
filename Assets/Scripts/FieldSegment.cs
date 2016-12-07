@@ -21,6 +21,8 @@ public class FieldSegment : MonoBehaviour
     private int numpoints; //number of linepoints on curve; checkpoint is first point
     private float pointdensity = 100f; //more means less linepoints
     private List<GameObject> landmarks;
+    private GameObject checkpoint;
+    private GameObject nextCheckpoint;
     
 
     void Awake ()
@@ -218,8 +220,28 @@ public class FieldSegment : MonoBehaviour
         return newpoint;
     }
 
+    public void SetCheckpoint (GameObject _checkpoint)
+    {
+        checkpoint = _checkpoint;
+        checkpoint.GetComponent<Animator>().enabled = false;
+    }
+
+    public GameObject GetCheckpoint ()
+    {
+        return checkpoint;
+    }
+
+    public void SetNextCheckpoint (GameObject _nextCheckpoint)
+    {
+        nextCheckpoint = _nextCheckpoint;
+    }
+
     public void SetActive (bool setting)
     {
         isActive = setting;
+        if (isActive)
+        {
+            nextCheckpoint.GetComponent<Animator>().enabled = true;
+        }
     }
 }
