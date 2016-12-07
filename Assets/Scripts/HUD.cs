@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class HUD : MonoBehaviour {
@@ -23,19 +24,54 @@ public class HUD : MonoBehaviour {
 
     void UpdateMultiplier ()
     {
-        MULTIPLIERTEXT.GetComponent<TextMesh>().text =
-            "x " + GameManager.instance.multiplier.ToString("N2");
+        MULTIPLIERTEXT.GetComponent<Text>().text =
+            "x " + GameManager.instance.multiplier.ToString("N0");
     }
 
     void UpdateScore ()
     {
-        SCORETEXT.GetComponent<TextMesh>().text =
-            "SCORE: " + GameManager.instance.score;
+        int score = GameManager.instance.score;
+        int thousands = 0;
+        while (score > 999)
+        {
+            score /= 1000;
+            ++thousands;
+        }
+        string padding = "";
+        if (score < 10) padding += " ";
+        if (score < 100) padding += " ";
+        string suffix = "";
+        switch (thousands)
+        {
+            case 0:
+                suffix = " ";
+                break;
+            case 1:
+                suffix = "K";
+                break;
+            case 2:
+                suffix = "M";
+                break;
+            case 3:
+                suffix = "B";
+                break;
+            case 4:
+                suffix = "T";
+                break;
+            case 5:
+                suffix = "Q";
+                break;
+            default:
+                suffix = "?!?";
+                break;
+        }
+        SCORETEXT.GetComponent<Text>().text =
+            "SCORE: " + padding + score + suffix;
     }
 
     void UpdateTime ()
     {
-        TIMETEXT.GetComponent<TextMesh>().text = 
+        TIMETEXT.GetComponent<Text>().text = 
             GameManager.instance.time.ToString("00.00");
     }
 
