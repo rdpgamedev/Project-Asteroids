@@ -30,4 +30,9 @@ public class PlayerShip : MonoBehaviour
         GameManager.instance.score += (int)(velocity * 
             Time.deltaTime * GameManager.instance.multiplier);
 	}
+
+    void OnCollisionEnter(Collision collision)
+    {
+        
+    }
 }

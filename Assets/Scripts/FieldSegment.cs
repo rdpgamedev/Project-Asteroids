@@ -134,6 +134,7 @@ public class FieldSegment : MonoBehaviour
             landmarkpoint += normal * Random.Range(800f, 1000f);
             GameObject landmark = Instantiate<GameObject>(ASTEROID);
             landmark.transform.position = landmarkpoint;
+            landmark.transform.parent = transform;
             landmark.GetComponent<RandomModel>().ChooseAsteroid(fieldtype);
             landmark.transform.localScale *= Random.Range(300f, 450f);
             landmark.GetComponent<Rigidbody>().mass = 999999f;

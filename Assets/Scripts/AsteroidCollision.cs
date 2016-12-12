@@ -2,6 +2,8 @@
 using System.Collections;
 
 public class AsteroidCollision : MonoBehaviour {
+    public int colliders;
+
 
 	// Use this for initialization
 	void Start () {
@@ -19,5 +21,17 @@ public class AsteroidCollision : MonoBehaviour {
         {
             Destroy(collision.gameObject);
         }
+    }
+
+    void OnTriggerEnter (Collider collider)
+    {
+        ++colliders;
+        GetComponent<MeshCollider>().enabled = true;
+    }
+
+    void OnTriggerExit ()
+    {
+        --colliders;
+        if (colliders == 0) GetComponent<MeshCollider>().enabled = false;
     }
 }

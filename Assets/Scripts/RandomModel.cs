@@ -20,6 +20,6 @@ public class RandomModel : MonoBehaviour
     {
         GetComponent<MeshFilter>().sharedMesh = meshes[Random.Range(0, meshes.Length)];
         GetComponent<MeshRenderer>().material = materials[Random.Range((int)type * 4, 4 + (int)type * 4)];
-        //GetComponent<MeshCollider>().sharedMesh = GetComponent<MeshFilter>().sharedMesh;
+        GetComponent<MeshCollider>().sharedMesh = GetComponent<MeshFilter>().sharedMesh;
     }
 }
