@@ -6,6 +6,7 @@
 
 using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -21,22 +22,19 @@ public class PlayerController : MonoBehaviour
     {
         //keys to check for player input
         keys = new KeyCode[] {
-             KeyCode.W, KeyCode.A, KeyCode.S, KeyCode.D,
-             KeyCode.Q, KeyCode.E, KeyCode.Space, KeyCode.LeftShift,
-             KeyCode.Escape, KeyCode.P,
-             KeyCode.UpArrow, KeyCode.DownArrow, KeyCode.LeftArrow, KeyCode.RightArrow
+             KeyCode.Escape, KeyCode.P, KeyCode.R
             };
         player = PlayerShip.instance;
 	}
 	
 	void Update ()
     {
-        //if (Input.anyKeyDown) CheckInput();
-        //smooth input axes axis = axis + delta * 0.3
-        xaxisleft = xaxisleft + (Input.GetAxis("Left Horizontal") - xaxisleft) * Time.deltaTime * 4;
-        yaxisleft = yaxisleft + (Input.GetAxis("Left Vertical") - yaxisleft) * Time.deltaTime * 4;
-        xaxisright = xaxisright + (Input.GetAxis("Right Horizontal") - xaxisright) * Time.deltaTime * 4;
-        yaxisright = yaxisright + (Input.GetAxis("Right Vertical") - yaxisright) * Time.deltaTime * 4;
+        if (Input.anyKeyDown) CheckInput();
+        //smooth input axes axis
+        xaxisleft += (Input.GetAxis("Left Horizontal") - xaxisleft) * Time.deltaTime * 4;
+        yaxisleft += (Input.GetAxis("Left Vertical") - yaxisleft) * Time.deltaTime * 4;
+        xaxisright += (Input.GetAxis("Right Horizontal") - xaxisright) * Time.deltaTime * 4;
+        yaxisright += (Input.GetAxis("Right Vertical") - yaxisright) * Time.deltaTime * 4;
     }
 
     void CheckInput()
@@ -55,6 +53,13 @@ public class PlayerController : MonoBehaviour
             case KeyCode.Escape:
                 //Quit game
                 Application.Quit();
+                break;
+            case KeyCode.R:
+                //Restart game
+                SceneManager.LoadSceneAsync("MainScene").allowSceneActivation = true;
+                break;
+            case KeyCode.P:
+                //Pause game
                 break;
             default:
                 break;
