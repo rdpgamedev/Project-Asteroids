@@ -47,6 +47,7 @@ public class Field : MonoBehaviour
     void AddSegment ()
     {
         GameObject segment = Instantiate<GameObject>(FIELDSEGMENT);
+        segment.transform.parent = transform;
         FieldSegment fieldSegment = segment.GetComponent<FieldSegment>();
         Bezier curve = segment.GetComponent<Bezier>();
         Vector3 lastControlPoint;

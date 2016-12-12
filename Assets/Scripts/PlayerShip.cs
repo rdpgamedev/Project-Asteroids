@@ -33,6 +33,6 @@ public class PlayerShip : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-
+        
     }
 }
