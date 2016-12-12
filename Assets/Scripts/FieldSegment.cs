@@ -23,6 +23,7 @@ public class FieldSegment : MonoBehaviour
     private List<GameObject> landmarks;
     private GameObject checkpoint;
     private GameObject nextCheckpoint;
+    private int asteroidCount;
     
 
     void Awake ()
@@ -43,6 +44,11 @@ public class FieldSegment : MonoBehaviour
             Destroy(this);
         }
 	}
+
+    void OnDestroy ()
+    {
+        Field.instance.asteroidCount -= asteroidCount;
+    }
 
     public void GenerateSegment(FieldType _fieldtype, TrackType _tracktype, Vector3 lastControlPoint)
     {
@@ -154,7 +160,7 @@ public class FieldSegment : MonoBehaviour
         //Spawn Asteroids
         int unspawnedAsteroids = 
             Field.instance.MAXASTEROIDS - Field.instance.asteroidCount;
-        for (int i = 0; i < (unspawnedAsteroids)/20; ++i)
+        for (int i = 0; i < (unspawnedAsteroids)/10; ++i)
         {
             Vector3 point = curve.GetPoint((float)i / 100f);
             GameObject asteroid = Instantiate<GameObject>(ASTEROID);
@@ -185,6 +191,7 @@ public class FieldSegment : MonoBehaviour
             }
             asteroid.transform.parent = transform;
             ++Field.instance.asteroidCount;
+            ++asteroidCount;
         }
 
     }
