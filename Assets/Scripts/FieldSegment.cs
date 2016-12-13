@@ -138,14 +138,8 @@ public class FieldSegment : MonoBehaviour
             Vector3 landmarkpoint = curve.GetPoint(0.5f);
             Vector3 normal = curve.GetNormal(0.5f);
             landmarkpoint += normal * Random.Range(800f, 1000f);
-            GameObject landmark = Instantiate<GameObject>(ASTEROID);
-            landmark.transform.position = landmarkpoint;
+            GameObject landmark = SpawnLandmark(landmarkpoint);
             landmark.transform.parent = transform;
-            landmark.GetComponent<RandomModel>().ChooseAsteroid(fieldtype);
-            landmark.transform.localScale *= Random.Range(300f, 450f);
-            landmark.GetComponent<Rigidbody>().mass = 999999f;
-            landmark.GetComponent<RandomRotation>().enabled = false;
-            landmark.name = "Landmark";
             landmarks.Add(landmark);
         }
         //Spawn Linepoints
@@ -163,13 +157,7 @@ public class FieldSegment : MonoBehaviour
         for (int i = 0; i < (unspawnedAsteroids)/10; ++i)
         {
             Vector3 point = curve.GetPoint((float)i / 100f);
-            GameObject asteroid = Instantiate<GameObject>(ASTEROID);
-            asteroid.GetComponent<RandomModel>().ChooseAsteroid(fieldtype);
-            asteroid.transform.localScale *= Random.Range(30f, 45f);
-            asteroid.GetComponent<Rigidbody>().velocity = 
-                new Vector3(Random.Range(-10f, 10f), 
-                            Random.Range(-10f, 10f), 
-                            Random.Range(-10f, 10f));
+            GameObject asteroid = SpawnAsteroid(point);
             bool collided = true; //tracking if collided with a landmark
             asteroid.transform.forward = curve.GetFirstDeriv((float)i / 100f);
             while (collided)
@@ -194,6 +182,31 @@ public class FieldSegment : MonoBehaviour
             ++asteroidCount;
         }
 
+    }
+
+    public GameObject SpawnAsteroid (Vector3 position)
+    {
+        GameObject asteroid = Instantiate<GameObject>(ASTEROID);
+        asteroid.GetComponent<RandomModel>().ChooseAsteroid(fieldtype);
+        asteroid.transform.localScale *= Random.Range(30f, 45f);
+        asteroid.GetComponent<Rigidbody>().velocity =
+            new Vector3(Random.Range(-10f, 10f),
+                        Random.Range(-10f, 10f),
+                        Random.Range(-10f, 10f));
+        asteroid.transform.position = position;
+        return asteroid;
+    }
+
+    public GameObject SpawnLandmark (Vector3 position)
+    {
+        GameObject landmark = Instantiate<GameObject>(ASTEROID);
+        landmark.transform.position = position;
+        landmark.GetComponent<RandomModel>().ChooseAsteroid(fieldtype);
+        landmark.transform.localScale *= Random.Range(300f, 450f);
+        landmark.GetComponent<Rigidbody>().mass = 999999f;
+        landmark.GetComponent<RandomRotation>().enabled = false;
+        landmark.name = "Landmark";
+        return landmark;
     }
 
     Vector3 RandomlyOffset(Vector3 point, float delta)
