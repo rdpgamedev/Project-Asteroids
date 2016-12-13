@@ -170,7 +170,7 @@ public class FieldSegment : MonoBehaviour
                 new Vector3(Random.Range(-10f, 10f), 
                             Random.Range(-10f, 10f), 
                             Random.Range(-10f, 10f));
-            bool collided = true;
+            bool collided = true; //tracking if collided with a landmark
             asteroid.transform.forward = curve.GetFirstDeriv((float)i / 100f);
             while (collided)
             {

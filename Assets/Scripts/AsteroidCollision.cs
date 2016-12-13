@@ -19,7 +19,7 @@ public class AsteroidCollision : MonoBehaviour {
     {
         if (collision.gameObject.name.Contains("Asteroid"))
         {
-            Destroy(collision.gameObject);
+            //Destroy(collision.gameObject);
         }
     }
 
