@@ -6,6 +6,7 @@ public class AsteroidCollision : MonoBehaviour {
     public int colliders;
     public FieldSegment segment;
     public bool isChild = false;
+    public GameObject AsteroidParticleSystem;
 
 	// Use this for initialization
 	void Start () {
@@ -30,6 +31,14 @@ public class AsteroidCollision : MonoBehaviour {
                 Vector3 scale = oldAsteroid.transform.localScale;
                 Destroy(collision.gameObject);
                 --segment.asteroidCount;
+                GameObject particleSystem = Instantiate<GameObject>(AsteroidParticleSystem);
+                particleSystem.transform.parent = segment.transform;
+                particleSystem.transform.position = position;
+                //change to ice particles if ice asteroid
+                if (GetComponent<MeshRenderer>().material.name.Contains("Ice"))
+                {
+                    particleSystem.GetComponent<ParticleSystem>().startColor = new Color(60f/255f, 75f/255f, 75f/255f, 0.2f);
+                }
                 //spawn smaller asteroids
                 int asteroidCount = Random.Range(1, MAXCHILDRENASTEROIDS);
                 for (int i = 0; i < asteroidCount; ++i)
