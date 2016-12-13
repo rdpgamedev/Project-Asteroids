@@ -30,7 +30,10 @@ public class AsteroidCollision : MonoBehaviour {
                 Vector3 position = oldAsteroid.transform.position;
                 Vector3 scale = oldAsteroid.transform.localScale;
                 Destroy(collision.gameObject);
-                --segment.asteroidCount;
+                if (segment != null)
+                {
+                    --segment.asteroidCount;
+                }
                 GameObject particleSystem = Instantiate<GameObject>(AsteroidParticleSystem);
                 particleSystem.transform.parent = segment.transform;
                 particleSystem.transform.position = position;
