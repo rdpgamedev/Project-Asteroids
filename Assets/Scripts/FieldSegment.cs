@@ -13,6 +13,7 @@ public class FieldSegment : MonoBehaviour
     public GameObject ASTEROID;
     public bool isActive;
     public int asteroidCount;
+    public GameObject fieldParticles;
 
     private FieldType fieldtype;
     private TrackType tracktype;
@@ -34,7 +35,7 @@ public class FieldSegment : MonoBehaviour
 
     void Start ()
     {
-        
+
 	}
 	
 	void Update ()
@@ -178,7 +179,16 @@ public class FieldSegment : MonoBehaviour
                 }
             }
         }
-
+        //Spawn Field Particles
+        Vector3 midpoint = curve.GetPoint(0.5f);
+        GameObject particles = Instantiate<GameObject>(fieldParticles);
+        particles.transform.parent = transform;
+        particles.transform.position = midpoint;
+        particles.transform.forward = curve.GetFirstDeriv(0.5f);
+        if (fieldtype == FieldType.ICE)
+        {
+            particles.GetComponent<ParticleSystem>().startColor = new Color(52f/255f, 65f/255f, 68f/255f, 87f/255f);
+        }
     }
 
     public GameObject SpawnAsteroid (Vector3 position)
