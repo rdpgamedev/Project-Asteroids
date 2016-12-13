@@ -18,12 +18,13 @@ public class RandomRotation : MonoBehaviour
         deltaAngleY = Random.Range(-MAXIMUM_SPEED, MAXIMUM_SPEED);
         deltaAngleZ = Random.Range(-MAXIMUM_SPEED, MAXIMUM_SPEED);
         eulerRotation = new Vector3(deltaAngleX, deltaAngleY, deltaAngleZ);
+        GetComponent<Rigidbody>().angularVelocity = eulerRotation;
     }
 	
 	// Update is called once per frame
 	void Update ()
     {
-        this.transform.Rotate(eulerRotation);
+
 	}
 }
 

@@ -43,7 +43,7 @@ public class AsteroidCollision : MonoBehaviour {
                     particleSystem.GetComponent<ParticleSystem>().startColor = new Color(60f/255f, 75f/255f, 75f/255f, 0.2f);
                 }
                 //spawn smaller asteroids
-                int asteroidCount = Random.Range(1, MAXCHILDRENASTEROIDS);
+                int asteroidCount = Random.Range(2, MAXCHILDRENASTEROIDS);
                 for (int i = 0; i < asteroidCount; ++i)
                 {
                     GameObject newAsteroid = segment.SpawnAsteroid(position);
