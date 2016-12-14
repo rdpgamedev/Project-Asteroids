@@ -4,7 +4,7 @@ using System.Collections;
 public class MoveTo : MonoBehaviour
 {
     public GameObject TARGET;
-    public float speed = 6f;
+    public float ratio = 6f;
 
     void Start()
     {
@@ -13,6 +13,8 @@ public class MoveTo : MonoBehaviour
 
     void LateUpdate()
     {
-        transform.localPosition = TARGET.transform.localPosition + new Vector3(0f, 0f, -PlayerShip.instance.GetComponent<Rigidbody>().velocity.magnitude * 0.2f);
+        //transform.localPosition = TARGET.transform.localPosition + new Vector3(0f, 0f, -PlayerShip.instance.GetComponent<Rigidbody>().velocity.magnitude * 0.2f);
+        Vector3 delta = TARGET.transform.position - transform.position;
+        transform.Translate(delta / ratio, Space.World);
     }
 }
