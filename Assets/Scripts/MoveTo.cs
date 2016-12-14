@@ -11,7 +11,7 @@ public class MoveTo : MonoBehaviour
 
     }
 
-    void LateUpdate()
+    void FixedUpdate()
     {
         //transform.localPosition = TARGET.transform.localPosition + new Vector3(0f, 0f, -PlayerShip.instance.GetComponent<Rigidbody>().velocity.magnitude * 0.2f);
         Vector3 delta = TARGET.transform.position - transform.position;

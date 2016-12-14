@@ -4,9 +4,11 @@ using System.Collections;
 public class MembraneCollider : MonoBehaviour {
     public GameObject CHECKPOINT;
 
+    private CameraPos cameraPos;
+
 	void Start ()
     {
-	
+        cameraPos = CameraPos.instance.GetComponent<CameraPos>();
 	}
 	
 	void Update ()
@@ -25,6 +27,7 @@ public class MembraneCollider : MonoBehaviour {
             ++(GameManager.instance.level);
             GameManager.instance.ResetTime();
             ThrusterController.MAXTHRUST += 1f;
+            cameraPos.CheckpointZoom();
         }
     }
 }
