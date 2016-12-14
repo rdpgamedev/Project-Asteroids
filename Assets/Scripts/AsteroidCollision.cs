@@ -40,7 +40,8 @@ public class AsteroidCollision : MonoBehaviour {
                 //change to ice particles if ice asteroid
                 if (GetComponent<MeshRenderer>().material.name.Contains("Ice"))
                 {
-                    particleSystem.GetComponent<ParticleSystem>().startColor = new Color(60f/255f, 75f/255f, 75f/255f, 0.2f);
+                    Color iceBlue = new Color(60f / 255f, 75f / 255f, 75f / 255f, 0.2f);
+                    particleSystem.GetComponent<ParticleSystem>().startColor = iceBlue;
                 }
                 //spawn smaller asteroids
                 int asteroidCount = Random.Range(2, MAXCHILDRENASTEROIDS);
