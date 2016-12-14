@@ -22,36 +22,39 @@ public class AsteroidCollision : MonoBehaviour {
 
     void OnCollisionEnter (Collision collision)
     {
-        if (collision.gameObject.name.Contains("Asteroid"))
+        if (collision.gameObject.name.Contains("Asteroid") && !isChild && !name.Contains("Landmark"))
         {
-            if (!isChild)
+            GameObject oldAsteroid = collision.gameObject;
+            Vector3 position = oldAsteroid.transform.position;
+            Vector3 scale = oldAsteroid.transform.localScale;
+            Destroy(collision.gameObject);
+            if (segment != null)
             {
-                GameObject oldAsteroid = collision.gameObject;
-                Vector3 position = oldAsteroid.transform.position;
-                Vector3 scale = oldAsteroid.transform.localScale;
-                Destroy(collision.gameObject);
-                if (segment != null)
-                {
-                    --segment.asteroidCount;
-                }
-                GameObject particleSystem = Instantiate<GameObject>(AsteroidParticleSystem);
-                particleSystem.transform.parent = segment.transform;
-                particleSystem.transform.position = position;
-                //change to ice particles if ice asteroid
-                if (GetComponent<MeshRenderer>().material.name.Contains("Ice"))
-                {
-                    Color iceBlue = new Color(60f / 255f, 75f / 255f, 75f / 255f, 0.2f);
-                    particleSystem.GetComponent<ParticleSystem>().startColor = iceBlue;
-                }
-                //spawn smaller asteroids
-                int asteroidCount = Random.Range(2, MAXCHILDRENASTEROIDS);
-                for (int i = 0; i < asteroidCount; ++i)
-                {
-                    GameObject newAsteroid = segment.SpawnAsteroid(position);
-                    newAsteroid.transform.localScale = scale / Mathf.Sqrt(asteroidCount);
-                    newAsteroid.GetComponent<AsteroidCollision>().isChild = true;
-                }
+                --segment.asteroidCount;
             }
+            else
+            {
+               Debug.Log("Segment is null. Changing name.");
+               gameObject.name = "MY SEGMENT IS NULL HELP";
+            }
+            GameObject particleSystem = Instantiate<GameObject>(AsteroidParticleSystem);
+            particleSystem.transform.parent = segment.transform;
+            particleSystem.transform.position = position;
+            //change to ice particles if ice asteroid
+            if (GetComponent<MeshRenderer>().material.name.Contains("Ice"))
+            {
+                Color iceBlue = new Color(60f / 255f, 75f / 255f, 75f / 255f, 0.2f);
+                particleSystem.GetComponent<ParticleSystem>().startColor = iceBlue;
+            }
+            //spawn smaller asteroids
+            int asteroidCount = Random.Range(2, MAXCHILDRENASTEROIDS);
+            for (int i = 0; i < asteroidCount; ++i)
+            {
+                GameObject newAsteroid = segment.SpawnAsteroid(position);
+                newAsteroid.transform.localScale = scale / Mathf.Sqrt(asteroidCount);
+                newAsteroid.GetComponent<AsteroidCollision>().isChild = true;
+            }
+            Destroy(gameObject);
         }
     }
 
