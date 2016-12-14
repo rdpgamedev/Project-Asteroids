@@ -28,6 +28,7 @@ public class Field : MonoBehaviour
             AddSegment();
             GameObject firstCheckpoint = segments[0].GetComponent<FieldSegment>().GetCheckpoint();
             firstCheckpoint.GetComponent<Animator>().enabled = true;
+            firstCheckpoint.transform.forward = transform.forward;
         }
 	}
 	
