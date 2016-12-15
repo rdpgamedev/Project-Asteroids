@@ -2,32 +2,41 @@
 using System.Collections;
 
 public class BezierLineRenderer : MonoBehaviour {
-    public float speed = 5f;
+    public float time = 5f;
     public int resolution = 100;
     
     private LineRenderer lineRenderer;
     private Bezier curve;
     private bool activated = false;
-    private float step;
     private float timer;
     private int numPoints = 1;
 
 	void Start () {
         lineRenderer = GetComponent<LineRenderer>();
         curve = GetComponent<Bezier>();
-        step = 1f / speed;
 	}
 	
 	void Update () {
 	    if (activated)
         {
             timer += Time.deltaTime;
-            if (timer > step)
+            float endAlpha = 0f;
+            if (timer > time)
             {
-                timer -= step;
-                ++numPoints;
-                if (numPoints > resolution) activated = false;
+                activated = false;
+                timer = 5f;
+                endAlpha = 0.5f;
+                Debug.Log("Timer up");
             }
+            GradientAlphaKey start = new GradientAlphaKey(0.5f, 0f);
+            GradientAlphaKey mid = new GradientAlphaKey(0.5f, timer / time);
+            GradientAlphaKey midEpsilon = new GradientAlphaKey(endAlpha, timer / time + 0.001f);
+            GradientAlphaKey end = new GradientAlphaKey(endAlpha, 1f);
+            Gradient lineGradient = new Gradient();
+            GradientAlphaKey[] alphaKeys = new GradientAlphaKey[] { start, mid, midEpsilon, end };
+            GradientColorKey[] colorKeys = lineRenderer.colorGradient.colorKeys;
+            lineGradient.SetKeys(colorKeys, alphaKeys);
+            lineRenderer.colorGradient = lineGradient;
         }
 	}
 
