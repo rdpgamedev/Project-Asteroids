@@ -29,6 +29,7 @@ public class MembraneCollider : MonoBehaviour {
             ThrusterController.MAXTHRUST += 1f;
             cameraPos.CheckpointZoom();
             fieldSegment.GetComponent<BezierLineRenderer>().Activate();
+            PlayerShip.instance.gameObject.GetComponent<Animator>().SetTrigger("boost");
         }
     }
 }
