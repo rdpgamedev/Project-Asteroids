@@ -44,7 +44,8 @@ public class AsteroidCollision : MonoBehaviour {
             if (GetComponent<MeshRenderer>().material.name.Contains("Ice"))
             {
                 Color iceBlue = new Color(60f / 255f, 75f / 255f, 75f / 255f, 0.2f);
-                particleSystem.GetComponent<ParticleSystem>().startColor = iceBlue;
+                var particlesMain = particleSystem.GetComponent<ParticleSystem>().main;
+                particlesMain.startColor = iceBlue;
             }
             //spawn smaller asteroids
             int asteroidCount = Random.Range(2, MAXCHILDRENASTEROIDS);

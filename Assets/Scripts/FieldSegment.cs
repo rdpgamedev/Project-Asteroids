@@ -187,7 +187,9 @@ public class FieldSegment : MonoBehaviour
         particles.transform.forward = curve.GetFirstDeriv(0.5f);
         if (fieldtype == FieldType.ICE)
         {
-            particles.GetComponent<ParticleSystem>().startColor = new Color(52f/255f, 65f/255f, 68f/255f, 87f/255f);
+            Color iceCloud = new Color(52f / 255f, 65f / 255f, 100f / 255f, 87f / 255f);
+            var particlesMain = particles.GetComponent<ParticleSystem>().main;
+            particlesMain.startColor = iceCloud;
         }
     }
 

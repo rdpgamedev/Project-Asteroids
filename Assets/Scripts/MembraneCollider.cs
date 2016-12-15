@@ -28,6 +28,7 @@ public class MembraneCollider : MonoBehaviour {
             GameManager.instance.ResetTime();
             ThrusterController.MAXTHRUST += 1f;
             cameraPos.CheckpointZoom();
+            fieldSegment.GetComponent<BezierLineRenderer>().Activate();
         }
     }
 }
