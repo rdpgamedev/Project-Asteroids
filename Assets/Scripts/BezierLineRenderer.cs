@@ -39,7 +39,7 @@ public class BezierLineRenderer : MonoBehaviour {
         {
             points[i] = curve.GetPoint((float)i / (float)resolution);
         }
-        lineRenderer.SetVertexCount(resolution + 1);
+        lineRenderer.numPositions = resolution + 1;
         lineRenderer.SetPositions(points);
     }
 }
