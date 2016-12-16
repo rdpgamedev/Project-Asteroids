@@ -29,6 +29,7 @@ public class Field : MonoBehaviour
             GameObject firstCheckpoint = segments[0].GetComponent<FieldSegment>().GetCheckpoint();
             firstCheckpoint.GetComponent<Animator>().enabled = true;
             firstCheckpoint.transform.forward = transform.forward;
+            firstCheckpoint.GetComponent<AudioSource>().Play(20000);
         }
 	}
 	
