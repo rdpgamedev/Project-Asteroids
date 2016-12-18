@@ -276,7 +276,7 @@ public class FieldSegment : MonoBehaviour
         if (isActive)
         {
             nextCheckpoint.GetComponent<Animator>().enabled = true;
-            nextCheckpoint.GetComponent<AudioSource>().Play(30000);
+            nextCheckpoint.GetComponent<AudioSource>().PlayDelayed(30000);
         }
     }
 }
