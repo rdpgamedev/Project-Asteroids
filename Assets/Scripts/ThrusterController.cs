@@ -3,11 +3,14 @@ using System.Collections;
 
 public class ThrusterController : MonoBehaviour
 {
-    public static float MAXTHRUST = 10f;
+    public static float MAXTHRUST = 60f;
     public bool isLeft = false;
     public float maxRotation = 30f;
 
-    float thrust = 0.3f;
+    private float thrust = 0.3f;
+    private float xaxis;
+    private float yaxis;
+    private float thrustScale;
 
     // Use this for initialization
     void Start()
@@ -18,8 +21,7 @@ public class ThrusterController : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        float xaxis;
-        float yaxis;
+        thrustScale = PlayerShip.instance.thrustScale;
         if (isLeft)
         {
             xaxis = PlayerController.yaxisleft;
@@ -40,11 +42,14 @@ public class ThrusterController : MonoBehaviour
         PlayerShip ship = PlayerShip.instance;
         Rigidbody shipbody = ship.GetComponent<Rigidbody>();
         Vector3 direction = transform.forward;
-        Vector3 force = direction * thrust * thrust * MAXTHRUST;
+        Vector3 force = direction * thrust * thrust * thrustScale;
         //use point between thruster and ship as application point
         Vector3 thrusterpos = this.transform.position;
         Vector3 offset = ship.transform.position - thrusterpos;
-        offset *= thrust / 2 + 0.25f;
+        float offsetMin = PlayerShip.instance.thrusterOffsetMin;
+        if (offsetMin > 0.5f) offsetMin = 0.5f;
+        if (offsetMin < 0f) offsetMin = 0f;
+        offset *= thrust / 2 + offsetMin;
         Vector3 forcepos = thrusterpos + offset;
         shipbody.AddForceAtPosition(force, forcepos);
     }

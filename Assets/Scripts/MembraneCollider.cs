@@ -26,7 +26,7 @@ public class MembraneCollider : MonoBehaviour {
             GameManager.instance.difficulty += 0.05f;
             ++(GameManager.instance.level);
             GameManager.instance.ResetTime();
-            ThrusterController.MAXTHRUST += 1f;
+            PlayerShip.instance.thrustScale += 1f;
             cameraPos.CheckpointZoom();
             fieldSegment.GetComponent<BezierLineRenderer>().Activate();
             PlayerShip.instance.gameObject.GetComponent<Animator>().SetTrigger("boost");

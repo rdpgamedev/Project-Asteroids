@@ -13,7 +13,9 @@ public class PlayerShip : MonoBehaviour
     public static PlayerShip instance;
     public GameObject leftthruster;
     public GameObject rightthruster;
-    public float MAXTHRUST = 40f;
+    public float MAXTHRUST = 60f;
+    public float thrustScale = 20f;
+    public float thrusterOffsetMin = 0.35f;
 
     void Awake ()
     {
@@ -29,6 +31,7 @@ public class PlayerShip : MonoBehaviour
         float velocity = GetComponent<Rigidbody>().velocity.magnitude;
         GameManager.instance.score += (int)(velocity * 
             Time.deltaTime * GameManager.instance.multiplier);
+        if (thrustScale > MAXTHRUST) thrustScale = MAXTHRUST;
 	}
 
     void OnCollisionEnter(Collision collision)
