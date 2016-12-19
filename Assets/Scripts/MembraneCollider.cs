@@ -30,6 +30,7 @@ public class MembraneCollider : MonoBehaviour {
             cameraPos.CheckpointZoom();
             fieldSegment.GetComponent<BezierLineRenderer>().Activate();
             PlayerShip.instance.gameObject.GetComponent<Animator>().SetTrigger("boost");
+            GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Animator>().SetTrigger("boost");
         }
     }
 }
