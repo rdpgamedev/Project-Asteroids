@@ -17,14 +17,17 @@ public class PlayerController : MonoBehaviour
 
     private KeyCode[] keys;
     private PlayerShip player;
+    private BGM musicPlayer;
 
     void Start ()
     {
         //keys to check for player input
         keys = new KeyCode[] {
-             KeyCode.Escape, KeyCode.P, KeyCode.R
+             KeyCode.Escape, KeyCode.P, KeyCode.R,
+             KeyCode.Period, KeyCode.Comma
             };
         player = PlayerShip.instance;
+        musicPlayer = BGM.instance;
 	}
 	
 	void Update ()
@@ -39,7 +42,6 @@ public class PlayerController : MonoBehaviour
 
     void CheckInput()
     {
-        Debug.Log("Key pressed down: " + Input.inputString);
         for (int i = 0; i < keys.Length; i++)
         {
             if (Input.GetKeyDown(keys[i])) PerformKey(keys[i]);
@@ -60,6 +62,14 @@ public class PlayerController : MonoBehaviour
                 break;
             case KeyCode.P:
                 //Pause game
+                break;
+            case KeyCode.Period:
+                //Play next song
+                musicPlayer.PlayNextSong();
+                break;
+            case KeyCode.Comma:
+                //Play previous song
+                musicPlayer.PlayPreviousSong();
                 break;
             default:
                 break;
