@@ -23,10 +23,10 @@ public class MembraneCollider : MonoBehaviour {
             GameObject fieldSegment = CHECKPOINT.transform.parent.gameObject;
             FieldSegment segment = fieldSegment.GetComponent<FieldSegment>();
             GameManager.instance.SetActiveSegment(segment);
-            GameManager.instance.difficulty += 0.05f;
+            GameManager.instance.difficulty += 0.025f;
             ++(GameManager.instance.level);
             GameManager.instance.ResetTime();
-            PlayerShip.instance.thrustScale += 1f;
+            PlayerShip.instance.thrustScale += 30f;
             cameraPos.CheckpointZoom();
             fieldSegment.GetComponent<BezierLineRenderer>().Activate();
             PlayerShip.instance.gameObject.GetComponent<Animator>().SetTrigger("boost");

@@ -3,10 +3,11 @@ using System.Collections;
 
 public class ThrusterController : MonoBehaviour
 {
-    public static float MAXTHRUST = 60f;
+    public static float MAXTHRUST;
     public bool isLeft = false;
-    public float maxRotation = 30f;
 
+    private float maxXRotation = 18f;
+    private float maxYRotation = 16f;
     private float thrust = 0.3f;
     private float xaxis;
     private float yaxis;
@@ -26,23 +27,23 @@ public class ThrusterController : MonoBehaviour
         {
             xaxis = PlayerController.yaxisleft;
             yaxis = -PlayerController.xaxisleft;
-            thrust = (-yaxis + 1f) / 4 + 0.5f;
+            thrust = ((-yaxis + 1f) / 6f + (2f/3f) - Mathf.Abs(xaxis)/8f);
         }
         else
         {
             xaxis = PlayerController.yaxisright;
             yaxis = -PlayerController.xaxisright;
-            thrust = ((yaxis + 1f) / 4) + 0.5f;
+            thrust = ((yaxis + 1f) / 6f + (2f/3f) - Mathf.Abs(xaxis)/8f);
         }
-        float xrot = -xaxis * maxRotation;
-        float yrot = yaxis * maxRotation / 2;
+        float xrot = -xaxis * maxXRotation;
+        float yrot = yaxis * maxYRotation;
         transform.localEulerAngles = new Vector3(xrot, yrot, 0);
 
         //apply thrust
         PlayerShip ship = PlayerShip.instance;
         Rigidbody shipbody = ship.GetComponent<Rigidbody>();
         Vector3 direction = transform.forward;
-        Vector3 force = direction * thrust * thrust * thrustScale;
+        Vector3 force = direction * thrust * thrustScale;
         //use point between thruster and ship as application point
         Vector3 thrusterpos = this.transform.position;
         Vector3 offset = ship.transform.position - thrusterpos;
