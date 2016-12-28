@@ -6,10 +6,10 @@ public class GameManager : MonoBehaviour {
     public float STARTTIME = 9.99f;
     public int level = 1;
     public int score = 0;
-    public float multiplier = 1.0f;
     public float time;
     public float difficulty = 0f;
 
+    PlayerShip ship;
     FieldSegment activeSegment;
 
     void Awake ()
@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour {
     }
 	void Start ()
     {
+        ship = PlayerShip.instance;
         Startup();
 	}
 	
@@ -30,7 +31,6 @@ public class GameManager : MonoBehaviour {
     {
         level = 1;
         score = 0;
-        multiplier = 1.0f;
         time = STARTTIME;
         difficulty = 0f;
     }

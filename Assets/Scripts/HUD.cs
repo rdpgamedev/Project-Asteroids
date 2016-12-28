@@ -3,7 +3,6 @@ using UnityEngine.UI;
 using System.Collections;
 
 public class HUD : MonoBehaviour {
-    public GameObject MULTIPLIERTEXT;
     public GameObject SCORETEXT;
     public GameObject TIMETEXT;
     public GameObject VELOCITYTEXT;
@@ -16,17 +15,10 @@ public class HUD : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
-        UpdateMultiplier();
         UpdateScore();
         UpdateTime();
         UpdateVel();
 	}
-
-    void UpdateMultiplier ()
-    {
-        MULTIPLIERTEXT.GetComponent<Text>().text =
-            "x " + GameManager.instance.multiplier.ToString("N0");
-    }
 
     void UpdateScore ()
     {

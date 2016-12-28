@@ -33,9 +33,6 @@ public class PlayerShip : MonoBehaviour
 	
 	void Update ()
     {
-        float velocity = GetComponent<Rigidbody>().velocity.magnitude;
-        GameManager.instance.score += (int)(velocity * 
-            Time.deltaTime * GameManager.instance.multiplier);
         if (thrustScale > MAXTHRUST) thrustScale = MAXTHRUST;
         
 	}
