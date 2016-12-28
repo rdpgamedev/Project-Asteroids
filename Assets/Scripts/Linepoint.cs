@@ -25,7 +25,7 @@ public class Linepoint : MonoBehaviour {
                 if (CloseToPlayer(PICKUPDISTANCE))
                 {
                     Destroy(this.gameObject);
-                    GameManager.instance.multiplier += 1f;
+                    ++GameManager.instance.score;
                 }
                 Gravitate();
                 Scale();
