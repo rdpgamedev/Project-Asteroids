@@ -45,22 +45,23 @@ public class ThrusterController : MonoBehaviour
         if (isLeft)
         {
             xaxis = PlayerController.yaxisleft;
-            yaxis = -PlayerController.xaxisleft;
-            thrust = ((-yaxis + 1f) / 6f + (2f / 3f) - Mathf.Abs(xaxis) / 8f);
+            yaxis = PlayerController.xaxisleft;
+            thrust = ThrustCalculation(yaxis, xaxis);
         }
         else
         {
             xaxis = PlayerController.yaxisright;
-            yaxis = -PlayerController.xaxisright;
-            thrust = ((yaxis + 1f) / 6f + (2f / 3f) - Mathf.Abs(xaxis) / 8f);
+            yaxis = PlayerController.xaxisright;
+            thrust = ThrustCalculation(-yaxis, xaxis);
         }
         float xrot = -xaxis * maxXRotation;
-        float yrot = yaxis * maxYRotation;
+        float yrot = -yaxis * maxYRotation;
         transform.localEulerAngles = new Vector3(xrot, yrot, 0);
     }
     
     //calculates thrust based on yaxis and xaxis of controller
-    //
+    //yaxis is positive in direction toward center of controller
+    // (e.g. when the left stick is pushed to the right)
     float ThrustCalculation (float yaxis, float xaxis)
     {
         return (yaxis + 1f) / 6f + (2f / 3f) - Mathf.Abs(xaxis) / 8f;
