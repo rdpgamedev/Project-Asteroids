@@ -7,9 +7,10 @@ public class ThrusterController : MonoBehaviour
     public bool isLeft = false;
     public bool active = false;
 
+    private float TRIM = 0.6f; //pitch trim
     private float maxXRotation = 18f;
     private float maxYRotation = 16f;
-    private float thrust = 5f/6f; //thrust with no rotation
+    private float thrust = 4f/6f; //initial thrust before activation
     private float xaxis;
     private float yaxis;
     private float thrustScale;
@@ -17,6 +18,7 @@ public class ThrusterController : MonoBehaviour
     void Start()
     {
         MAXTHRUST = PlayerShip.instance.MAXTHRUST;
+        transform.localEulerAngles = new Vector3(TRIM, 0, 0);
     }
 
     void FixedUpdate()
@@ -54,7 +56,7 @@ public class ThrusterController : MonoBehaviour
             yaxis = PlayerController.xaxisright;
             thrust = ThrustCalculation(-yaxis, xaxis);
         }
-        float xrot = -xaxis * maxXRotation;
+        float xrot = -xaxis * maxXRotation + TRIM;
         float yrot = -yaxis * maxYRotation;
         transform.localEulerAngles = new Vector3(xrot, yrot, 0);
     }
