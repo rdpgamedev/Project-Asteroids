@@ -40,6 +40,12 @@ public class PlayerShip : MonoBehaviour
         
 	}
 
+    public void ActivateThrusters()
+    {
+        leftthruster.GetComponent<ThrusterController>().active = true;
+        rightthruster.GetComponent<ThrusterController>().active = true;
+    }
+
     private void LateUpdate()
     {
         float originalfov = cameraObj.GetComponent<Camera>().fieldOfView;
