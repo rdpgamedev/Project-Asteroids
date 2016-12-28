@@ -4,10 +4,14 @@ using System.Collections;
 public class MembraneCollider : MonoBehaviour {
     public GameObject CHECKPOINT;
 
+    private GameManager gameManager;
+    private PlayerShip ship;
     private CameraPos cameraPos;
 
 	void Start ()
     {
+        gameManager = GameManager.instance;
+        ship = PlayerShip.instance;
         cameraPos = CameraPos.instance.GetComponent<CameraPos>();
 	}
 	
@@ -22,14 +26,16 @@ public class MembraneCollider : MonoBehaviour {
         {
             GameObject fieldSegment = CHECKPOINT.transform.parent.gameObject;
             FieldSegment segment = fieldSegment.GetComponent<FieldSegment>();
-            GameManager.instance.SetActiveSegment(segment);
-            GameManager.instance.difficulty += 0.05f;
-            ++(GameManager.instance.level);
-            GameManager.instance.ResetTime();
-            ThrusterController.MAXTHRUST += 1f;
+            gameManager.SetActiveSegment(segment);
+            gameManager.difficulty += 0.025f;
+            ++(gameManager.level);
+            gameManager.ResetTime();
+            ship.thrustScale += 30f;
             cameraPos.CheckpointZoom();
             fieldSegment.GetComponent<BezierLineRenderer>().Activate();
-            PlayerShip.instance.gameObject.GetComponent<Animator>().SetTrigger("boost");
+            ship.gameObject.GetComponent<Animator>().SetTrigger("boost");
+            GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Animator>().SetTrigger("boost");
+            ship.ActivateThrusters();
         }
     }
 }
