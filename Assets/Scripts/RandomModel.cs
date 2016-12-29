@@ -8,14 +8,6 @@ public class RandomModel : MonoBehaviour
 {
     public Mesh[] meshes;
     public Material[] materials;
-	// Use this for initialization
-	void Start () {
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 
     public void ChooseOre()
     {

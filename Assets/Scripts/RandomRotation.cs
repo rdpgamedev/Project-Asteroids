@@ -26,11 +26,5 @@ public class RandomRotation : MonoBehaviour
             Random.Range(0f, 360f));
         transform.rotation = newRotation;
     }
-	
-	// Update is called once per frame
-	void Update ()
-    {
-
-	}
 }
 
