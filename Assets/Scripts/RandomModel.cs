@@ -16,6 +16,13 @@ public class RandomModel : MonoBehaviour
 	void Update () {
 	
 	}
+
+    public void ChooseOre()
+    {
+        GetComponent<MeshFilter>().sharedMesh = meshes[Random.Range(0, meshes.Length)];
+        Material[] oreMaterials = GetComponent<MeshRenderer>().materials;
+    }
+
     public void ChooseAsteroid(FieldType type)
     {
         GetComponent<MeshFilter>().sharedMesh = meshes[Random.Range(0, meshes.Length)];

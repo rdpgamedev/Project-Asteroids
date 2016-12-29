@@ -9,6 +9,7 @@ public class FieldSegment : MonoBehaviour
     public static float MAXLENGTH = 1200f;
     public static float MINLENGTH = 1000f;
     public static float MAXHEIGHT = 1000f;
+    public float linePointOffset;
     public GameObject LINEPOINT;
     public GameObject ASTEROID;
     public bool isActive;
@@ -21,7 +22,7 @@ public class FieldSegment : MonoBehaviour
     private float length;
     private float height;
     private int numpoints; //number of linepoints on curve; checkpoint is first point
-    private float pointdensity = 100f; //more means less linepoints
+    private float pointdensity = 80f; //more means less linepoints
     private List<GameObject> landmarks;
     private GameObject checkpoint;
     private GameObject nextCheckpoint;
@@ -148,9 +149,10 @@ public class FieldSegment : MonoBehaviour
         {
             float t = (float)i / (float)numpoints;
             GameObject newLinePoint = Instantiate<GameObject>(LINEPOINT);
-            newLinePoint.transform.position = curve.GetPoint(t);
+            newLinePoint.transform.position = RandomlyOffset(curve.GetPoint(t), linePointOffset);
             newLinePoint.transform.parent = transform;
             newLinePoint.GetComponent<Linepoint>().fieldSegment = this;
+            newLinePoint.GetComponent<RandomModel>().ChooseOre();
         }
         //Spawn Asteroids
         int unspawnedAsteroids = 
