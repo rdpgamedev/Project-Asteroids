@@ -151,6 +151,7 @@ public class FieldSegment : MonoBehaviour
             newLinePoint.transform.position = curve.GetPoint(t);
             newLinePoint.transform.parent = transform;
             newLinePoint.GetComponent<Linepoint>().fieldSegment = this;
+            newLinePoint.GetComponent<RandomModel>().ChooseOre();
         }
         //Spawn Asteroids
         int unspawnedAsteroids = 
