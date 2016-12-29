@@ -28,8 +28,9 @@ public class Field : MonoBehaviour
             AddSegment();
             GameObject firstCheckpoint = segments[0].GetComponent<FieldSegment>().GetCheckpoint();
             firstCheckpoint.GetComponent<Animator>().enabled = true;
+            firstCheckpoint.GetComponent<Animator>().Play("Checkpoint");
             firstCheckpoint.transform.forward = transform.forward;
-            firstCheckpoint.GetComponent<AudioSource>().PlayDelayed(1);
+            firstCheckpoint.GetComponent<AudioSource>().PlayDelayed(1f);
         }
 	}
 	

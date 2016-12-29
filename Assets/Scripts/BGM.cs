@@ -5,8 +5,9 @@ using UnityEngine;
 public class BGM : MonoBehaviour {
     public static BGM instance;
     public AudioClip[] songs;
+    public AudioClip startSong;
 
-    private int songIndex = 2;
+    private int songIndex = 0;
     private AudioSource musicPlayer;
 
     private void Awake()
@@ -16,7 +17,8 @@ public class BGM : MonoBehaviour {
 
 	void Start () {
         musicPlayer = GetComponent<AudioSource>();
-        PlaySong();
+        musicPlayer.Stop();
+        musicPlayer.PlayOneShot(startSong);
 	}
 	
 	// Update is called once per frame
@@ -32,8 +34,7 @@ public class BGM : MonoBehaviour {
 
     public void PlayNextSong ()
     {
-        ++songIndex;
-        if (songIndex >= songs.Length) songIndex = 0;
+        if (++songIndex >= songs.Length) songIndex = 0;
         PlaySong();
     }
 
