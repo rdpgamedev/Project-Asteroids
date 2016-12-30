@@ -14,12 +14,18 @@ public class PlayerShip : MonoBehaviour
     public GameObject leftthruster;
     public GameObject rightthruster;
     public GameObject cameraObj;
+    public GameObject explosionParticles;
+    public GameObject shipModel;
+    public GameObject menuUI;
     public float MAXTHRUST = 60f;
     public float thrustScale = 20f;
     public float thrusterOffsetMin = 0.35f;
     public float fovScale;
     public float fovMinVel;
     public float fovRange;
+
+    private bool isDead = false;
+    private float oldFov;
 
     void Awake ()
     {
@@ -34,7 +40,10 @@ public class PlayerShip : MonoBehaviour
 	void Update ()
     {
         if (thrustScale > MAXTHRUST) thrustScale = MAXTHRUST;
-        
+        if (isDead && explosionParticles.GetComponent<ParticleSystem>().isStopped)
+        {
+            UIManager.instance.ActivateUI(UIManager.UIType.MENU);
+        }
 	}
 
     public void ActivateThrusters()
@@ -47,15 +56,42 @@ public class PlayerShip : MonoBehaviour
     {
         float originalfov = cameraObj.GetComponent<Camera>().fieldOfView;
         float velocity = GetComponent<Rigidbody>().velocity.magnitude;
-        cameraObj.GetComponent<Camera>().fieldOfView *= Mathf.Sqrt(velocity / fovMinVel) * fovScale;
-        if (cameraObj.GetComponent<Camera>().fieldOfView >= originalfov + fovRange)
+        if (!isDead)
+        {
+            cameraObj.GetComponent<Camera>().fieldOfView *= Mathf.Sqrt(velocity / fovMinVel) * fovScale;
+            oldFov = cameraObj.GetComponent<Camera>().fieldOfView;
+        }else
+        {
+            cameraObj.GetComponent<Camera>().fieldOfView = oldFov;
+        }
+        if (cameraObj.GetComponent<Camera>().fieldOfView > originalfov + fovRange)
         {
             cameraObj.GetComponent<Camera>().fieldOfView = originalfov + fovRange;
+        }else if (cameraObj.GetComponent<Camera>().fieldOfView < originalfov)
+        {
+           cameraObj.GetComponent<Camera>().fieldOfView = originalfov;
         }
     }
 
     void OnCollisionEnter(Collision collision)
     {
-        
+        if (!isDead) StartDeath();
+    }
+
+    void StartDeath()
+    {
+        isDead = true;
+        explosionParticles.GetComponent<ParticleSystem>().Play();
+        DestroyVisualParts(0.1f);
+        cameraObj.GetComponent<LookAt>().enabled = false;
+        cameraObj.GetComponent<MoveTo>().enabled = false;
+    }
+
+    void DestroyVisualParts(float time)
+    {
+        Destroy(shipModel, time);
+        Destroy(leftthruster, time);
+        Destroy(rightthruster, time);
+        Destroy(transform.FindChild("VelocityChevrons").gameObject);
     }
 }

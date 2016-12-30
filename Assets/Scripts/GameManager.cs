@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
     public static GameManager instance;
@@ -11,6 +12,7 @@ public class GameManager : MonoBehaviour {
 
     PlayerShip ship;
     FieldSegment activeSegment;
+    bool gameOver = false;
 
     void Awake ()
     {
@@ -50,5 +52,11 @@ public class GameManager : MonoBehaviour {
     public FieldSegment GetActiveSegment ()
     {
         return activeSegment;
+    }
+
+    public void GameOver()
+    {
+        if (!gameOver) SceneManager.LoadSceneAsync("MainScene").allowSceneActivation = true;
+        gameOver = true;
     }
 }
