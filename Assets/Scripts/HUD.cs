@@ -69,7 +69,11 @@ public class HUD : MonoBehaviour {
 
     void UpdateVel ()
     {
-        VELOCITYTEXT.GetComponent<TextMesh>().text = 
+        if (VELOCITYTEXT != null)
+        {
+            VELOCITYTEXT.GetComponent<TextMesh>().text =
             (int)PlayerShip.instance.GetComponent<Rigidbody>().velocity.magnitude + " m/s";
+        }
+        
     }
 }
