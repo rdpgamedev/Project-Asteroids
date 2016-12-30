@@ -16,7 +16,7 @@ public class PlayerShip : MonoBehaviour
     public GameObject cameraObj;
     public GameObject explosionParticles;
     public GameObject shipModel;
-    public GameObject restartButton;
+    public GameObject menuUI;
     public float MAXTHRUST = 60f;
     public float thrustScale = 20f;
     public float thrusterOffsetMin = 0.35f;
@@ -42,7 +42,7 @@ public class PlayerShip : MonoBehaviour
         if (thrustScale > MAXTHRUST) thrustScale = MAXTHRUST;
         if (isDead && explosionParticles.GetComponent<ParticleSystem>().isStopped)
         {
-            restartButton.SetActive(true);
+            UIManager.instance.ActivateUI(UIManager.UIType.MENU);
         }
 	}
 
