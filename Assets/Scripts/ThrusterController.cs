@@ -40,6 +40,11 @@ public class ThrusterController : MonoBehaviour
         offset *= thrust / 2 + offsetMin;
         Vector3 forcepos = thrusterpos + offset;
         shipbody.AddForceAtPosition(force, forcepos);
+
+        ParticleSystem thrusterParticles = 
+            transform.FindChild("Thruster_Particles").GetComponent<ParticleSystem>();
+        ParticleSystem.EmissionModule emission = thrusterParticles.emission;
+        emission.rateOverTime = 1000f * (thrust - (13f / 24f)) * 24f / 11f;
     }
 
     void RotateThruster()
