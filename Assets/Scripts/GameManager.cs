@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour {
 	void Update ()
     {
         time -= Time.deltaTime;
+        if (time < 0f) time = 0f;
 	}
 
     public void Startup ()

@@ -40,6 +40,7 @@ public class PlayerShip : MonoBehaviour
 	void Update ()
     {
         if (thrustScale > MAXTHRUST) thrustScale = MAXTHRUST;
+        if (GameManager.instance.time == 0f && !isDead) StartDeath();
         if (isDead && explosionParticles.GetComponent<ParticleSystem>().isStopped)
         {
             UIManager.instance.ActivateUI(UIManager.UIType.MENU);
