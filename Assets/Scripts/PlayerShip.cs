@@ -43,7 +43,7 @@ public class PlayerShip : MonoBehaviour
         if (GameManager.instance.time == 0f && !isDead) StartDeath();
         if (isDead && explosionParticles.GetComponent<ParticleSystem>().isStopped)
         {
-            UIManager.instance.ActivateUI(UIManager.UIType.MENU);
+            UIManager.instance.ActivateUI(UIManager.UIType.PAUSE);
         }
 	}
 
