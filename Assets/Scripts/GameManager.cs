@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
     public static GameManager instance;
+    public GameObject FIELDOBJ;
     public float STARTTIME = 9.99f;
     public int level = 1;
     public int score = 0;
@@ -11,6 +12,7 @@ public class GameManager : MonoBehaviour {
     public float difficulty = 0f;
 
     PlayerShip ship;
+    GameObject field;
     FieldSegment activeSegment;
     bool gameOver = false;
 
@@ -36,6 +38,7 @@ public class GameManager : MonoBehaviour {
         score = 0;
         time = STARTTIME;
         difficulty = 0f;
+        field = GameObject.Instantiate<GameObject>(FIELDOBJ);
     }
 
     public void ResetTime ()
@@ -45,7 +48,7 @@ public class GameManager : MonoBehaviour {
 
     public void SetActiveSegment (FieldSegment seg)
     {
-        if (activeSegment != null) Destroy(activeSegment.gameObject); ;
+        if (activeSegment != null) Destroy(activeSegment.gameObject);
         activeSegment = seg;
         activeSegment.SetActive(true);
     }
@@ -59,5 +62,10 @@ public class GameManager : MonoBehaviour {
     {
         if (!gameOver) SceneManager.LoadSceneAsync("MainScene").allowSceneActivation = true;
         gameOver = true;
+    }
+
+    public void Restart()
+    {
+
     }
 }
