@@ -34,7 +34,7 @@ public class ThrusterController : MonoBehaviour
         //use point between thruster and ship as application point
         Vector3 thrusterpos = this.transform.position;
         Vector3 offset = ship.transform.position - thrusterpos;
-        float offsetMin = PlayerShip.instance.thrusterOffsetMin;
+        float offsetMin = PlayerShip.instance.THRUSTER_OFFSET_MIN;
         if (offsetMin > 0.5f) offsetMin = 0.5f;
         if (offsetMin < 0f) offsetMin = 0f;
         offset *= thrust / 2 + offsetMin;
@@ -45,6 +45,11 @@ public class ThrusterController : MonoBehaviour
             transform.FindChild("Thruster_Particles").GetComponent<ParticleSystem>();
         ParticleSystem.EmissionModule emission = thrusterParticles.emission;
         emission.rateOverTime = 1000f * (thrust - (13f / 24f)) * 24f / 11f;
+    }
+
+    public void ResetRotation ()
+    {
+        transform.localEulerAngles = new Vector3(TRIM, 0, 0);
     }
 
     void RotateThruster()

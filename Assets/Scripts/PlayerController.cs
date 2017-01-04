@@ -58,7 +58,7 @@ public class PlayerController : MonoBehaviour
                 break;
             case KeyCode.R:
                 //Restart game
-                SceneManager.LoadSceneAsync("MainScene").allowSceneActivation = true;
+                GameManager.instance.Restart();
                 break;
             case KeyCode.P:
                 //Pause game

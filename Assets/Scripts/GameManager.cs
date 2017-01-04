@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour {
     public static GameManager instance;
     public GameObject FIELDOBJ;
+    public GameObject cameraObj;
     public float STARTTIME = 9.99f;
     public int level = 1;
     public int score = 0;
@@ -66,6 +67,9 @@ public class GameManager : MonoBehaviour {
 
     public void Restart()
     {
-
+        Destroy(field);
+        ship.Restart();
+        cameraObj.GetComponent<CameraManager>().Restart();
+        Startup();
     }
 }
