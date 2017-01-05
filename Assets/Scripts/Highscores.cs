@@ -8,7 +8,20 @@ using UnityEngine;
 public class Highscores{
     [XmlArray("Scores")]
     [XmlArrayItem("Score")]
-    public List<Score> Scores = new List<Score>();
+    public List<Score> Scores = new List<Score>(); //sorted descending
+
+    public void Push (Score score) //inserts new score in descending order
+    {
+        for (int i = 0; i < Scores.Count; ++i)
+        {
+            if (score.score > Scores[i].score)
+            {
+                Scores.Insert(i, score);
+                return;
+            }
+        }
+        Scores.Add(score);
+    }
 
     public void Save(string path)
     {
