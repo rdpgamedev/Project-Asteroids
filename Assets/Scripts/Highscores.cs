@@ -12,15 +12,16 @@ public class Highscores{
 
     public void Push (Score score) //inserts new score in descending order
     {
-        for (int i = 0; i < Scores.Count; ++i)
+        int i = 0;
+        for (; i < Scores.Count; ++i)
         {
             if (score.score > Scores[i].score)
             {
-                Scores.Insert(i, score);
-                return;
+                break;
             }
         }
-        Scores.Add(score);
+        Scores.Insert(i, score);
+        Save(Path.Combine(Application.persistentDataPath, "highscores.xml"));
     }
 
     public void Save(string path)
@@ -29,6 +30,7 @@ public class Highscores{
         using (var stream = new FileStream(path, FileMode.Create))
         {
             serializer.Serialize(stream, this);
+            stream.Close();
         }
     }
 

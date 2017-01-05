@@ -9,6 +9,8 @@ public class Score {
     public string name;
     public int score;
 
+    public Score() {}
+
 	public Score (string _name, int _score)
     {
         name = _name;

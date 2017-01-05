@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.IO;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
@@ -16,6 +17,7 @@ public class GameManager : MonoBehaviour {
     PlayerShip ship;
     GameObject field;
     FieldSegment activeSegment;
+    Highscores highscores;
     bool gameOver = false;
 
     void Awake ()
@@ -26,7 +28,16 @@ public class GameManager : MonoBehaviour {
     {
         ship = PlayerShip.instance;
         Startup();
-	}
+        string highscoresPath = Path.Combine(Application.persistentDataPath, "highscores.xml");
+        Debug.Log(highscoresPath);
+        if (!File.Exists(highscoresPath))
+        {
+            FileStream stream = File.Create(highscoresPath);
+            stream.Close();
+            File.WriteAllText(highscoresPath, File.ReadAllText(Path.Combine(Application.dataPath, "Files/highscores.xml")));
+        }
+        highscores = Highscores.Load(highscoresPath);
+    }
 	
 	void Update ()
     {
