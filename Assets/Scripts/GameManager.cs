@@ -106,4 +106,9 @@ public class GameManager : MonoBehaviour {
         highscores.Push(newScore);
         Debug.Log("Added score by " + name);
     }
+
+    public int GetHighscore ()
+    {
+        return highscores.TopScore();
+    }
 }

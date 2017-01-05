@@ -10,6 +10,11 @@ public class Highscores{
     [XmlArrayItem("Score")]
     public List<Score> Scores = new List<Score>(); //sorted descending
 
+    public int TopScore ()
+    {
+        return Scores[0].score;
+    }
+
     public void Push (Score score) //inserts new score in descending order
     {
         int i = 0;

@@ -2,10 +2,10 @@
 <Highscores xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Scores>
     <Score name="RDP">
-      <score>100</score>
+      <score>2</score>
     </Score>
     <Score name="J9">
-      <score>99</score>
+      <score>1</score>
     </Score>
   </Scores>
 </Highscores>
