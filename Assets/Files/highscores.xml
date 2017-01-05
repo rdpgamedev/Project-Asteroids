@@ -1,7 +1,11 @@
-<Highscores>
-	<Scores>
-		<Score name="RDP">
-			<score>999</score>
-		</Score>
-	</Scores>
+<?xml version="1.0" encoding="Windows-1252"?>
+<Highscores xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Scores>
+    <Score name="RDP">
+      <score>100</score>
+    </Score>
+    <Score name="J9">
+      <score>99</score>
+    </Score>
+  </Scores>
 </Highscores>

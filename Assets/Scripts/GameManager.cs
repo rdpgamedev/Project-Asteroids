@@ -99,4 +99,11 @@ public class GameManager : MonoBehaviour {
         Startup();
         Play();
     }
+
+    public void AddScore(string name)
+    {
+        Score newScore = new Score(name, score);
+        highscores.Push(newScore);
+        Debug.Log("Added score by " + name);
+    }
 }
