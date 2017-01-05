@@ -51,6 +51,7 @@ public class ThrusterController : MonoBehaviour
     public void ResetRotation ()
     {
         transform.localEulerAngles = new Vector3(TRIM, 0, 0);
+        thrust = 4f / 6f;
     }
 
     void RotateThruster()
