@@ -20,8 +20,8 @@ public class UIManager : MonoBehaviour
 
     void Start()
     {
-        GAMEUI.SetActive(true);
-        activeUI = UIType.GAME;
+        MENUUI.SetActive(true);
+        activeUI = UIType.MENU;
     }
 
     void Update()
@@ -36,12 +36,15 @@ public class UIManager : MonoBehaviour
         {
             case UIType.MENU:
                 MENUUI.SetActive(true);
+                activeUI = UIType.MENU;
                 break;
             case UIType.GAME:
                 GAMEUI.SetActive(true);
+                activeUI = UIType.GAME;
                 break;
             case UIType.PAUSE:
                 PAUSEUI.SetActive(true);
+                activeUI = UIType.PAUSE;
                 break;
             default:
                 break;

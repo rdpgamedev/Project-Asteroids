@@ -31,23 +31,25 @@ public class PlayerShip : MonoBehaviour
     void Awake ()
     {
         instance = this;
+        firstPosition = transform.position;
+        firstRotation = transform.rotation;
+        firstThrustScale = thrustScale;
     }
 
 	void Start ()
     {
         cameraObj = GameObject.FindGameObjectWithTag("MainCamera");
-        firstPosition = transform.position;
-        firstRotation = transform.rotation;
-        firstThrustScale = thrustScale;
 	}
 	
 	void Update ()
     {
         if (thrustScale > MAXTHRUST) thrustScale = MAXTHRUST;
         if (GameManager.instance.time == 0f && !isDead) StartDeath();
-        if (isDead && explosionParticles.GetComponent<ParticleSystem>().isStopped)
+        if (isDead && explosionParticles.GetComponent<ParticleSystem>().isStopped && GameManager.instance.isPlaying)
         {
             UIManager.instance.ActivateUI(UIManager.UIType.PAUSE);
+            GameManager.instance.isPlaying = false;
+            Time.timeScale = 0f;
         }
 	}
 
@@ -80,8 +82,10 @@ public class PlayerShip : MonoBehaviour
         GetComponent<Rigidbody>().rotation = zeroRotation;
         GetComponent<Rigidbody>().freezeRotation = true;
         transform.position = firstPosition;
+        transform.position = new Vector3(transform.position.x, transform.position.y, -250f);
         transform.rotation = firstRotation;
         thrustScale = firstThrustScale;
+        isDead = false;
     }
 
     private void LateUpdate ()
@@ -125,6 +129,7 @@ public class PlayerShip : MonoBehaviour
         leftthruster.SetActive(false);
         rightthruster.SetActive(false);
         transform.FindChild("VelocityChevrons").gameObject.SetActive(false);
+        GetComponent<AudioSource>().enabled = false;
     }
     
     void ShowVisualParts ()

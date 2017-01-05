@@ -12,8 +12,10 @@ public class Field : MonoBehaviour
     public int asteroidCount = 0;
     public enum FieldType { ICE, ROCK };
     public enum TrackType { STRAIGHT, CURVE, SLALOM, HAIRPIN };
+
     List<GameObject> segments;
     List<GameObject> checkpoints;
+    bool activated;
 
     void Awake ()
     {
@@ -26,13 +28,10 @@ public class Field : MonoBehaviour
         for (int i = 0; i < 5; ++i)
         {
             AddSegment();
-            GameObject firstCheckpoint = segments[0].GetComponent<FieldSegment>().GetCheckpoint();
-            firstCheckpoint.GetComponent<Animator>().enabled = true;
-            firstCheckpoint.GetComponent<Animator>().Play("Checkpoint");
-            firstCheckpoint.transform.forward = transform.forward;
-            firstCheckpoint.GetComponent<AudioSource>().PlayDelayed(1f);
         }
-	}
+        GameObject firstCheckpoint = segments[0].GetComponent<FieldSegment>().GetCheckpoint();
+        firstCheckpoint.transform.forward = transform.forward;
+    }
 	
 	void Update ()
     {
@@ -45,7 +44,18 @@ public class Field : MonoBehaviour
             lastsegment = segments[segments.Count - 1];
             lastSegPos = lastsegment.transform.position;
         }
+        if (GameManager.instance.isPlaying && !activated) Activate();
 	}
+
+    public void Activate ()
+    {
+        GameObject firstCheckpoint = segments[0].GetComponent<FieldSegment>().GetCheckpoint();
+        firstCheckpoint.GetComponent<Animator>().enabled = true;
+        firstCheckpoint.GetComponent<Animator>().Play("Checkpoint");
+        firstCheckpoint.GetComponent<AudioSource>().PlayDelayed(1f);
+        activated = true;
+        Time.timeScale = 1f;
+    }
 
     void AddSegment ()
     {

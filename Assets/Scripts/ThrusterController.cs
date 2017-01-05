@@ -31,6 +31,7 @@ public class ThrusterController : MonoBehaviour
         Rigidbody shipbody = ship.GetComponent<Rigidbody>();
         Vector3 direction = transform.forward;
         Vector3 force = direction * thrust * thrustScale;
+        if (!GameManager.instance.isPlaying) force *= 0f;
         //use point between thruster and ship as application point
         Vector3 thrusterpos = this.transform.position;
         Vector3 offset = ship.transform.position - thrusterpos;
