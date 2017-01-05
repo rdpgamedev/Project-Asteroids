@@ -7,7 +7,7 @@ public class BGM : MonoBehaviour {
     public AudioClip[] songs;
     public AudioClip startSong;
 
-    private int songIndex = 0;
+    private int songIndex = 1;
     private AudioSource musicPlayer;
 
     private void Awake()
@@ -17,14 +17,20 @@ public class BGM : MonoBehaviour {
 
 	void Start () {
         musicPlayer = GetComponent<AudioSource>();
-        musicPlayer.Stop();
-        musicPlayer.PlayOneShot(startSong);
-	}
+        musicPlayer.volume = 0.25f;
+        PlaySong();
+    }
 	
-	// Update is called once per frame
 	void Update () {
         if (!musicPlayer.isPlaying) PlayNextSong();
 	}
+
+    public void Activate()
+    {
+        musicPlayer.Stop();
+        musicPlayer.volume = 1f;
+        musicPlayer.PlayOneShot(startSong);
+    }
 
     public void PlaySong()
     {

@@ -8,28 +8,32 @@ using System.Collections;
 
 public class PlayerShip : MonoBehaviour
 {
-
-    //instance of PlayerShip for other scripts to access
-    public static PlayerShip instance;
+    public static PlayerShip instance; //instance of PlayerShip for other scripts to access
     public GameObject leftthruster;
     public GameObject rightthruster;
     public GameObject cameraObj;
     public GameObject explosionParticles;
     public GameObject shipModel;
     public GameObject menuUI;
-    public float MAXTHRUST = 60f;
-    public float thrustScale = 20f;
-    public float thrusterOffsetMin = 0.35f;
+    public float MAXTHRUST;
+    public float THRUSTER_OFFSET_MIN;
+    public float thrustScale;
     public float fovScale;
     public float fovMinVel;
     public float fovRange;
 
     private bool isDead = false;
     private float oldFov;
+    private Vector3 firstPosition;
+    private Quaternion firstRotation;
+    private float firstThrustScale;
 
     void Awake ()
     {
         instance = this;
+        firstPosition = transform.position;
+        firstRotation = transform.rotation;
+        firstThrustScale = thrustScale;
     }
 
 	void Start ()
@@ -40,19 +44,51 @@ public class PlayerShip : MonoBehaviour
 	void Update ()
     {
         if (thrustScale > MAXTHRUST) thrustScale = MAXTHRUST;
-        if (isDead && explosionParticles.GetComponent<ParticleSystem>().isStopped)
+        if (GameManager.instance.time == 0f && !isDead) StartDeath();
+        if (isDead && explosionParticles.GetComponent<ParticleSystem>().isStopped && GameManager.instance.isPlaying)
         {
-            UIManager.instance.ActivateUI(UIManager.UIType.MENU);
+            UIManager.instance.ActivateUI(UIManager.UIType.PAUSE);
+            GameManager.instance.isPlaying = false;
+            Time.timeScale = 0f;
         }
 	}
 
-    public void ActivateThrusters()
+    public void ActivateThrusters ()
     {
         leftthruster.GetComponent<ThrusterController>().active = true;
         rightthruster.GetComponent<ThrusterController>().active = true;
     }
 
-    private void LateUpdate()
+    public void DeactivateThrusters ()
+    {
+        leftthruster.GetComponent<ThrusterController>().active = false;
+        rightthruster.GetComponent<ThrusterController>().active = false;
+    }
+
+    public void ResetThrusters ()
+    {
+        leftthruster.GetComponent<ThrusterController>().ResetRotation();
+        rightthruster.GetComponent<ThrusterController>().ResetRotation();
+    }
+
+    public void Restart ()
+    {
+        ShowVisualParts();
+        DeactivateThrusters();
+        ResetThrusters();
+        GetComponent<Rigidbody>().velocity = new Vector3();
+        Quaternion zeroRotation = new Quaternion();
+        zeroRotation.eulerAngles = new Vector3();
+        GetComponent<Rigidbody>().rotation = zeroRotation;
+        GetComponent<Rigidbody>().freezeRotation = true;
+        transform.position = firstPosition;
+        transform.position = new Vector3(transform.position.x, transform.position.y, -250f);
+        transform.rotation = firstRotation;
+        thrustScale = firstThrustScale;
+        isDead = false;
+    }
+
+    private void LateUpdate ()
     {
         float originalfov = cameraObj.GetComponent<Camera>().fieldOfView;
         float velocity = GetComponent<Rigidbody>().velocity.magnitude;
@@ -73,25 +109,34 @@ public class PlayerShip : MonoBehaviour
         }
     }
 
-    void OnCollisionEnter(Collision collision)
+    void OnCollisionEnter (Collision collision)
     {
         if (!isDead) StartDeath();
     }
 
-    void StartDeath()
+    void StartDeath ()
     {
         isDead = true;
         explosionParticles.GetComponent<ParticleSystem>().Play();
-        DestroyVisualParts(0.1f);
+        Invoke("HideVisualParts", 0.1f);
         cameraObj.GetComponent<LookAt>().enabled = false;
         cameraObj.GetComponent<MoveTo>().enabled = false;
     }
 
-    void DestroyVisualParts(float time)
+    void HideVisualParts ()
     {
-        Destroy(shipModel, time);
-        Destroy(leftthruster, time);
-        Destroy(rightthruster, time);
-        Destroy(transform.FindChild("VelocityChevrons").gameObject);
+        shipModel.SetActive(false);
+        leftthruster.SetActive(false);
+        rightthruster.SetActive(false);
+        transform.FindChild("VelocityChevrons").gameObject.SetActive(false);
+        GetComponent<AudioSource>().enabled = false;
+    }
+    
+    void ShowVisualParts ()
+    {
+        shipModel.SetActive(true);
+        leftthruster.SetActive(true);
+        rightthruster.SetActive(true);
+        transform.FindChild("VelocityChevrons").gameObject.SetActive(true);
     }
 }

@@ -5,10 +5,11 @@ using UnityEngine;
 public class UIManager : MonoBehaviour
 {
     public static UIManager instance;
-    public GameObject GAMEUI;
     public GameObject MENUUI;
+    public GameObject GAMEUI;
+    public GameObject PAUSEUI;
 
-    public enum UIType { GAME, MENU };
+    public enum UIType { MENU, GAME, PAUSE };
 
     private UIType activeUI;
 
@@ -19,8 +20,8 @@ public class UIManager : MonoBehaviour
 
     void Start()
     {
-        GAMEUI.SetActive(true);
-        activeUI = UIType.GAME;
+        MENUUI.SetActive(true);
+        activeUI = UIType.MENU;
     }
 
     void Update()
@@ -33,11 +34,17 @@ public class UIManager : MonoBehaviour
         DeactivateUI(activeUI);
         switch (ui)
         {
-            case UIType.GAME:
-                GAMEUI.SetActive(true);
-                break;
             case UIType.MENU:
                 MENUUI.SetActive(true);
+                activeUI = UIType.MENU;
+                break;
+            case UIType.GAME:
+                GAMEUI.SetActive(true);
+                activeUI = UIType.GAME;
+                break;
+            case UIType.PAUSE:
+                PAUSEUI.SetActive(true);
+                activeUI = UIType.PAUSE;
                 break;
             default:
                 break;
@@ -48,11 +55,14 @@ public class UIManager : MonoBehaviour
     {
         switch (ui)
         {
+            case UIType.MENU:
+                MENUUI.SetActive(false);
+                break;
             case UIType.GAME:
                 GAMEUI.SetActive(false);
                 break;
-            case UIType.MENU:
-                MENUUI.SetActive(false);
+            case UIType.PAUSE:
+                PAUSEUI.SetActive(false);
                 break;
             default:
                 break;
