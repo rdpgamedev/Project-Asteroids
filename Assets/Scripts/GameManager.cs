@@ -102,12 +102,17 @@ public class GameManager : MonoBehaviour {
 
     public void MenuScreen()
     {
-
+        UIManager.instance.ActivateUI(UIManager.UIType.MENU);
     }
 
     public void ScoresScreen()
     {
+        UIManager.instance.ActivateUI(UIManager.UIType.SCORES);
+    }
 
+    public void CreditsScreen()
+    {
+        UIManager.instance.ActivateUI(UIManager.UIType.CREDITS);
     }
 
     public void AddScore(string name)
