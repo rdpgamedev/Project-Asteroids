@@ -14,11 +14,6 @@ public class MembraneCollider : MonoBehaviour {
         ship = PlayerShip.instance;
         cameraPos = CameraPos.instance.GetComponent<CameraPos>();
 	}
-	
-	void Update ()
-    {
-	
-	}
 
     void OnTriggerEnter (Collider other)
     {
