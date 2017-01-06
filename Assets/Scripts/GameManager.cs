@@ -126,4 +126,9 @@ public class GameManager : MonoBehaviour {
     {
         return highscores.TopScore();
     }
+
+    public int GetBottomScore ()
+    {
+        return highscores.BottomScore();
+    }
 }

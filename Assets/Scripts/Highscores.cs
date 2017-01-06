@@ -15,6 +15,11 @@ public class Highscores{
         return Scores[0].score;
     }
 
+    public int BottomScore ()
+    {
+        return Scores[9].score;
+    }
+
     public void Push (Score score) //inserts new score in descending order
     {
         int i = 0;

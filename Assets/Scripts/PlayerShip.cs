@@ -51,7 +51,7 @@ public class PlayerShip : MonoBehaviour
         {
             GameManager.instance.isPlaying = false;
             Time.timeScale = 0f;
-            if (gameManager.score < gameManager.GetHighscore())
+            if (gameManager.score < gameManager.GetBottomScore())
             {
                 UIManager.instance.ActivateUI(UIManager.UIType.PAUSE);
             }

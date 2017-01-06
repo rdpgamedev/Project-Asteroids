@@ -2,9 +2,33 @@
 <Highscores xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Scores>
     <Score name="RDP">
-      <score>2</score>
+      <score>10</score>
     </Score>
     <Score name="J9">
+      <score>9</score>
+    </Score>
+	<Score name="OLI">
+      <score>8</score>
+    </Score>
+    <Score name="MIK">
+      <score>7</score>
+    </Score>
+	<Score name="COL">
+      <score>6</score>
+    </Score>
+    <Score name="ALX">
+      <score>5</score>
+    </Score>
+	<Score name="GAB">
+      <score>4</score>
+    </Score>
+    <Score name="VEG">
+      <score>3</score>
+    </Score>
+	<Score name="FLY">
+      <score>2</score>
+    </Score>
+    <Score name="ORE">
       <score>1</score>
     </Score>
   </Scores>
