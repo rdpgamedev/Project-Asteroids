@@ -8,8 +8,11 @@ public class UIManager : MonoBehaviour
     public GameObject MENUUI;
     public GameObject GAMEUI;
     public GameObject PAUSEUI;
+    public GameObject HIGHSCOREUI;
+    public GameObject SCORESUI;
+    public GameObject CREDITSUI;
 
-    public enum UIType { MENU, GAME, PAUSE };
+    public enum UIType { MENU, GAME, PAUSE, HIGHSCORE, SCORES, CREDITS};
 
     private UIType activeUI;
 
@@ -46,6 +49,18 @@ public class UIManager : MonoBehaviour
                 PAUSEUI.SetActive(true);
                 activeUI = UIType.PAUSE;
                 break;
+            case UIType.HIGHSCORE:
+                HIGHSCOREUI.SetActive(true);
+                activeUI = UIType.HIGHSCORE;
+                break;
+            case UIType.SCORES:
+                SCORESUI.SetActive(true);
+                activeUI = UIType.SCORES;
+                break;
+            case UIType.CREDITS:
+                CREDITSUI.SetActive(true);
+                activeUI = UIType.CREDITS;
+                break;
             default:
                 break;
         }
@@ -63,6 +78,15 @@ public class UIManager : MonoBehaviour
                 break;
             case UIType.PAUSE:
                 PAUSEUI.SetActive(false);
+                break;
+            case UIType.HIGHSCORE:
+                HIGHSCOREUI.SetActive(false);
+                break;
+            case UIType.SCORES:
+                SCORESUI.SetActive(false);
+                break;
+            case UIType.CREDITS:
+                CREDITSUI.SetActive(false);
                 break;
             default:
                 break;

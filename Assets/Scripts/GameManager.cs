@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.IO;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
@@ -12,6 +13,7 @@ public class GameManager : MonoBehaviour {
     public int score = 0;
     public float time;
     public float difficulty = 0f;
+    public Highscores highscores;
 
     PlayerShip ship;
     GameObject field;
@@ -26,7 +28,16 @@ public class GameManager : MonoBehaviour {
     {
         ship = PlayerShip.instance;
         Startup();
-	}
+        string highscoresPath = Path.Combine(Application.persistentDataPath, "highscores.xml");
+        Debug.Log(highscoresPath);
+        if (!File.Exists(highscoresPath))
+        {
+            FileStream stream = File.Create(highscoresPath);
+            stream.Close();
+            File.WriteAllText(highscoresPath, File.ReadAllText(Path.Combine(Application.dataPath, "defaulthighscores.xml")));
+        }
+        highscores = Highscores.Load(highscoresPath);
+    }
 	
 	void Update ()
     {
@@ -87,5 +98,37 @@ public class GameManager : MonoBehaviour {
         cameraObj.GetComponent<CameraManager>().Restart();
         Startup();
         Play();
+    }
+
+    public void MenuScreen()
+    {
+        UIManager.instance.ActivateUI(UIManager.UIType.MENU);
+    }
+
+    public void ScoresScreen()
+    {
+        UIManager.instance.ActivateUI(UIManager.UIType.SCORES);
+    }
+
+    public void CreditsScreen()
+    {
+        UIManager.instance.ActivateUI(UIManager.UIType.CREDITS);
+    }
+
+    public void AddScore(string name)
+    {
+        Score newScore = new Score(name, score);
+        highscores.Push(newScore);
+        Debug.Log("Added score by " + name);
+    }
+
+    public int GetHighscore ()
+    {
+        return highscores.TopScore();
+    }
+
+    public int GetBottomScore ()
+    {
+        return highscores.BottomScore();
     }
 }

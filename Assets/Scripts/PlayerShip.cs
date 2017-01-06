@@ -27,6 +27,7 @@ public class PlayerShip : MonoBehaviour
     private Vector3 firstPosition;
     private Quaternion firstRotation;
     private float firstThrustScale;
+    private GameManager gameManager;
 
     void Awake ()
     {
@@ -39,6 +40,7 @@ public class PlayerShip : MonoBehaviour
 	void Start ()
     {
         cameraObj = GameObject.FindGameObjectWithTag("MainCamera");
+        gameManager = GameManager.instance;
 	}
 	
 	void Update ()
@@ -47,9 +49,18 @@ public class PlayerShip : MonoBehaviour
         if (GameManager.instance.time == 0f && !isDead) StartDeath();
         if (isDead && explosionParticles.GetComponent<ParticleSystem>().isStopped && GameManager.instance.isPlaying)
         {
-            UIManager.instance.ActivateUI(UIManager.UIType.PAUSE);
             GameManager.instance.isPlaying = false;
             Time.timeScale = 0f;
+            if (gameManager.score < gameManager.GetBottomScore())
+            {
+                UIManager.instance.ActivateUI(UIManager.UIType.PAUSE);
+            }
+            else
+            {
+                UIManager.instance.ActivateUI(UIManager.UIType.HIGHSCORE);
+            }
+            
+            
         }
 	}
 
