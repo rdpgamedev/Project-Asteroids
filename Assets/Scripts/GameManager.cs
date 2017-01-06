@@ -100,6 +100,16 @@ public class GameManager : MonoBehaviour {
         Play();
     }
 
+    public void MenuScreen()
+    {
+
+    }
+
+    public void ScoresScreen()
+    {
+
+    }
+
     public void AddScore(string name)
     {
         Score newScore = new Score(name, score);
