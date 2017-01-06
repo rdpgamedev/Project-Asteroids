@@ -13,11 +13,11 @@ public class GameManager : MonoBehaviour {
     public int score = 0;
     public float time;
     public float difficulty = 0f;
+    public Highscores highscores;
 
     PlayerShip ship;
     GameObject field;
     FieldSegment activeSegment;
-    Highscores highscores;
     bool gameOver = false;
 
     void Awake ()
