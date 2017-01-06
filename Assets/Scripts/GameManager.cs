@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour {
         {
             FileStream stream = File.Create(highscoresPath);
             stream.Close();
-            File.WriteAllText(highscoresPath, File.ReadAllText(Path.Combine(Application.dataPath, "Files/highscores.xml")));
+            File.WriteAllText(highscoresPath, File.ReadAllText(Path.Combine(Application.dataPath, "defaulthighscores.xml")));
         }
         highscores = Highscores.Load(highscoresPath);
     }
