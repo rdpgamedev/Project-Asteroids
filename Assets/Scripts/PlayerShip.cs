@@ -129,9 +129,11 @@ public class PlayerShip : MonoBehaviour
     {
         isDead = true;
         explosionParticles.GetComponent<ParticleSystem>().Play();
+        explosionParticles.GetComponent<AudioSource>().Play();
         Invoke("HideVisualParts", 0.1f);
         cameraObj.GetComponent<LookAt>().enabled = false;
         cameraObj.GetComponent<MoveTo>().enabled = false;
+        BGM.instance.SetVolume(0.3f);
     }
 
     void HideVisualParts ()
