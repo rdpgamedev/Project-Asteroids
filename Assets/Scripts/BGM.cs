@@ -17,7 +17,7 @@ public class BGM : MonoBehaviour {
 
 	void Start () {
         musicPlayer = GetComponent<AudioSource>();
-        musicPlayer.volume = 0.25f;
+        musicPlayer.volume = 0.3f;
         PlaySong();
     }
 	
@@ -49,5 +49,12 @@ public class BGM : MonoBehaviour {
         --songIndex;
         if (songIndex < 0) songIndex = songs.Length - 1;
         PlaySong();
+    }
+
+    public void SetVolume (float vol)
+    {
+        if (vol < 0f) vol = 0f;
+        if (vol > 1f) vol = 1f;
+        musicPlayer.volume = vol;
     }
 }
