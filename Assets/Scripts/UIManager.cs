@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
@@ -25,6 +26,7 @@ public class UIManager : MonoBehaviour
     {
         MENUUI.SetActive(true);
         activeUI = UIType.MENU;
+        ActivateUI(activeUI);
     }
 
     void Update()
@@ -40,6 +42,7 @@ public class UIManager : MonoBehaviour
             case UIType.MENU:
                 MENUUI.SetActive(true);
                 activeUI = UIType.MENU;
+                MENUUI.transform.FindChild("Play Button").GetComponent<Button>().Select();
                 break;
             case UIType.GAME:
                 GAMEUI.SetActive(true);
@@ -48,6 +51,7 @@ public class UIManager : MonoBehaviour
             case UIType.PAUSE:
                 PAUSEUI.SetActive(true);
                 activeUI = UIType.PAUSE;
+                PAUSEUI.transform.FindChild("Restart Button").GetComponent<Button>().Select();
                 break;
             case UIType.HIGHSCORE:
                 HIGHSCOREUI.SetActive(true);
@@ -56,6 +60,7 @@ public class UIManager : MonoBehaviour
             case UIType.SCORES:
                 SCORESUI.SetActive(true);
                 activeUI = UIType.SCORES;
+                SCORESUI.transform.FindChild("Menu Button").GetComponent<Button>().Select();
                 break;
             case UIType.CREDITS:
                 CREDITSUI.SetActive(true);
