@@ -31,7 +31,6 @@ public class GameManager : MonoBehaviour {
         ship = PlayerShip.instance;
         Startup();
         string highscoresPath = Path.Combine(Application.persistentDataPath, "highscores.xml");
-        Debug.Log(highscoresPath);
         if (!File.Exists(highscoresPath))
         {
             FileStream stream = File.Create(highscoresPath);
