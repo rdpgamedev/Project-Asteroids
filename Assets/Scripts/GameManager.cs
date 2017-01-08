@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour {
     public static GameManager instance;
     public GameObject FIELDOBJ;
     public GameObject SCOREPARTICLES;
+    public GameObject TIMEPARTICLES;
     public GameObject cameraObj;
     public float STARTTIME = 9.99f;
     public bool isPlaying;

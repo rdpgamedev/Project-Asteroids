@@ -33,6 +33,7 @@ public class MembraneCollider : MonoBehaviour {
             ship.ActivateThrusters();
             ship.GetComponent<Rigidbody>().freezeRotation = false;
             CHECKPOINT.transform.FindChild("CheckpointExplosion").GetComponent<ParticleSystem>().Play();
+            gameManager.TIMEPARTICLES.GetComponent<ParticleSystem>().Play();
         }
     }
 }
