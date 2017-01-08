@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour {
     public static GameManager instance;
     public GameObject FIELDOBJ;
+    public GameObject SCOREPARTICLES;
     public GameObject cameraObj;
     public float STARTTIME = 9.99f;
     public bool isPlaying;
@@ -113,6 +114,13 @@ public class GameManager : MonoBehaviour {
     public void CreditsScreen()
     {
         UIManager.instance.ActivateUI(UIManager.UIType.CREDITS);
+    }
+
+    public void IncreaseScore ()
+    {
+        ++score;
+        if (score % 10 == 0) SCOREPARTICLES.GetComponent<ParticleSystem>().Play();
+        SCOREPARTICLES.transform.parent.GetComponent<Animator>().SetTrigger("flash");
     }
 
     public void AddScore(string name)
