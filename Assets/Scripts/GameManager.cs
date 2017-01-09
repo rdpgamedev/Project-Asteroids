@@ -46,6 +46,7 @@ public class GameManager : MonoBehaviour {
         {
             time -= Time.deltaTime;
             if (time < 0f) time = 0f;
+            TIMEPARTICLES.transform.parent.GetComponent<Animator>().SetFloat("time", time);
         }
 	}
 
@@ -61,6 +62,7 @@ public class GameManager : MonoBehaviour {
     public void ResetTime ()
     {
         time = STARTTIME;
+        TIMEPARTICLES.transform.parent.GetComponent<Animator>().SetTrigger("green");
     }
 
     public void SetActiveSegment (FieldSegment seg)
