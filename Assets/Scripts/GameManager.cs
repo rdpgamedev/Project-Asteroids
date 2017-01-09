@@ -123,6 +123,7 @@ public class GameManager : MonoBehaviour {
         ++score;
         if (score % 10 == 0) SCOREPARTICLES.GetComponent<ParticleSystem>().Play();
         SCOREPARTICLES.transform.parent.GetComponent<Animator>().SetTrigger("flash");
+        SCOREPARTICLES.transform.parent.GetComponent<AudioSource>().Play();
     }
 
     public void AddScore(string name)
