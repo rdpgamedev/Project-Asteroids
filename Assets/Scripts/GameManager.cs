@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour {
     public float difficulty = 0f;
     public Highscores highscores;
 
+    GameObject timeObj;
     PlayerShip ship;
     GameObject field;
     FieldSegment activeSegment;
@@ -28,6 +29,7 @@ public class GameManager : MonoBehaviour {
     }
 	void Start ()
     {
+        timeObj = TIMEPARTICLES.transform.parent.gameObject;
         ship = PlayerShip.instance;
         Startup();
         string highscoresPath = Path.Combine(Application.persistentDataPath, "highscores.xml");
@@ -45,7 +47,15 @@ public class GameManager : MonoBehaviour {
         if (isPlaying)
         {
             time -= Time.deltaTime;
-            if (time < 0f) time = 0f;
+            if (time < 0f)
+            {
+                time = 0f;
+                timeObj.GetComponent<AudioSource>().Stop();
+            }
+            else if (time < 10f)
+            {
+                if (!timeObj.GetComponent<AudioSource>().isPlaying) timeObj.GetComponent<AudioSource>().Play();
+            }
             TIMEPARTICLES.transform.parent.GetComponent<Animator>().SetFloat("time", time);
         }
 	}
@@ -62,7 +72,8 @@ public class GameManager : MonoBehaviour {
     public void ResetTime ()
     {
         time = STARTTIME;
-        TIMEPARTICLES.transform.parent.GetComponent<Animator>().SetTrigger("green");
+        timeObj.GetComponent<Animator>().SetTrigger("green");
+        timeObj.GetComponent<AudioSource>().Stop();
     }
 
     public void SetActiveSegment (FieldSegment seg)
