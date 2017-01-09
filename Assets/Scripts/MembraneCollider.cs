@@ -32,6 +32,8 @@ public class MembraneCollider : MonoBehaviour {
             GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Animator>().SetTrigger("boost");
             ship.ActivateThrusters();
             ship.GetComponent<Rigidbody>().freezeRotation = false;
+            CHECKPOINT.transform.FindChild("CheckpointExplosion").GetComponent<ParticleSystem>().Play();
+            gameManager.TIMEPARTICLES.GetComponent<ParticleSystem>().Play();
         }
     }
 }

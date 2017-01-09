@@ -6,6 +6,8 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour {
     public static GameManager instance;
     public GameObject FIELDOBJ;
+    public GameObject SCOREPARTICLES;
+    public GameObject TIMEPARTICLES;
     public GameObject cameraObj;
     public float STARTTIME = 9.99f;
     public bool isPlaying;
@@ -15,6 +17,7 @@ public class GameManager : MonoBehaviour {
     public float difficulty = 0f;
     public Highscores highscores;
 
+    GameObject timeObj;
     PlayerShip ship;
     GameObject field;
     FieldSegment activeSegment;
@@ -26,10 +29,10 @@ public class GameManager : MonoBehaviour {
     }
 	void Start ()
     {
+        timeObj = TIMEPARTICLES.transform.parent.gameObject;
         ship = PlayerShip.instance;
         Startup();
         string highscoresPath = Path.Combine(Application.persistentDataPath, "highscores.xml");
-        Debug.Log(highscoresPath);
         if (!File.Exists(highscoresPath))
         {
             FileStream stream = File.Create(highscoresPath);
@@ -44,7 +47,16 @@ public class GameManager : MonoBehaviour {
         if (isPlaying)
         {
             time -= Time.deltaTime;
-            if (time < 0f) time = 0f;
+            if (time < 0f)
+            {
+                time = 0f;
+                timeObj.GetComponent<AudioSource>().Stop();
+            }
+            else if (time < 10f)
+            {
+                if (!timeObj.GetComponent<AudioSource>().isPlaying) timeObj.GetComponent<AudioSource>().Play();
+            }
+            TIMEPARTICLES.transform.parent.GetComponent<Animator>().SetFloat("time", time);
         }
 	}
 
@@ -60,6 +72,8 @@ public class GameManager : MonoBehaviour {
     public void ResetTime ()
     {
         time = STARTTIME;
+        timeObj.GetComponent<Animator>().SetTrigger("green");
+        timeObj.GetComponent<AudioSource>().Stop();
     }
 
     public void SetActiveSegment (FieldSegment seg)
@@ -113,6 +127,14 @@ public class GameManager : MonoBehaviour {
     public void CreditsScreen()
     {
         UIManager.instance.ActivateUI(UIManager.UIType.CREDITS);
+    }
+
+    public void IncreaseScore ()
+    {
+        ++score;
+        if (score % 10 == 0) SCOREPARTICLES.GetComponent<ParticleSystem>().Play();
+        SCOREPARTICLES.transform.parent.GetComponent<Animator>().SetTrigger("flash");
+        SCOREPARTICLES.transform.parent.GetComponent<AudioSource>().Play();
     }
 
     public void AddScore(string name)

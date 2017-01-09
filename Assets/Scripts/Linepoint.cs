@@ -16,6 +16,7 @@ public class Linepoint : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
+        if (!GameManager.instance.isPlaying) return;
         bool active = false;
         if (fieldSegment != null) active = fieldSegment.isActive;
         if ((fieldSegment == null) || (active))
@@ -25,7 +26,7 @@ public class Linepoint : MonoBehaviour {
                 if (CloseToPlayer(PICKUPDISTANCE))
                 {
                     Destroy(this.gameObject);
-                    ++GameManager.instance.score;
+                    GameManager.instance.IncreaseScore();
                 }
                 Gravitate();
                 Scale();
