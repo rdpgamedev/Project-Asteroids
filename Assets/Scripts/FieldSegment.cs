@@ -26,6 +26,8 @@ public class FieldSegment : MonoBehaviour
     private List<GameObject> landmarks;
     private GameObject checkpoint;
     private GameObject nextCheckpoint;
+    private bool destroy;
+    private float fieldRad;
     
 
     void Awake ()
@@ -36,14 +38,14 @@ public class FieldSegment : MonoBehaviour
 
     void Start ()
     {
-
+        fieldRad = MAXLENGTH * 4f;
 	}
 	
 	void Update ()
     {
-	    if (numpoints < 0)
+	    if (destroy && checkDistance(fieldRad) )
         {
-            Destroy(this);
+            Destroy(this.gameObject);
         }
 	}
 
@@ -195,6 +197,11 @@ public class FieldSegment : MonoBehaviour
         }
     }
 
+    public void Destroy()
+    {
+        destroy = true;
+    }
+
     public GameObject SpawnAsteroid (Vector3 position)
     {
         GameObject asteroid = Instantiate<GameObject>(ASTEROID);
@@ -280,5 +287,10 @@ public class FieldSegment : MonoBehaviour
             nextCheckpoint.GetComponent<Animator>().enabled = true;
             nextCheckpoint.GetComponent<AudioSource>().PlayDelayed(1f);
         }
+    }
+
+    private bool checkDistance(float dist)
+    {
+        return ((PlayerShip.instance.transform.position - transform.position).magnitude > dist);
     }
 }

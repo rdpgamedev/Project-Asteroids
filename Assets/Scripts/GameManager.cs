@@ -78,7 +78,7 @@ public class GameManager : MonoBehaviour {
 
     public void SetActiveSegment (FieldSegment seg)
     {
-        if (activeSegment != null) Destroy(activeSegment.gameObject);
+        if (activeSegment != null) activeSegment.Destroy();
         activeSegment = seg;
         activeSegment.SetActive(true);
     }
