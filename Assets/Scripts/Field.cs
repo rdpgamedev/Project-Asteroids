@@ -58,6 +58,12 @@ public class Field : MonoBehaviour
         Time.timeScale = 1f;
     }
 
+    public GameObject LastSegment()
+    {
+        if (segments.Count < 1) return null;
+        return segments[segments.Count - 1];
+    }
+
     void AddSegment ()
     {
         GameObject segment = Instantiate<GameObject>(FIELDSEGMENT);

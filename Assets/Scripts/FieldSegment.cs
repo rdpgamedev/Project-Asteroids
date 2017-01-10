@@ -196,14 +196,48 @@ public class FieldSegment : MonoBehaviour
         //Spawn Field Particles
         Vector3 midpoint = curve.GetPoint(0.5f);
         GameObject particles = Instantiate<GameObject>(fieldParticles);
+        particles.name = "Field Particles";
         particles.transform.parent = transform;
         particles.transform.position = midpoint;
         particles.transform.forward = curve.GetFirstDeriv(0.5f);
+        ParticleSystem.MainModule particlesMain = particles.GetComponent<ParticleSystem>().main;
         if (fieldtype == FieldType.ICE)
         {
             Color iceCloud = new Color(52f / 255f, 65f / 255f, 100f / 255f, 87f / 255f);
-            var particlesMain = particles.GetComponent<ParticleSystem>().main;
             particlesMain.startColor = iceCloud;
+        }
+        GameObject lastSegment = Field.instance.LastSegment();
+        int oldMaxParticles;
+        if (lastSegment == null)
+        {
+            oldMaxParticles = 50;
+        }
+        else
+        {
+            GameObject oldParticles = lastSegment.transform.FindChild("Field Particles").gameObject;
+            oldMaxParticles = oldParticles.GetComponent<ParticleSystem>().main.maxParticles;
+        }
+        if (oldMaxParticles == 0)
+        {
+            if (Random.Range(0f, 1f) < 0.6f)
+            {
+                particlesMain.maxParticles = 0;
+            }
+            else
+            {
+                particlesMain.maxParticles = oldMaxParticles + Random.Range(-oldMaxParticles, 100 - oldMaxParticles) / 3;
+            }
+        }
+        else
+        {
+            if (Random.Range(0f, 1f) < 0.6f)
+            {
+                particlesMain.maxParticles = oldMaxParticles + Random.Range(-oldMaxParticles, 100 - oldMaxParticles) / 3;
+            }
+            else
+            {
+                particlesMain.maxParticles = 0;
+            }
         }
     }
 
