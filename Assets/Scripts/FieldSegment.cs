@@ -15,6 +15,7 @@ public class FieldSegment : MonoBehaviour
     public bool isActive;
     public int asteroidCount;
     public GameObject fieldParticles;
+    public bool isGenerating;
 
     private FieldType fieldtype;
     private TrackType tracktype;
@@ -28,6 +29,7 @@ public class FieldSegment : MonoBehaviour
     private GameObject nextCheckpoint;
     private bool destroy;
     private float fieldRad;
+    private float generateTime;
     
 
     void Awake ()
@@ -43,7 +45,8 @@ public class FieldSegment : MonoBehaviour
 	
 	void Update ()
     {
-	    if (destroy && checkDistance(fieldRad) )
+        if (Time.time - generateTime > 1.5f) isGenerating = false;
+        if (destroy && checkDistance(fieldRad) )
         {
             Destroy(this.gameObject);
         }
@@ -56,6 +59,8 @@ public class FieldSegment : MonoBehaviour
 
     public void GenerateSegment(FieldType _fieldtype, TrackType _tracktype, Vector3 lastControlPoint)
     {
+        isGenerating = true;
+        generateTime = Time.time;
         fieldtype = _fieldtype;
         tracktype = _tracktype;
         length = Random.Range(MINLENGTH, MAXLENGTH);
@@ -227,6 +232,7 @@ public class FieldSegment : MonoBehaviour
         landmark.transform.localScale *= Random.Range(300f, 450f);
         landmark.GetComponent<Rigidbody>().mass = 999999f;
         landmark.GetComponent<RandomRotation>().enabled = false;
+        landmark.GetComponent<AsteroidCollision>().segment = this;
         landmark.name = "Landmark";
         return landmark;
     }
@@ -292,5 +298,10 @@ public class FieldSegment : MonoBehaviour
     private bool checkDistance(float dist)
     {
         return ((PlayerShip.instance.transform.position - transform.position).magnitude > dist);
+    }
+
+    public void RepositionAsteroid(GameObject asteroid)
+    {
+        asteroid.transform.position = RandomlyOffset(asteroid.transform.position, 20f);
     }
 }
