@@ -158,8 +158,8 @@ public class FieldSegment : MonoBehaviour
         }
         //Spawn Asteroids
         int unspawnedAsteroids = 
-            Field.instance.MAXASTEROIDS - Field.instance.asteroidCount;
-        for (int i = 0; i < (unspawnedAsteroids)/20; ++i)
+            Field.instance.MINASTEROIDS + Field.instance.checkpointsMade * 10;
+        for (int i = 0; i < (unspawnedAsteroids); ++i)
         {
             Vector3 point = curve.GetPoint((float)i / 100f);
             GameObject asteroid = SpawnAsteroid(point);

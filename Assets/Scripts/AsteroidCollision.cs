@@ -18,7 +18,10 @@ public class AsteroidCollision : MonoBehaviour {
 	
 	}
 
-
+    private void OnDestroy()
+    {
+        --segment.asteroidCount;
+    }
 
     void OnCollisionEnter (Collision collision)
     {

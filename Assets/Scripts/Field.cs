@@ -7,11 +7,12 @@ public class Field : MonoBehaviour
     public static Field instance;
     public GameObject FIELDSEGMENT;
     public GameObject CHECKPOINT;
-    public int MAXASTEROIDS = 1500;
+    public int MINASTEROIDS = 25;
 
     public int asteroidCount = 0;
     public enum FieldType { ICE, ROCK };
     public enum TrackType { STRAIGHT, CURVE, SLALOM, HAIRPIN };
+    public int checkpointsMade = 0;
 
     List<GameObject> segments;
     List<GameObject> checkpoints;
@@ -92,6 +93,7 @@ public class Field : MonoBehaviour
             GameObject prevSegment = segments[segments.Count - 2];
             prevSegment.GetComponent<FieldSegment>().SetNextCheckpoint(checkpoint);
         }
+        ++checkpointsMade;
     }
 
     TrackType RandomTrackType(float difficulty)
