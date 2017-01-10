@@ -100,16 +100,16 @@ public class Field : MonoBehaviour
     {
         if (difficulty > 1f) difficulty = 1f;
         if (difficulty < 0f) difficulty = 0f;
-        float choice = Random.Range(0f, 1f) * difficulty + 0.5f;
-        if (choice < 0.25f)
+        float choice = Random.Range(0f, Mathf.Min(difficulty + 0.4f, 1f));
+        if (choice < 0.3f)
         {
             return TrackType.STRAIGHT;
         }
-        else if (choice < 0.5f)
+        else if (choice < 0.6f)
         {
             return TrackType.CURVE;
         }
-        else if (choice < 0.75f)
+        else if (choice < 0.9f)
         {
             return TrackType.SLALOM;
         }

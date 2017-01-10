@@ -8,7 +8,7 @@ public class FieldSegment : MonoBehaviour
 {
     public static float MAXLENGTH = 1200f;
     public static float MINLENGTH = 1000f;
-    public static float MAXHEIGHT = 1000f;
+    public static float MAXHEIGHT = 300f;
     public float linePointOffset;
     public GameObject LINEPOINT;
     public GameObject ASTEROID;
@@ -77,11 +77,11 @@ public class FieldSegment : MonoBehaviour
             case TrackType.STRAIGHT:
                 {
                     p1 = p0 + forward * length / 3;
-                    RandomlyOffset(p1, height);
+                    p1 = RandomlyOffset(p1, height);
                     p2 = p0 + forward * length * 2 / 3;
-                    RandomlyOffset(p2, height);
+                    p2 = RandomlyOffset(p2, height);
                     p3 = p0 + forward * length;
-                    RandomlyOffset(p3, height);
+                    p3 = RandomlyOffset(p3, height);
                     break;
                 }
             case TrackType.CURVE:
@@ -93,11 +93,11 @@ public class FieldSegment : MonoBehaviour
                         forward, endDirection, theta, 0f);
                     end.Normalize();
                     p1 = p0 + forward * length / 3;
-                    RandomlyOffset(p1, height);
+                    p1 = RandomlyOffset(p1, height);
                     p2 = p0 + forward * length / 2 + end * length / 6;
-                    RandomlyOffset(p2, height);
+                    p2 = RandomlyOffset(p2, height);
                     p3 = p2 + end * length / 3;
-                    RandomlyOffset(p3, height);
+                    p3 = RandomlyOffset(p3, height);
                     break;
                 }
             case TrackType.SLALOM:
@@ -106,11 +106,11 @@ public class FieldSegment : MonoBehaviour
                     Vector3 approxNormal = Vector3.RotateTowards(forward, backDirection, Mathf.PI / 2f, 0f);
                     approxNormal.Normalize();
                     p1 = p0 + forward * length / 3;
-                    RandomlyOffset(p1, height);
+                    p1 = RandomlyOffset(p1, height);
                     p2 = p0 + forward * length * 2 / 3 + approxNormal * length / 6;
-                    RandomlyOffset(p2, height);
+                    p2 = RandomlyOffset(p2, height);
                     p3 = p0 + forward * length - approxNormal * length / 6;
-                    RandomlyOffset(p3, height);
+                    p3 = RandomlyOffset(p3, height);
                     break;
                 }
             case TrackType.HAIRPIN:
@@ -123,11 +123,11 @@ public class FieldSegment : MonoBehaviour
                         forward, endDirection, theta, 0f);
                     end.Normalize();
                     p1 = p0 + forward * length / 3;
-                    RandomlyOffset(p1, height);
+                    p1 = RandomlyOffset(p1, height);
                     p2 = p0 + forward * length / 2 + end * length / 6;
-                    RandomlyOffset(p2, height);
+                    p2 = RandomlyOffset(p2, height);
                     p3 = p2 + end * length / 3;
-                    RandomlyOffset(p3, height);
+                    p3 = RandomlyOffset(p3, height);
                     pointdensity *= 0.7f;
                     break;
                 }
@@ -145,8 +145,13 @@ public class FieldSegment : MonoBehaviour
         if (Random.Range(0, 5) > 3)
         { 
             Vector3 landmarkpoint = curve.GetPoint(0.5f);
+            Debug.Log("curve point:" + landmarkpoint);
             Vector3 normal = curve.GetNormal(0.5f);
+            Debug.Log("normal : " + normal);
+            normal.Normalize();
+            Debug.Log("normalized normal: " + normal);
             landmarkpoint += normal * Random.Range(800f, 1000f);
+            Debug.Log("new point: " + landmarkpoint);
             GameObject landmark = SpawnLandmark(landmarkpoint);
             landmark.transform.parent = transform;
             landmarks.Add(landmark);
@@ -166,7 +171,7 @@ public class FieldSegment : MonoBehaviour
             Field.instance.MINASTEROIDS + Field.instance.checkpointsMade * 3;
         for (int i = 0; i < (unspawnedAsteroids); ++i)
         {
-            Vector3 point = curve.GetPoint((float)i / 100f);
+            Vector3 point = curve.GetPoint((float)i / (float)unspawnedAsteroids);
             GameObject asteroid = SpawnAsteroid(point);
             bool collided = true; //tracking if collided with a landmark
             asteroid.transform.forward = curve.GetFirstDeriv((float)i / 100f);

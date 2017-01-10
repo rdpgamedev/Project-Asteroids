@@ -20,7 +20,7 @@ public class AsteroidCollision : MonoBehaviour {
 
     void OnCollisionEnter (Collision collision)
     {
-        if (segment.isGenerating)
+        if (segment.isGenerating && !name.Contains("Landmark"))
         {
             segment.RepositionAsteroid(gameObject);
         }
