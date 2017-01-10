@@ -158,7 +158,7 @@ public class FieldSegment : MonoBehaviour
         }
         //Spawn Asteroids
         int unspawnedAsteroids = 
-            Field.instance.MINASTEROIDS + Field.instance.checkpointsMade * 10;
+            Field.instance.MINASTEROIDS + Field.instance.checkpointsMade * 3;
         for (int i = 0; i < (unspawnedAsteroids); ++i)
         {
             Vector3 point = curve.GetPoint((float)i / 100f);
@@ -167,7 +167,7 @@ public class FieldSegment : MonoBehaviour
             asteroid.transform.forward = curve.GetFirstDeriv((float)i / 100f);
             while (collided)
             {
-                Vector3 offset = RandomlyOffsetXY(point, 1000f) - point;
+                Vector3 offset = RandomlyOffsetXY(point, 500f) - point;
                 asteroid.transform.position = point;
                 asteroid.transform.position += asteroid.transform.right.normalized * offset.x;
                 asteroid.transform.position += asteroid.transform.up.normalized * offset.y;
