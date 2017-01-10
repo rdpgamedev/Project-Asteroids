@@ -18,11 +18,6 @@ public class AsteroidCollision : MonoBehaviour {
 	
 	}
 
-    private void OnDestroy()
-    {
-        --segment.asteroidCount;
-    }
-
     void OnCollisionEnter (Collision collision)
     {
         if (collision.gameObject.name.Contains("Asteroid") && !isChild && !name.Contains("Landmark"))
@@ -59,6 +54,7 @@ public class AsteroidCollision : MonoBehaviour {
                 newAsteroid.GetComponent<AsteroidCollision>().isChild = true;
             }
             Destroy(gameObject);
+            --segment.asteroidCount;
         }
     }
 
