@@ -145,13 +145,9 @@ public class FieldSegment : MonoBehaviour
             {
                 if ((landmarkpoint - closestSegmentCenter).magnitude > MINLENGTH / 4f)
                 {
-                    Debug.Log("curve point:" + landmarkpoint);
                     Vector3 normal = curve.GetNormal(0.5f);
-                    Debug.Log("normal : " + normal);
                     normal.Normalize();
-                    Debug.Log("normalized normal: " + normal);
                     landmarkpoint += normal * Random.Range(800f, 1000f);
-                    Debug.Log("new point: " + landmarkpoint);
                     GameObject landmark = SpawnLandmark(landmarkpoint);
                     landmark.transform.parent = transform;
                     landmarks.Add(landmark);
