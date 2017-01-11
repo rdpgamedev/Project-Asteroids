@@ -46,7 +46,7 @@ public class FieldSegment : MonoBehaviour
 	void Update ()
     {
         if (Time.time - generateTime > 1.5f) isGenerating = false;
-        if (destroy && checkDistance(fieldRad) )
+        if (destroy && CheckDistance(fieldRad) )
         {
             Destroy(this.gameObject);
         }
@@ -65,6 +65,7 @@ public class FieldSegment : MonoBehaviour
         tracktype = _tracktype;
         length = Random.Range(MINLENGTH, MAXLENGTH);
         height = Random.Range(0f, MAXHEIGHT);
+        Vector3 closestSegmentCenter = FindClosestPoint(Field.instance.SegmentMidpoints());
 
         //Create Bezier curve
         Vector3 p0, p1 ,p2, p3;
@@ -141,16 +142,19 @@ public class FieldSegment : MonoBehaviour
             Vector3 landmarkpoint = curve.GetPoint(0.5f);
             if ((landmarkpoint - PlayerShip.instance.transform.position).magnitude > MAXLENGTH * 2 || !GameManager.instance.isPlaying)
             {
-                Debug.Log("curve point:" + landmarkpoint);
-                Vector3 normal = curve.GetNormal(0.5f);
-                Debug.Log("normal : " + normal);
-                normal.Normalize();
-                Debug.Log("normalized normal: " + normal);
-                landmarkpoint += normal * Random.Range(800f, 1000f);
-                Debug.Log("new point: " + landmarkpoint);
-                GameObject landmark = SpawnLandmark(landmarkpoint);
-                landmark.transform.parent = transform;
-                landmarks.Add(landmark);
+                if ((landmarkpoint - closestSegmentCenter).magnitude > MINLENGTH / 4f)
+                {
+                    Debug.Log("curve point:" + landmarkpoint);
+                    Vector3 normal = curve.GetNormal(0.5f);
+                    Debug.Log("normal : " + normal);
+                    normal.Normalize();
+                    Debug.Log("normalized normal: " + normal);
+                    landmarkpoint += normal * Random.Range(800f, 1000f);
+                    Debug.Log("new point: " + landmarkpoint);
+                    GameObject landmark = SpawnLandmark(landmarkpoint);
+                    landmark.transform.parent = transform;
+                    landmarks.Add(landmark);
+                }
             }
         }
         //Spawn Linepoints
@@ -171,23 +175,27 @@ public class FieldSegment : MonoBehaviour
             Vector3 point = curve.GetPoint((float)i / (float)unspawnedAsteroids);
             if ((point - PlayerShip.instance.transform.position).magnitude > MAXLENGTH * 2 || !GameManager.instance.isPlaying)
             {
-                GameObject asteroid = SpawnAsteroid(point);
-                bool collided = true; //tracking if collided with a landmark
-                asteroid.transform.forward = curve.GetFirstDeriv((float)i / 100f);
-                while (collided)
+                //check segment overlap (if asteroid is too close to closest segments' center)
+                if ((point - closestSegmentCenter).magnitude > MINLENGTH/4f)
                 {
-                    Vector3 offset = RandomlyOffsetXY(point, 500f) - point;
-                    asteroid.transform.position = point;
-                    asteroid.transform.position += asteroid.transform.right.normalized * offset.x;
-                    asteroid.transform.position += asteroid.transform.up.normalized * offset.y;
-                    collided = false;
-                    foreach (GameObject lm in landmarks)
+                    GameObject asteroid = SpawnAsteroid(point);
+                    bool collided = true; //tracking if collided with a landmark
+                    asteroid.transform.forward = curve.GetFirstDeriv((float)i / 100f);
+                    while (collided)
                     {
-                        if (lm.GetComponent<MeshCollider>().bounds.Intersects(
-                            asteroid.GetComponent<MeshCollider>().bounds))
+                        Vector3 offset = RandomlyOffsetXY(point, 500f) - point;
+                        asteroid.transform.position = point;
+                        asteroid.transform.position += asteroid.transform.right.normalized * offset.x;
+                        asteroid.transform.position += asteroid.transform.up.normalized * offset.y;
+                        collided = false;
+                        foreach (GameObject lm in landmarks)
                         {
-                            collided = true;
-                            break;
+                            if (lm.GetComponent<MeshCollider>().bounds.Intersects(
+                                asteroid.GetComponent<MeshCollider>().bounds))
+                            {
+                                collided = true;
+                                break;
+                            }
                         }
                     }
                 }
@@ -334,7 +342,7 @@ public class FieldSegment : MonoBehaviour
         }
     }
 
-    private bool checkDistance(float dist)
+    private bool CheckDistance(float dist)
     {
         return ((PlayerShip.instance.transform.position - transform.position).magnitude > dist);
     }
@@ -342,5 +350,35 @@ public class FieldSegment : MonoBehaviour
     public void RepositionAsteroid(GameObject asteroid)
     {
         asteroid.transform.position = RandomlyOffset(asteroid.transform.position, 20f);
+    }
+
+    public Vector3 GetCurveCenter()
+    {
+        return curve.GetPoint(0.5f);
+    }
+
+    private Vector3 FindClosestPoint (List<Vector3> points)
+    {
+        Vector3 center = GetCurveCenter();
+        if (points.Count > 0)
+        {
+            Vector3 closest = points[0];
+            float dist = (center - closest).magnitude;
+            foreach (Vector3 point in points)
+            {
+                float newDist = (center - point).magnitude;
+                if (newDist < dist)
+                {
+                    closest = point;
+                    dist = newDist;
+                }
+            }
+            return center;
+        }
+        else
+        {
+            Vector3 offset = (center - transform.position) * 2;
+            return (center - offset);
+        }
     }
 }

@@ -64,6 +64,16 @@ public class Field : MonoBehaviour
         return segments[segments.Count - 1];
     }
 
+    public List<Vector3> SegmentMidpoints()
+    {
+        List<Vector3> midpoints = new List<Vector3>();
+        foreach (GameObject segment in segments)
+        {
+            midpoints.Add(segment.GetComponent<FieldSegment>().GetCurveCenter());
+        }
+        return midpoints;
+    }
+
     void AddSegment ()
     {
         GameObject segment = Instantiate<GameObject>(FIELDSEGMENT);
