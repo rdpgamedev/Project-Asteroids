@@ -75,6 +75,11 @@ public class Field : MonoBehaviour
         return midpoints;
     }
 
+    public void RemoveSegment (GameObject segment)
+    {
+        segments.Remove(segment);
+    }
+
     void AddSegment ()
     {
         GameObject segment = Instantiate<GameObject>(FIELDSEGMENT);

@@ -48,6 +48,7 @@ public class FieldSegment : MonoBehaviour
         if (Time.time - generateTime > 1.5f) isGenerating = false;
         if (destroy && CheckDistance(fieldRad) )
         {
+            Field.instance.RemoveSegment(this.gameObject);
             Destroy(this.gameObject);
         }
 	}
