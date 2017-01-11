@@ -13,11 +13,12 @@ public class Field : MonoBehaviour
     public enum FieldType { ICE, ROCK };
     public enum TrackType { STRAIGHT, CURVE, SLALOM, HAIRPIN };
     public int checkpointsMade = 0;
+    public bool activated;
+
 
     List<GameObject> segments;
     List<GameObject> checkpoints;
-    bool activated;
-
+    
     void Awake ()
     {
         instance = this;

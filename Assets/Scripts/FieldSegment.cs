@@ -140,7 +140,7 @@ public class FieldSegment : MonoBehaviour
         if (Random.Range(0, 5) > 3)
         { 
             Vector3 landmarkpoint = curve.GetPoint(0.5f);
-            if ((landmarkpoint - PlayerShip.instance.transform.position).magnitude > MAXLENGTH * 2 || !GameManager.instance.isPlaying)
+            if ((landmarkpoint - PlayerShip.instance.transform.position).magnitude > MAXLENGTH * 2 || !Field.instance.activated)
             {
                 if ((landmarkpoint - closestSegmentCenter).magnitude > MINLENGTH / 4f)
                 {
@@ -173,7 +173,7 @@ public class FieldSegment : MonoBehaviour
         for (int i = 0; i < (unspawnedAsteroids); ++i)
         {
             Vector3 point = curve.GetPoint((float)i / (float)unspawnedAsteroids);
-            if ((point - PlayerShip.instance.transform.position).magnitude > MAXLENGTH * 2 || !GameManager.instance.isPlaying)
+            if ((point - PlayerShip.instance.transform.position).magnitude > MAXLENGTH * 2 || !Field.instance.activated)
             {
                 //check segment overlap (if asteroid is too close to closest segments' center)
                 if ((point - closestSegmentCenter).magnitude > MINLENGTH/4f)
