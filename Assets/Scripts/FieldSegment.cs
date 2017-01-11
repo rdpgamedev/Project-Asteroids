@@ -77,7 +77,6 @@ public class FieldSegment : MonoBehaviour
             case TrackType.STRAIGHT:
                 {
                     p1 = p0 + forward * length / 3;
-                    p1 = RandomlyOffset(p1, height);
                     p2 = p0 + forward * length * 2 / 3;
                     p2 = RandomlyOffset(p2, height);
                     p3 = p0 + forward * length;
@@ -93,11 +92,9 @@ public class FieldSegment : MonoBehaviour
                         forward, endDirection, theta, 0f);
                     end.Normalize();
                     p1 = p0 + forward * length / 3;
-                    p1 = RandomlyOffset(p1, height);
                     p2 = p0 + forward * length / 2 + end * length / 6;
                     p2 = RandomlyOffset(p2, height);
                     p3 = p2 + end * length / 3;
-                    p3 = RandomlyOffset(p3, height);
                     break;
                 }
             case TrackType.SLALOM:
@@ -106,7 +103,6 @@ public class FieldSegment : MonoBehaviour
                     Vector3 approxNormal = Vector3.RotateTowards(forward, backDirection, Mathf.PI / 2f, 0f);
                     approxNormal.Normalize();
                     p1 = p0 + forward * length / 3;
-                    p1 = RandomlyOffset(p1, height);
                     p2 = p0 + forward * length * 2 / 3 + approxNormal * length / 6;
                     p2 = RandomlyOffset(p2, height);
                     p3 = p0 + forward * length - approxNormal * length / 6;
@@ -115,7 +111,7 @@ public class FieldSegment : MonoBehaviour
                 }
             case TrackType.HAIRPIN:
                 {
-                    //CREATE END VECTOR WITHIN 90 and 180 DEGREES OF FORWARD
+                    //CREATE END VECTOR WITHIN 90 and 135 DEGREES OF FORWARD
                     float theta = Random.Range(Mathf.PI / 2f, 3f * Mathf.PI / 4f);
                     Vector3 endDirection = RandomlyOffset(
                         -forward, 0.05f, 0.1f);
@@ -123,11 +119,9 @@ public class FieldSegment : MonoBehaviour
                         forward, endDirection, theta, 0f);
                     end.Normalize();
                     p1 = p0 + forward * length / 3;
-                    p1 = RandomlyOffset(p1, height);
                     p2 = p0 + forward * length / 2 + end * length / 6;
                     p2 = RandomlyOffset(p2, height);
                     p3 = p2 + end * length / 3;
-                    p3 = RandomlyOffset(p3, height);
                     pointdensity *= 0.7f;
                     break;
                 }
@@ -145,16 +139,19 @@ public class FieldSegment : MonoBehaviour
         if (Random.Range(0, 5) > 3)
         { 
             Vector3 landmarkpoint = curve.GetPoint(0.5f);
-            Debug.Log("curve point:" + landmarkpoint);
-            Vector3 normal = curve.GetNormal(0.5f);
-            Debug.Log("normal : " + normal);
-            normal.Normalize();
-            Debug.Log("normalized normal: " + normal);
-            landmarkpoint += normal * Random.Range(800f, 1000f);
-            Debug.Log("new point: " + landmarkpoint);
-            GameObject landmark = SpawnLandmark(landmarkpoint);
-            landmark.transform.parent = transform;
-            landmarks.Add(landmark);
+            if ((landmarkpoint - PlayerShip.instance.transform.position).magnitude > MAXLENGTH * 2 || !GameManager.instance.isPlaying)
+            {
+                Debug.Log("curve point:" + landmarkpoint);
+                Vector3 normal = curve.GetNormal(0.5f);
+                Debug.Log("normal : " + normal);
+                normal.Normalize();
+                Debug.Log("normalized normal: " + normal);
+                landmarkpoint += normal * Random.Range(800f, 1000f);
+                Debug.Log("new point: " + landmarkpoint);
+                GameObject landmark = SpawnLandmark(landmarkpoint);
+                landmark.transform.parent = transform;
+                landmarks.Add(landmark);
+            }
         }
         //Spawn Linepoints
         for (int i = 1; i < numpoints; ++i)
@@ -172,23 +169,26 @@ public class FieldSegment : MonoBehaviour
         for (int i = 0; i < (unspawnedAsteroids); ++i)
         {
             Vector3 point = curve.GetPoint((float)i / (float)unspawnedAsteroids);
-            GameObject asteroid = SpawnAsteroid(point);
-            bool collided = true; //tracking if collided with a landmark
-            asteroid.transform.forward = curve.GetFirstDeriv((float)i / 100f);
-            while (collided)
+            if ((point - PlayerShip.instance.transform.position).magnitude > MAXLENGTH * 2 || !GameManager.instance.isPlaying)
             {
-                Vector3 offset = RandomlyOffsetXY(point, 500f) - point;
-                asteroid.transform.position = point;
-                asteroid.transform.position += asteroid.transform.right.normalized * offset.x;
-                asteroid.transform.position += asteroid.transform.up.normalized * offset.y;
-                collided = false;
-                foreach (GameObject lm in landmarks)
+                GameObject asteroid = SpawnAsteroid(point);
+                bool collided = true; //tracking if collided with a landmark
+                asteroid.transform.forward = curve.GetFirstDeriv((float)i / 100f);
+                while (collided)
                 {
-                    if (lm.GetComponent<MeshCollider>().bounds.Intersects(
-                        asteroid.GetComponent<MeshCollider>().bounds))
+                    Vector3 offset = RandomlyOffsetXY(point, 500f) - point;
+                    asteroid.transform.position = point;
+                    asteroid.transform.position += asteroid.transform.right.normalized * offset.x;
+                    asteroid.transform.position += asteroid.transform.up.normalized * offset.y;
+                    collided = false;
+                    foreach (GameObject lm in landmarks)
                     {
-                        collided = true;
-                        break;
+                        if (lm.GetComponent<MeshCollider>().bounds.Intersects(
+                            asteroid.GetComponent<MeshCollider>().bounds))
+                        {
+                            collided = true;
+                            break;
+                        }
                     }
                 }
             }
