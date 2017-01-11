@@ -7,16 +7,18 @@ public class Field : MonoBehaviour
     public static Field instance;
     public GameObject FIELDSEGMENT;
     public GameObject CHECKPOINT;
-    public int MAXASTEROIDS = 1500;
+    public int MINASTEROIDS = 25;
 
     public int asteroidCount = 0;
     public enum FieldType { ICE, ROCK };
     public enum TrackType { STRAIGHT, CURVE, SLALOM, HAIRPIN };
+    public int checkpointsMade = 0;
+    public bool activated;
+
 
     List<GameObject> segments;
     List<GameObject> checkpoints;
-    bool activated;
-
+    
     void Awake ()
     {
         instance = this;
@@ -57,6 +59,27 @@ public class Field : MonoBehaviour
         Time.timeScale = 1f;
     }
 
+    public GameObject LastSegment()
+    {
+        if (segments.Count < 1) return null;
+        return segments[segments.Count - 1];
+    }
+
+    public List<Vector3> SegmentMidpoints()
+    {
+        List<Vector3> midpoints = new List<Vector3>();
+        foreach (GameObject segment in segments)
+        {
+            midpoints.Add(segment.GetComponent<FieldSegment>().GetCurveCenter());
+        }
+        return midpoints;
+    }
+
+    public void RemoveSegment (GameObject segment)
+    {
+        segments.Remove(segment);
+    }
+
     void AddSegment ()
     {
         GameObject segment = Instantiate<GameObject>(FIELDSEGMENT);
@@ -92,22 +115,23 @@ public class Field : MonoBehaviour
             GameObject prevSegment = segments[segments.Count - 2];
             prevSegment.GetComponent<FieldSegment>().SetNextCheckpoint(checkpoint);
         }
+        ++checkpointsMade;
     }
 
     TrackType RandomTrackType(float difficulty)
     {
         if (difficulty > 1f) difficulty = 1f;
         if (difficulty < 0f) difficulty = 0f;
-        float choice = Random.Range(0f, 1f) * difficulty + 0.5f;
-        if (choice < 0.25f)
+        float choice = Random.Range(0f, Mathf.Min(difficulty + 0.4f, 1f));
+        if (choice < 0.3f)
         {
             return TrackType.STRAIGHT;
         }
-        else if (choice < 0.5f)
+        else if (choice < 0.6f)
         {
             return TrackType.CURVE;
         }
-        else if (choice < 0.75f)
+        else if (choice < 0.9f)
         {
             return TrackType.SLALOM;
         }

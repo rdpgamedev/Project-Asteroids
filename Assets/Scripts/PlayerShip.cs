@@ -122,7 +122,14 @@ public class PlayerShip : MonoBehaviour
 
     void OnCollisionEnter (Collision collision)
     {
-        if (!isDead) StartDeath();
+        if (GameManager.instance.isPlaying)
+        {
+            if (!isDead) StartDeath();
+        }
+        else
+        {
+            Destroy(collision.gameObject);
+        }
     }
 
     void StartDeath ()

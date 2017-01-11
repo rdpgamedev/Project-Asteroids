@@ -18,11 +18,13 @@ public class AsteroidCollision : MonoBehaviour {
 	
 	}
 
-
-
     void OnCollisionEnter (Collision collision)
     {
-        if (collision.gameObject.name.Contains("Asteroid") && !isChild && !name.Contains("Landmark"))
+        if (segment.isGenerating && !name.Contains("Landmark"))
+        {
+            segment.RepositionAsteroid(gameObject);
+        }
+        else if (collision.gameObject.name.Contains("Asteroid") && !isChild && !name.Contains("Landmark"))
         {
             GameObject oldAsteroid = collision.gameObject;
             Vector3 position = oldAsteroid.transform.position;
@@ -56,6 +58,7 @@ public class AsteroidCollision : MonoBehaviour {
                 newAsteroid.GetComponent<AsteroidCollision>().isChild = true;
             }
             Destroy(gameObject);
+            --segment.asteroidCount;
         }
     }
 

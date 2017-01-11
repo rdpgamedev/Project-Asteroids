@@ -26,7 +26,6 @@ public class BezierLineRenderer : MonoBehaviour {
                 activated = false;
                 timer = 5f;
                 endAlpha = 0.5f;
-                Debug.Log("Timer up");
             }
             GradientAlphaKey start = new GradientAlphaKey(0.5f, 0f);
             GradientAlphaKey mid = new GradientAlphaKey(0.5f, timer / time);

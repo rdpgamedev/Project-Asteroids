@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour {
     public GameObject TIMEPARTICLES;
     public GameObject cameraObj;
     public float STARTTIME = 9.99f;
-    public bool isPlaying;
+    public bool isPlaying = false;
     public int level = 1;
     public int score = 0;
     public float time;
@@ -78,7 +78,7 @@ public class GameManager : MonoBehaviour {
 
     public void SetActiveSegment (FieldSegment seg)
     {
-        if (activeSegment != null) Destroy(activeSegment.gameObject);
+        if (activeSegment != null) activeSegment.Destroy();
         activeSegment = seg;
         activeSegment.SetActive(true);
     }
@@ -90,13 +90,13 @@ public class GameManager : MonoBehaviour {
 
     public void Play ()
     {
-        isPlaying = true;
         UIManager.instance.ActivateUI(UIManager.UIType.GAME);
         BGM.instance.Activate();
         cameraObj.GetComponent<MoveTo>().enabled = true;
         cameraObj.GetComponent<LookAt>().enabled = true;
         cameraObj.transform.position = ship.transform.FindChild("DefaultCameraPos").position;
         ship.GetComponent<AudioSource>().enabled = true;
+        isPlaying = true;
     }
 
     public void GameOver()

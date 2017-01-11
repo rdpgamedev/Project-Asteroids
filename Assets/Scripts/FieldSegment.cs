@@ -8,13 +8,14 @@ public class FieldSegment : MonoBehaviour
 {
     public static float MAXLENGTH = 1200f;
     public static float MINLENGTH = 1000f;
-    public static float MAXHEIGHT = 1000f;
+    public static float MAXHEIGHT = 300f;
     public float linePointOffset;
     public GameObject LINEPOINT;
     public GameObject ASTEROID;
     public bool isActive;
     public int asteroidCount;
     public GameObject fieldParticles;
+    public bool isGenerating;
 
     private FieldType fieldtype;
     private TrackType tracktype;
@@ -26,6 +27,9 @@ public class FieldSegment : MonoBehaviour
     private List<GameObject> landmarks;
     private GameObject checkpoint;
     private GameObject nextCheckpoint;
+    private bool destroy;
+    private float fieldRad;
+    private float generateTime;
     
 
     void Awake ()
@@ -36,14 +40,16 @@ public class FieldSegment : MonoBehaviour
 
     void Start ()
     {
-
+        fieldRad = MAXLENGTH * 4f;
 	}
 	
 	void Update ()
     {
-	    if (numpoints < 0)
+        if (Time.time - generateTime > 1.5f) isGenerating = false;
+        if (destroy && CheckDistance(fieldRad) )
         {
-            Destroy(this);
+            Field.instance.RemoveSegment(this.gameObject);
+            Destroy(this.gameObject);
         }
 	}
 
@@ -54,10 +60,13 @@ public class FieldSegment : MonoBehaviour
 
     public void GenerateSegment(FieldType _fieldtype, TrackType _tracktype, Vector3 lastControlPoint)
     {
+        isGenerating = true;
+        generateTime = Time.time;
         fieldtype = _fieldtype;
         tracktype = _tracktype;
         length = Random.Range(MINLENGTH, MAXLENGTH);
         height = Random.Range(0f, MAXHEIGHT);
+        Vector3 closestSegmentCenter = FindClosestPoint(Field.instance.SegmentMidpoints());
 
         //Create Bezier curve
         Vector3 p0, p1 ,p2, p3;
@@ -70,11 +79,10 @@ public class FieldSegment : MonoBehaviour
             case TrackType.STRAIGHT:
                 {
                     p1 = p0 + forward * length / 3;
-                    RandomlyOffset(p1, height);
                     p2 = p0 + forward * length * 2 / 3;
-                    RandomlyOffset(p2, height);
+                    p2 = RandomlyOffset(p2, height);
                     p3 = p0 + forward * length;
-                    RandomlyOffset(p3, height);
+                    p3 = RandomlyOffset(p3, height);
                     break;
                 }
             case TrackType.CURVE:
@@ -86,11 +94,9 @@ public class FieldSegment : MonoBehaviour
                         forward, endDirection, theta, 0f);
                     end.Normalize();
                     p1 = p0 + forward * length / 3;
-                    RandomlyOffset(p1, height);
                     p2 = p0 + forward * length / 2 + end * length / 6;
-                    RandomlyOffset(p2, height);
+                    p2 = RandomlyOffset(p2, height);
                     p3 = p2 + end * length / 3;
-                    RandomlyOffset(p3, height);
                     break;
                 }
             case TrackType.SLALOM:
@@ -99,16 +105,15 @@ public class FieldSegment : MonoBehaviour
                     Vector3 approxNormal = Vector3.RotateTowards(forward, backDirection, Mathf.PI / 2f, 0f);
                     approxNormal.Normalize();
                     p1 = p0 + forward * length / 3;
-                    RandomlyOffset(p1, height);
                     p2 = p0 + forward * length * 2 / 3 + approxNormal * length / 6;
-                    RandomlyOffset(p2, height);
+                    p2 = RandomlyOffset(p2, height);
                     p3 = p0 + forward * length - approxNormal * length / 6;
-                    RandomlyOffset(p3, height);
+                    p3 = RandomlyOffset(p3, height);
                     break;
                 }
             case TrackType.HAIRPIN:
                 {
-                    //CREATE END VECTOR WITHIN 90 and 180 DEGREES OF FORWARD
+                    //CREATE END VECTOR WITHIN 90 and 135 DEGREES OF FORWARD
                     float theta = Random.Range(Mathf.PI / 2f, 3f * Mathf.PI / 4f);
                     Vector3 endDirection = RandomlyOffset(
                         -forward, 0.05f, 0.1f);
@@ -116,11 +121,9 @@ public class FieldSegment : MonoBehaviour
                         forward, endDirection, theta, 0f);
                     end.Normalize();
                     p1 = p0 + forward * length / 3;
-                    RandomlyOffset(p1, height);
                     p2 = p0 + forward * length / 2 + end * length / 6;
-                    RandomlyOffset(p2, height);
+                    p2 = RandomlyOffset(p2, height);
                     p3 = p2 + end * length / 3;
-                    RandomlyOffset(p3, height);
                     pointdensity *= 0.7f;
                     break;
                 }
@@ -138,11 +141,18 @@ public class FieldSegment : MonoBehaviour
         if (Random.Range(0, 5) > 3)
         { 
             Vector3 landmarkpoint = curve.GetPoint(0.5f);
-            Vector3 normal = curve.GetNormal(0.5f);
-            landmarkpoint += normal * Random.Range(800f, 1000f);
-            GameObject landmark = SpawnLandmark(landmarkpoint);
-            landmark.transform.parent = transform;
-            landmarks.Add(landmark);
+            if ((landmarkpoint - PlayerShip.instance.transform.position).magnitude > MAXLENGTH * 2 || !Field.instance.activated)
+            {
+                if ((landmarkpoint - closestSegmentCenter).magnitude > MINLENGTH / 4f)
+                {
+                    Vector3 normal = curve.GetNormal(0.5f);
+                    normal.Normalize();
+                    landmarkpoint += normal * Random.Range(800f, 1000f);
+                    GameObject landmark = SpawnLandmark(landmarkpoint);
+                    landmark.transform.parent = transform;
+                    landmarks.Add(landmark);
+                }
+            }
         }
         //Spawn Linepoints
         for (int i = 1; i < numpoints; ++i)
@@ -155,28 +165,36 @@ public class FieldSegment : MonoBehaviour
             newLinePoint.GetComponent<RandomModel>().ChooseOre();
         }
         //Spawn Asteroids
-        int unspawnedAsteroids = 
-            Field.instance.MAXASTEROIDS - Field.instance.asteroidCount;
-        for (int i = 0; i < (unspawnedAsteroids)/20; ++i)
+        int unspawnedAsteroids = Mathf.Min(
+            Field.instance.MINASTEROIDS + Field.instance.checkpointsMade * 3,
+            100);
+        for (int i = 0; i < (unspawnedAsteroids); ++i)
         {
-            Vector3 point = curve.GetPoint((float)i / 100f);
-            GameObject asteroid = SpawnAsteroid(point);
-            bool collided = true; //tracking if collided with a landmark
-            asteroid.transform.forward = curve.GetFirstDeriv((float)i / 100f);
-            while (collided)
+            Vector3 point = curve.GetPoint((float)i / (float)unspawnedAsteroids);
+            if ((point - PlayerShip.instance.transform.position).magnitude > MAXLENGTH * 2 || !Field.instance.activated)
             {
-                Vector3 offset = RandomlyOffsetXY(point, 1000f) - point;
-                asteroid.transform.position = point;
-                asteroid.transform.position += asteroid.transform.right.normalized * offset.x;
-                asteroid.transform.position += asteroid.transform.up.normalized * offset.y;
-                collided = false;
-                foreach (GameObject lm in landmarks)
+                //check segment overlap (if asteroid is too close to closest segments' center)
+                if ((point - closestSegmentCenter).magnitude > MINLENGTH/4f)
                 {
-                    if (lm.GetComponent<MeshCollider>().bounds.Intersects(
-                        asteroid.GetComponent<MeshCollider>().bounds))
+                    GameObject asteroid = SpawnAsteroid(point);
+                    bool collided = true; //tracking if collided with a landmark
+                    asteroid.transform.forward = curve.GetFirstDeriv((float)i / 100f);
+                    while (collided)
                     {
-                        collided = true;
-                        break;
+                        Vector3 offset = RandomlyOffsetXY(point, 500f) - point;
+                        asteroid.transform.position = point;
+                        asteroid.transform.position += asteroid.transform.right.normalized * offset.x;
+                        asteroid.transform.position += asteroid.transform.up.normalized * offset.y;
+                        collided = false;
+                        foreach (GameObject lm in landmarks)
+                        {
+                            if (lm.GetComponent<MeshCollider>().bounds.Intersects(
+                                asteroid.GetComponent<MeshCollider>().bounds))
+                            {
+                                collided = true;
+                                break;
+                            }
+                        }
                     }
                 }
             }
@@ -184,15 +202,54 @@ public class FieldSegment : MonoBehaviour
         //Spawn Field Particles
         Vector3 midpoint = curve.GetPoint(0.5f);
         GameObject particles = Instantiate<GameObject>(fieldParticles);
+        particles.name = "Field Particles";
         particles.transform.parent = transform;
         particles.transform.position = midpoint;
         particles.transform.forward = curve.GetFirstDeriv(0.5f);
+        ParticleSystem.MainModule particlesMain = particles.GetComponent<ParticleSystem>().main;
         if (fieldtype == FieldType.ICE)
         {
             Color iceCloud = new Color(52f / 255f, 65f / 255f, 100f / 255f, 87f / 255f);
-            var particlesMain = particles.GetComponent<ParticleSystem>().main;
             particlesMain.startColor = iceCloud;
         }
+        GameObject lastSegment = Field.instance.LastSegment();
+        int oldMaxParticles;
+        if (lastSegment == null)
+        {
+            oldMaxParticles = 50;
+        }
+        else
+        {
+            GameObject oldParticles = lastSegment.transform.FindChild("Field Particles").gameObject;
+            oldMaxParticles = oldParticles.GetComponent<ParticleSystem>().main.maxParticles;
+        }
+        if (oldMaxParticles == 0)
+        {
+            if (Random.Range(0f, 1f) < 0.6f)
+            {
+                particlesMain.maxParticles = 0;
+            }
+            else
+            {
+                particlesMain.maxParticles = oldMaxParticles + Random.Range(-oldMaxParticles, 100 - oldMaxParticles) / 3;
+            }
+        }
+        else
+        {
+            if (Random.Range(0f, 1f) < 0.6f)
+            {
+                particlesMain.maxParticles = oldMaxParticles + Random.Range(-oldMaxParticles, 100 - oldMaxParticles) / 3;
+            }
+            else
+            {
+                particlesMain.maxParticles = 0;
+            }
+        }
+    }
+
+    public void Destroy()
+    {
+        destroy = true;
     }
 
     public GameObject SpawnAsteroid (Vector3 position)
@@ -220,6 +277,7 @@ public class FieldSegment : MonoBehaviour
         landmark.transform.localScale *= Random.Range(300f, 450f);
         landmark.GetComponent<Rigidbody>().mass = 999999f;
         landmark.GetComponent<RandomRotation>().enabled = false;
+        landmark.GetComponent<AsteroidCollision>().segment = this;
         landmark.name = "Landmark";
         return landmark;
     }
@@ -279,6 +337,46 @@ public class FieldSegment : MonoBehaviour
         {
             nextCheckpoint.GetComponent<Animator>().enabled = true;
             nextCheckpoint.GetComponent<AudioSource>().PlayDelayed(1f);
+        }
+    }
+
+    private bool CheckDistance(float dist)
+    {
+        return ((PlayerShip.instance.transform.position - transform.position).magnitude > dist);
+    }
+
+    public void RepositionAsteroid(GameObject asteroid)
+    {
+        asteroid.transform.position = RandomlyOffset(asteroid.transform.position, 20f);
+    }
+
+    public Vector3 GetCurveCenter()
+    {
+        return curve.GetPoint(0.5f);
+    }
+
+    private Vector3 FindClosestPoint (List<Vector3> points)
+    {
+        Vector3 center = GetCurveCenter();
+        if (points.Count > 0)
+        {
+            Vector3 closest = points[0];
+            float dist = (center - closest).magnitude;
+            foreach (Vector3 point in points)
+            {
+                float newDist = (center - point).magnitude;
+                if (newDist < dist)
+                {
+                    closest = point;
+                    dist = newDist;
+                }
+            }
+            return center;
+        }
+        else
+        {
+            Vector3 offset = (center - transform.position) * 2;
+            return (center - offset);
         }
     }
 }

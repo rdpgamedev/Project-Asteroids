@@ -4,7 +4,7 @@ using System.Collections;
 public class Linepoint : MonoBehaviour {
     public static float CLOSEDISTANCE = 100f;
     public static float PICKUPDISTANCE = 5f;
-    public static float SPEED = 0.25f;
+    public static float SPEED = 0.5f;
     public FieldSegment fieldSegment;
     private Vector3 scale;
 	// Use this for initialization
