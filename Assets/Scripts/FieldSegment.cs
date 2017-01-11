@@ -169,8 +169,9 @@ public class FieldSegment : MonoBehaviour
             newLinePoint.GetComponent<RandomModel>().ChooseOre();
         }
         //Spawn Asteroids
-        int unspawnedAsteroids = 
-            Field.instance.MINASTEROIDS + Field.instance.checkpointsMade * 3;
+        int unspawnedAsteroids = Mathf.Min(
+            Field.instance.MINASTEROIDS + Field.instance.checkpointsMade * 3,
+            100);
         for (int i = 0; i < (unspawnedAsteroids); ++i)
         {
             Vector3 point = curve.GetPoint((float)i / (float)unspawnedAsteroids);
