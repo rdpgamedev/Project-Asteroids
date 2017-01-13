@@ -99,12 +99,6 @@ public class GameManager : MonoBehaviour {
         isPlaying = true;
     }
 
-    public void GameOver()
-    {
-        if (!gameOver) SceneManager.LoadSceneAsync("MainScene").allowSceneActivation = true;
-        gameOver = true;
-    }
-
     public void Pause()
     {
         Time.timeScale = 0f;
