@@ -53,10 +53,11 @@ public class PlayerShip : MonoBehaviour
             Time.timeScale = 0f;
             if (gameManager.score < gameManager.GetBottomScore())
             {
-                UIManager.instance.ActivateUI(UIManager.UIType.PAUSE);
+                GameManager.instance.Pause();
             }
             else
             {
+                GameManager.instance.Pause();
                 UIManager.instance.ActivateUI(UIManager.UIType.HIGHSCORE);
             }
             

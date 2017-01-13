@@ -55,7 +55,6 @@ public class Field : MonoBehaviour
         firstCheckpoint.GetComponent<Animator>().Play("Checkpoint");
         firstCheckpoint.GetComponent<AudioSource>().PlayDelayed(1f);
         activated = true;
-        Time.timeScale = 1f;
     }
 
     public void Pause()
@@ -65,7 +64,7 @@ public class Field : MonoBehaviour
 
     public void UnPause()
     {
-        firstCheckpoint.GetComponent<AudioSource>().UnPause();
+        if (firstCheckpoint != null) firstCheckpoint.GetComponent<AudioSource>().UnPause();
     }
 
     public GameObject LastSegment()

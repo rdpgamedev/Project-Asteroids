@@ -90,13 +90,12 @@ public class GameManager : MonoBehaviour {
 
     public void Play ()
     {
-        UIManager.instance.ActivateUI(UIManager.UIType.GAME);
         BGM.instance.Activate();
         cameraObj.GetComponent<MoveTo>().enabled = true;
         cameraObj.GetComponent<LookAt>().enabled = true;
         cameraObj.transform.position = ship.transform.FindChild("DefaultCameraPos").position;
         ship.GetComponent<AudioSource>().enabled = true;
-        isPlaying = true;
+        Resume();
     }
 
     public void Pause()
