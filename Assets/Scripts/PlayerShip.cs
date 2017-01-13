@@ -21,8 +21,8 @@ public class PlayerShip : MonoBehaviour
     public float fovScale;
     public float fovMinVel;
     public float fovRange;
+    public bool isDead = false;
 
-    private bool isDead = false;
     private float oldFov;
     private Vector3 firstPosition;
     private Quaternion firstRotation;

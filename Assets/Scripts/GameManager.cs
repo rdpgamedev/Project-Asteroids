@@ -105,6 +105,22 @@ public class GameManager : MonoBehaviour {
         gameOver = true;
     }
 
+    public void Pause()
+    {
+        Time.timeScale = 0f;
+        isPlaying = false;
+        PauseAudio();
+        UIManager.instance.ActivateUI(UIManager.UIType.PAUSE);
+    } 
+
+    public void Resume()
+    {
+        Time.timeScale = 1f;
+        isPlaying = true;
+        UnPauseAudio();
+        UIManager.instance.ActivateUI(UIManager.UIType.GAME);
+    }
+
     public void Restart()
     {
         Destroy(field);
@@ -152,5 +168,21 @@ public class GameManager : MonoBehaviour {
     public int GetBottomScore ()
     {
         return highscores.BottomScore();
+    }
+
+    void PauseAudio()
+    {
+        PlayerShip.instance.gameObject.GetComponent<AudioSource>().Pause();
+        if (activeSegment != null) activeSegment.nextCheckpoint.GetComponent<AudioSource>().Pause();
+        else Field.instance.Pause();
+        BGM.instance.Pause();
+    }
+
+    void UnPauseAudio()
+    {
+        PlayerShip.instance.gameObject.GetComponent<AudioSource>().UnPause();
+        if (activeSegment != null) activeSegment.nextCheckpoint.GetComponent<AudioSource>().UnPause();
+        else Field.instance.UnPause();
+        BGM.instance.UnPause();
     }
 }

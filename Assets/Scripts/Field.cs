@@ -15,9 +15,9 @@ public class Field : MonoBehaviour
     public int checkpointsMade = 0;
     public bool activated;
 
-
     List<GameObject> segments;
     List<GameObject> checkpoints;
+    GameObject firstCheckpoint;
     
     void Awake ()
     {
@@ -31,7 +31,7 @@ public class Field : MonoBehaviour
         {
             AddSegment();
         }
-        GameObject firstCheckpoint = segments[0].GetComponent<FieldSegment>().GetCheckpoint();
+        firstCheckpoint = segments[0].GetComponent<FieldSegment>().GetCheckpoint();
         firstCheckpoint.transform.forward = transform.forward;
     }
 	
@@ -51,12 +51,21 @@ public class Field : MonoBehaviour
 
     public void Activate ()
     {
-        GameObject firstCheckpoint = segments[0].GetComponent<FieldSegment>().GetCheckpoint();
         firstCheckpoint.GetComponent<Animator>().enabled = true;
         firstCheckpoint.GetComponent<Animator>().Play("Checkpoint");
         firstCheckpoint.GetComponent<AudioSource>().PlayDelayed(1f);
         activated = true;
         Time.timeScale = 1f;
+    }
+
+    public void Pause()
+    {
+        firstCheckpoint.GetComponent<AudioSource>().Pause();
+    }
+
+    public void UnPause()
+    {
+        firstCheckpoint.GetComponent<AudioSource>().UnPause();
     }
 
     public GameObject LastSegment()

@@ -51,7 +51,16 @@ public class UIManager : MonoBehaviour
             case UIType.PAUSE:
                 PAUSEUI.SetActive(true);
                 activeUI = UIType.PAUSE;
-                PAUSEUI.transform.FindChild("Restart Button").GetComponent<Button>().Select();
+                if (PlayerShip.instance.isDead)
+                {
+                    PAUSEUI.transform.FindChild("Restart Button").GetComponent<Button>().Select();
+                    PAUSEUI.transform.FindChild("Resume Button").gameObject.SetActive(false);
+                }
+                else
+                {
+                    PAUSEUI.transform.FindChild("Resume Button").GetComponent<Button>().Select();
+                }
+
                 break;
             case UIType.HIGHSCORE:
                 HIGHSCOREUI.SetActive(true);
@@ -83,6 +92,7 @@ public class UIManager : MonoBehaviour
                 GAMEUI.SetActive(false);
                 break;
             case UIType.PAUSE:
+                PAUSEUI.transform.FindChild("Resume Button").gameObject.SetActive(true);
                 PAUSEUI.SetActive(false);
                 break;
             case UIType.HIGHSCORE:

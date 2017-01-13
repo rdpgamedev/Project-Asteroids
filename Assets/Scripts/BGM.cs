@@ -7,8 +7,9 @@ public class BGM : MonoBehaviour {
     public AudioClip[] songs;
     public AudioClip startSong;
 
-    private int songIndex = 1;
-    private AudioSource musicPlayer;
+    int songIndex = 1;
+    AudioSource musicPlayer;
+    bool paused;
 
     private void Awake()
     {
@@ -22,7 +23,7 @@ public class BGM : MonoBehaviour {
     }
 	
 	void Update () {
-        if (!musicPlayer.isPlaying) PlayNextSong();
+        if (!musicPlayer.isPlaying && !paused) PlayNextSong();
 	}
 
     public void Activate()
@@ -56,5 +57,17 @@ public class BGM : MonoBehaviour {
         if (vol < 0f) vol = 0f;
         if (vol > 1f) vol = 1f;
         musicPlayer.volume = vol;
+    }
+
+    public void Pause()
+    {
+        paused = true;
+        musicPlayer.Pause();
+    }
+
+    public void UnPause()
+    {
+        paused = false;
+        musicPlayer.UnPause();
     }
 }
