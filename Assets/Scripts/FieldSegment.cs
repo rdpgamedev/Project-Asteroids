@@ -16,6 +16,7 @@ public class FieldSegment : MonoBehaviour
     public int asteroidCount;
     public GameObject fieldParticles;
     public bool isGenerating;
+    public GameObject nextCheckpoint;
 
     private FieldType fieldtype;
     private TrackType tracktype;
@@ -26,7 +27,6 @@ public class FieldSegment : MonoBehaviour
     private float pointdensity = 80f; //more means less linepoints
     private List<GameObject> landmarks;
     private GameObject checkpoint;
-    private GameObject nextCheckpoint;
     private bool destroy;
     private float fieldRad;
     private float generateTime;

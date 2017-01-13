@@ -21,8 +21,8 @@ public class PlayerShip : MonoBehaviour
     public float fovScale;
     public float fovMinVel;
     public float fovRange;
+    public bool isDead = false;
 
-    private bool isDead = false;
     private float oldFov;
     private Vector3 firstPosition;
     private Quaternion firstRotation;
@@ -53,10 +53,11 @@ public class PlayerShip : MonoBehaviour
             Time.timeScale = 0f;
             if (gameManager.score < gameManager.GetBottomScore())
             {
-                UIManager.instance.ActivateUI(UIManager.UIType.PAUSE);
+                GameManager.instance.Pause();
             }
             else
             {
+                GameManager.instance.Pause();
                 UIManager.instance.ActivateUI(UIManager.UIType.HIGHSCORE);
             }
             

@@ -58,10 +58,11 @@ public class PlayerController : MonoBehaviour
                 break;
             case KeyCode.R:
                 //Restart game
-                GameManager.instance.Restart();
+                //GameManager.instance.Restart();
                 break;
             case KeyCode.P:
                 //Pause game
+                if (GameManager.instance.isPlaying) GameManager.instance.Pause();
                 break;
             case KeyCode.Period:
                 //Play next song

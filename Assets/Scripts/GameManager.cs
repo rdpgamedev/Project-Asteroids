@@ -90,19 +90,28 @@ public class GameManager : MonoBehaviour {
 
     public void Play ()
     {
-        UIManager.instance.ActivateUI(UIManager.UIType.GAME);
         BGM.instance.Activate();
         cameraObj.GetComponent<MoveTo>().enabled = true;
         cameraObj.GetComponent<LookAt>().enabled = true;
         cameraObj.transform.position = ship.transform.FindChild("DefaultCameraPos").position;
         ship.GetComponent<AudioSource>().enabled = true;
-        isPlaying = true;
+        Resume();
     }
 
-    public void GameOver()
+    public void Pause()
     {
-        if (!gameOver) SceneManager.LoadSceneAsync("MainScene").allowSceneActivation = true;
-        gameOver = true;
+        Time.timeScale = 0f;
+        isPlaying = false;
+        PauseAudio();
+        UIManager.instance.ActivateUI(UIManager.UIType.PAUSE);
+    } 
+
+    public void Resume()
+    {
+        Time.timeScale = 1f;
+        isPlaying = true;
+        UnPauseAudio();
+        UIManager.instance.ActivateUI(UIManager.UIType.GAME);
     }
 
     public void Restart()
@@ -152,5 +161,21 @@ public class GameManager : MonoBehaviour {
     public int GetBottomScore ()
     {
         return highscores.BottomScore();
+    }
+
+    void PauseAudio()
+    {
+        PlayerShip.instance.gameObject.GetComponent<AudioSource>().Pause();
+        if (activeSegment != null) activeSegment.nextCheckpoint.GetComponent<AudioSource>().Pause();
+        else Field.instance.Pause();
+        BGM.instance.Pause();
+    }
+
+    void UnPauseAudio()
+    {
+        PlayerShip.instance.gameObject.GetComponent<AudioSource>().UnPause();
+        if (activeSegment != null) activeSegment.nextCheckpoint.GetComponent<AudioSource>().UnPause();
+        else Field.instance.UnPause();
+        BGM.instance.UnPause();
     }
 }
