@@ -275,7 +275,8 @@ public class FieldSegment : MonoBehaviour
         landmark.transform.position = position;
         landmark.GetComponent<RandomModel>().ChooseAsteroid(fieldtype);
         landmark.transform.localScale *= Random.Range(300f, 450f);
-        landmark.GetComponent<Rigidbody>().mass = 999999f;
+        landmark.GetComponent<Rigidbody>().isKinematic = true;
+        landmark.GetComponent<MeshCollider>().convex = false;
         landmark.GetComponent<RandomRotation>().enabled = false;
         landmark.GetComponent<AsteroidCollision>().segment = this;
         landmark.name = "Landmark";
