@@ -56,6 +56,7 @@ public class UIManager : MonoBehaviour
             case UIType.HIGHSCORE:
                 HIGHSCOREUI.SetActive(true);
                 activeUI = UIType.HIGHSCORE;
+                HIGHSCOREUI.transform.FindChild("Score Panel").FindChild("InputField").GetComponent<InputField>().Select();
                 break;
             case UIType.SCORES:
                 SCORESUI.SetActive(true);
