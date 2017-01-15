@@ -256,7 +256,9 @@ public class FieldSegment : MonoBehaviour
     {
         GameObject asteroid = Instantiate<GameObject>(ASTEROID);
         asteroid.GetComponent<RandomModel>().ChooseAsteroid(fieldtype);
-        asteroid.transform.localScale *= Random.Range(30f, 45f);
+        float scale;
+        asteroid.transform.localScale *= scale = Random.Range(30f, 45f);
+        asteroid.GetComponent<Rigidbody>().mass *= scale * scale * scale;
         asteroid.GetComponent<Rigidbody>().velocity =
             new Vector3(Random.Range(-10f, 10f),
                         Random.Range(-10f, 10f),
