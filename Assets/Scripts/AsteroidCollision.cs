@@ -7,6 +7,7 @@ public class AsteroidCollision : MonoBehaviour {
     public FieldSegment segment;
     public bool isChild = false;
     public GameObject AsteroidParticleSystem;
+    public GameObject AsteroidChildParticles;
 
 	// Use this for initialization
 	void Start () {
@@ -49,6 +50,13 @@ public class AsteroidCollision : MonoBehaviour {
                     newAsteroid.transform.localScale *= 0.5f;
                     newAsteroid.GetComponent<Rigidbody>().velocity = GetComponent<Rigidbody>().velocity * 2;
                     newAsteroid.GetComponent<AsteroidCollision>().isChild = true;
+                    GameObject dustParticles = Instantiate<GameObject>(AsteroidChildParticles);
+                    dustParticles.transform.parent = newAsteroid.transform;
+                    dustParticles.transform.localPosition = new Vector3();
+                    dustParticles.transform.localScale = new Vector3(1f, 1f, 1f);
+                    //change color to asteroid's color
+                    var particlesMain = dustParticles.GetComponent<ParticleSystem>().main;
+                    particlesMain.startColor = newAsteroid.GetComponent<MeshRenderer>().material.color;
                 }
                 Destroy(gameObject);
                 --segment.asteroidCount;
