@@ -7,6 +7,7 @@ public class AsteroidCollision : MonoBehaviour {
     public FieldSegment segment;
     public bool isChild = false;
     public GameObject AsteroidParticleSystem;
+    public GameObject AsteroidChildParticles;
 
 	// Use this for initialization
 	void Start () {
@@ -27,17 +28,64 @@ public class AsteroidCollision : MonoBehaviour {
         else if (collision.gameObject.name.Contains("Asteroid") && !isChild && !name.Contains("Landmark"))
         {
             GameObject oldAsteroid = collision.gameObject;
+            if (GetComponent<Rigidbody>().mass < oldAsteroid.GetComponent<Rigidbody>().mass)
+            {
+                if (segment != null) --segment.asteroidCount;
+                GameObject particleSystem = Instantiate<GameObject>(AsteroidParticleSystem);
+                particleSystem.transform.parent = segment.transform;
+                particleSystem.transform.position = transform.position;
+                //change to ice particles if ice asteroid
+                if (GetComponent<MeshRenderer>().material.name.Contains("Ice"))
+                {
+                    Color iceBlue = new Color(60f / 255f, 75f / 255f, 75f / 255f, 0.2f);
+                    var particlesMain = particleSystem.GetComponent<ParticleSystem>().main;
+                    particlesMain.startColor = iceBlue;
+                }
+                //spawn smaller asteroids
+                int asteroidCount = Random.Range(2, MAXCHILDRENASTEROIDS);
+                for (int i = 0; i < asteroidCount; ++i)
+                {
+                    GameObject newAsteroid = segment.SpawnAsteroid(transform.position);
+                    newAsteroid.transform.localScale = transform.localScale * (float)System.Math.Pow(asteroidCount, (-1 / 3));
+                    newAsteroid.transform.localScale *= 0.5f;
+                    newAsteroid.GetComponent<Rigidbody>().velocity = GetComponent<Rigidbody>().velocity * 2;
+                    newAsteroid.GetComponent<AsteroidCollision>().isChild = true;
+                    GameObject dustParticles = Instantiate<GameObject>(AsteroidChildParticles);
+                    dustParticles.transform.parent = newAsteroid.transform;
+                    dustParticles.transform.localPosition = new Vector3();
+                    dustParticles.transform.localScale = new Vector3(1f, 1f, 1f);
+                    //change color to asteroid's color
+                    var particlesMain = dustParticles.GetComponent<ParticleSystem>().main;
+                    particlesMain.startColor = newAsteroid.GetComponent<MeshRenderer>().material.color;
+                }
+                Destroy(gameObject);
+                --segment.asteroidCount;
+            }
+            else
+            {
+                gameObject.name = "Asteroid Collided";
+            }
+        }
+
+        /*
+        if (segment.isGenerating && !name.Contains("Landmark"))
+        {
+            segment.RepositionAsteroid(gameObject);
+        }
+        else if (collision.gameObject.name.Contains("Asteroid") && !isChild && !name.Contains("Landmark"))
+        {
+            GameObject oldAsteroid = collision.gameObject;
+            if (GetComponent<Rigidbody>().mass > oldAsteroid.GetComponent<Rigidbody>().mass) return;
             Vector3 position = oldAsteroid.transform.position;
             Vector3 scale = oldAsteroid.transform.localScale;
-            Destroy(collision.gameObject);
             if (segment != null)
             {
                 --segment.asteroidCount;
             }
             else
             {
-               Debug.Log("Segment is null. Changing name.");
-               gameObject.name = "MY SEGMENT IS NULL HELP";
+                Debug.Log("Segment is null. Changing name.");
+                gameObject.name = "MY SEGMENT IS NULL HELP";
             }
             GameObject particleSystem = Instantiate<GameObject>(AsteroidParticleSystem);
             particleSystem.transform.parent = segment.transform;
@@ -60,6 +108,7 @@ public class AsteroidCollision : MonoBehaviour {
             Destroy(gameObject);
             --segment.asteroidCount;
         }
+        */
     }
 
     void OnTriggerEnter (Collider collider)
