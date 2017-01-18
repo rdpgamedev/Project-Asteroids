@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
     public static float xaxisright;
     public static float yaxisright;
 
-    public bool useSimplifiedControls = true;
+    public bool useSimplifiedControls = false;
 
     private KeyCode[] keys;
     private PlayerShip player;
@@ -36,14 +36,14 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.anyKeyDown) CheckInput();
         //smooth input axes axis
-        xaxisleft += (Input.GetAxis("Left Horizontal") - xaxisleft) / 2f;
-        yaxisleft += (Input.GetAxis("Left Vertical") - yaxisleft) / 2f;
-        xaxisright += (Input.GetAxis("Right Horizontal") - xaxisright) / 2f;
-        yaxisright += (Input.GetAxis("Right Vertical") - yaxisright) / 2f;
+        xaxisleft = Input.GetAxis("Left Horizontal");
+        yaxisleft = Input.GetAxis("Left Vertical");
+        xaxisright = Input.GetAxis("Right Horizontal");
+        yaxisright = Input.GetAxis("Right Vertical");
 
-        Debug.Log("     Y Axis Left: " + yaxisleft);
         if (useSimplifiedControls) mapSimplifiedControls();
         Debug.Log("SIMP Y Axis Left: " + yaxisleft);
+        Debug.Log("SIMP Y Axis Right: " + yaxisright);
     }
 
     /*
@@ -71,7 +71,7 @@ public class PlayerController : MonoBehaviour
         float pitch = yaxisleft; //adds to Y axes to impart pitch
         simplifiedYAxisLeft += pitch;
         simplifiedYAxisRight += pitch;
-
+        /*
         //Right axes
         float yaw = xaxisright; //adds to X axes to impart yaw
         simplifiedXAxisLeft += yaw;
@@ -79,7 +79,7 @@ public class PlayerController : MonoBehaviour
         float thrust = yaxisright; //adds to X axes to impart thrust
         simplifiedXAxisLeft += thrust;
         simplifiedXAxisRight -= thrust;
-
+        */
         //cap simplified axes to 1
         simplifiedXAxisLeft = Mathf.Min (simplifiedXAxisLeft, 1f);
         simplifiedYAxisLeft = Mathf.Min (simplifiedYAxisLeft, 1f);
@@ -97,6 +97,16 @@ public class PlayerController : MonoBehaviour
         yaxisleft = simplifiedYAxisLeft;
         xaxisright = simplifiedXAxisRight;
         yaxisright = simplifiedYAxisRight;
+    }
+
+    float ClampAbs(float input, float clamp)
+    {
+        if (Mathf.Abs(input) <= Mathf.Abs(clamp)) return input;
+        else
+        {
+            if (input * clamp > 0) return clamp;
+            else return -clamp;
+        }
     }
 
     void CheckInput()
