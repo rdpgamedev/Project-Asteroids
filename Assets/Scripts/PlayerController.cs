@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
     public static float xaxisright;
     public static float yaxisright;
 
-    public bool useSimplifiedControls;
+    public bool useSimplifiedControls = true;
 
     private KeyCode[] keys;
     private PlayerShip player;
@@ -36,15 +36,67 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.anyKeyDown) CheckInput();
         //smooth input axes axis
-        xaxisleft += (Input.GetAxis("Left Horizontal") - xaxisleft) * Time.deltaTime * 4;
-        yaxisleft += (Input.GetAxis("Left Vertical") - yaxisleft) * Time.deltaTime * 4;
-        xaxisright += (Input.GetAxis("Right Horizontal") - xaxisright) * Time.deltaTime * 4;
-        yaxisright += (Input.GetAxis("Right Vertical") - yaxisright) * Time.deltaTime * 4;
+        xaxisleft += (Input.GetAxis("Left Horizontal") - xaxisleft) / 2f;
+        yaxisleft += (Input.GetAxis("Left Vertical") - yaxisleft) / 2f;
+        xaxisright += (Input.GetAxis("Right Horizontal") - xaxisright) / 2f;
+        yaxisright += (Input.GetAxis("Right Vertical") - yaxisright) / 2f;
 
-        if (useSimplifiedControls)
-        {
+        Debug.Log("     Y Axis Left: " + yaxisleft);
+        if (useSimplifiedControls) mapSimplifiedControls();
+        Debug.Log("SIMP Y Axis Left: " + yaxisleft);
+    }
 
-        }
+    /*
+     * Map horizontal and vertical axes of both sets of input
+     * to a simplified version.
+     * Left inputs:
+     *   Horizontal - Roll
+     *   Vertical - Pitch
+     * Right inputs:
+     *   Horizontal - Yaw
+     *   Vertical - Thrust
+     */
+    void mapSimplifiedControls ()
+    {
+        //Placeholder axes to hold non-normalized axis values
+        float simplifiedXAxisLeft = 0f;
+        float simplifiedYAxisLeft = 0f;
+        float simplifiedXAxisRight = 0f;
+        float simplifiedYAxisRight = 0f;
+
+        //Left axes
+        float roll = xaxisleft; //adds to Y axes to impart roll
+        simplifiedYAxisLeft += roll;
+        simplifiedYAxisRight -= roll;
+        float pitch = yaxisleft; //adds to Y axes to impart pitch
+        simplifiedYAxisLeft += pitch;
+        simplifiedYAxisRight += pitch;
+
+        //Right axes
+        float yaw = xaxisright; //adds to X axes to impart yaw
+        simplifiedXAxisLeft += yaw;
+        simplifiedXAxisRight += yaw;
+        float thrust = yaxisright; //adds to X axes to impart thrust
+        simplifiedXAxisLeft += thrust;
+        simplifiedXAxisRight -= thrust;
+
+        //cap simplified axes to 1
+        simplifiedXAxisLeft = Mathf.Min (simplifiedXAxisLeft, 1f);
+        simplifiedYAxisLeft = Mathf.Min (simplifiedYAxisLeft, 1f);
+        simplifiedXAxisRight = Mathf.Min (simplifiedXAxisRight, 1f);
+        simplifiedYAxisRight = Mathf.Min (simplifiedYAxisRight, 1f);
+
+        //cap simplified axes to -1
+        simplifiedXAxisLeft = Mathf.Max(simplifiedXAxisLeft, -1f);
+        simplifiedYAxisLeft = Mathf.Max(simplifiedYAxisLeft, -1f);
+        simplifiedXAxisRight = Mathf.Max(simplifiedXAxisRight, -1f);
+        simplifiedYAxisRight = Mathf.Max(simplifiedYAxisRight, -1f);
+
+        //assign simplified axes to normal axis fields
+        xaxisleft = simplifiedXAxisLeft;
+        yaxisleft = simplifiedYAxisLeft;
+        xaxisright = simplifiedXAxisRight;
+        yaxisright = simplifiedYAxisRight;
     }
 
     void CheckInput()
