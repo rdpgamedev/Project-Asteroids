@@ -1,7 +1,7 @@
 ﻿/*
  * Controls the input for the player object.
- * Reads player input and sends commands to
- * the player object.
+ * Reads player input and formats it into
+ * usable data for the ThrusterControllers.
  */
 
 using UnityEngine;
@@ -14,6 +14,8 @@ public class PlayerController : MonoBehaviour
     public static float yaxisleft;
     public static float xaxisright;
     public static float yaxisright;
+
+    public bool useSimplifiedControls;
 
     private KeyCode[] keys;
     private PlayerShip player;
@@ -38,6 +40,11 @@ public class PlayerController : MonoBehaviour
         yaxisleft += (Input.GetAxis("Left Vertical") - yaxisleft) * Time.deltaTime * 4;
         xaxisright += (Input.GetAxis("Right Horizontal") - xaxisright) * Time.deltaTime * 4;
         yaxisright += (Input.GetAxis("Right Vertical") - yaxisright) * Time.deltaTime * 4;
+
+        if (useSimplifiedControls)
+        {
+
+        }
     }
 
     void CheckInput()
