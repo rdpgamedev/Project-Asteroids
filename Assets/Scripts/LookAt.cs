@@ -6,7 +6,7 @@ public class LookAt : MonoBehaviour
     public GameObject TARGET;
     public GameObject UP_OBJ;
     public bool lerpRotation = false;
-    public float lerpWeight = 20f;
+    public float lerpWeight = 15f;
     // Use this for initialization
     void Start()
     {
