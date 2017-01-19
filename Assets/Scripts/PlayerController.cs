@@ -62,8 +62,6 @@ public class PlayerController : MonoBehaviour
             yaxisright *= -1f; //uninvert thrust axis
             mapSimplifiedControls();
         }
-        Debug.Log("SIMP Y Axis Left: " + yaxisleft);
-        Debug.Log("SIMP Y Axis Right: " + yaxisright);
 
         //smooth input axes
         float smoothfactor = 0.95f;
