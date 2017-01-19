@@ -8,8 +8,8 @@ public class ThrusterController : MonoBehaviour
     public bool active = false;
 
     private float TRIM = 0.6f; //pitch trim
-    private float maxXRotation = 18f;
-    private float maxYRotation = 16f;
+    private float maxXRotation = 12f;
+    private float maxYRotation = 10f;
     private float thrust = 4f/6f; //initial thrust before activation
     private float xaxis;
     private float yaxis;
@@ -45,7 +45,7 @@ public class ThrusterController : MonoBehaviour
         ParticleSystem thrusterParticles = 
             transform.FindChild("Thruster_Particles").GetComponent<ParticleSystem>();
         ParticleSystem.EmissionModule emission = thrusterParticles.emission;
-        emission.rateOverTime = 1000f * (thrust - (13f / 24f)) * 24f / 11f;
+        emission.rateOverTime = 1000f * (thrust - (13f / 24f)) * 24f / 11f + 50f;
     }
 
     public void ResetRotation ()
