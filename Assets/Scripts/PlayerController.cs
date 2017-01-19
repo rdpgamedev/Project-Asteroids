@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour
     public static float yaxisright;
 
     public bool useSimplifiedControls = false;
+    public bool invertVertical = false;
 
     private KeyCode[] keys;
     private PlayerShip player;
@@ -48,16 +49,28 @@ public class PlayerController : MonoBehaviour
         xaxisright = Input.GetAxis("Right Horizontal");
         yaxisright = Input.GetAxis("Right Vertical");
 
+        //invert if necessary
+        if (invertVertical)
+        {
+            yaxisleft *= -1f;
+            yaxisright *= -1f;
+        }
+
         //map axes to simplified if necessary
-        if (useSimplifiedControls) mapSimplifiedControls();
+        if (useSimplifiedControls)
+        {
+            yaxisright *= -1f; //uninvert thrust axis
+            mapSimplifiedControls();
+        }
         Debug.Log("SIMP Y Axis Left: " + yaxisleft);
         Debug.Log("SIMP Y Axis Right: " + yaxisright);
 
         //smooth input axes
-        xaxisleft = oldxaxisleft * 0.8f + xaxisleft * 0.2f;
-        yaxisleft = oldyaxisleft * 0.8f + yaxisleft * 0.2f;
-        xaxisright = oldxaxisright * 0.8f + xaxisright * 0.2f;
-        yaxisright = oldyaxisright * 0.8f + yaxisright * 0.2f;
+        float smoothfactor = 0.95f;
+        xaxisleft = oldxaxisleft * smoothfactor + xaxisleft * (1 - smoothfactor);
+        yaxisleft = oldyaxisleft * smoothfactor + yaxisleft * (1 - smoothfactor);
+        xaxisright = oldxaxisright * smoothfactor + xaxisright * (1 - smoothfactor);
+        yaxisright = oldyaxisright * smoothfactor + yaxisright * (1 - smoothfactor);
     }
 
     /*
@@ -72,7 +85,7 @@ public class PlayerController : MonoBehaviour
      */
     void mapSimplifiedControls ()
     {
-        //Placeholder axes to hold non-normalized axis values
+        //Placeholder axes to hold non-unit-scale axis values
         float simplifiedXAxisLeft = 0f;
         float simplifiedYAxisLeft = 0f;
         float simplifiedXAxisRight = 0f;
