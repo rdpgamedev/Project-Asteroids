@@ -8,8 +8,8 @@ public class ThrusterController : MonoBehaviour
     public bool active = false;
 
     private float TRIM = 0.6f; //pitch trim
-    private float maxXRotation = 18f;
-    private float maxYRotation = 16f;
+    private float maxXRotation = 12f;
+    private float maxYRotation = 10f;
     private float thrust = 4f/6f; //initial thrust before activation
     private float xaxis;
     private float yaxis;

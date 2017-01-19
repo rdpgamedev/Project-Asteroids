@@ -59,12 +59,12 @@ public class PlayerController : MonoBehaviour
         //map axes to simplified if necessary
         if (useSimplifiedControls)
         {
-            yaxisright *= -1f; //uninvert thrust axis
+            if (invertVertical) yaxisright *= -1f; //uninvert thrust axis
             mapSimplifiedControls();
         }
 
         //smooth input axes
-        float smoothfactor = 0.95f;
+        float smoothfactor = 0.6f;
         xaxisleft = oldxaxisleft * smoothfactor + xaxisleft * (1 - smoothfactor);
         yaxisleft = oldyaxisleft * smoothfactor + yaxisleft * (1 - smoothfactor);
         xaxisright = oldxaxisright * smoothfactor + xaxisright * (1 - smoothfactor);
