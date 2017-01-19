@@ -45,7 +45,7 @@ public class ThrusterController : MonoBehaviour
         ParticleSystem thrusterParticles = 
             transform.FindChild("Thruster_Particles").GetComponent<ParticleSystem>();
         ParticleSystem.EmissionModule emission = thrusterParticles.emission;
-        emission.rateOverTime = 1000f * (thrust - (13f / 24f)) * 24f / 11f;
+        emission.rateOverTime = 1000f * (thrust - (13f / 24f)) * 24f / 11f + 50f;
     }
 
     public void ResetRotation ()

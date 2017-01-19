@@ -35,15 +35,29 @@ public class PlayerController : MonoBehaviour
 	void Update ()
     {
         if (Input.anyKeyDown) CheckInput();
-        //smooth input axes axis
+
+        //save old axes
+        float oldxaxisleft = xaxisleft;
+        float oldyaxisleft = yaxisleft;
+        float oldxaxisright = xaxisright;
+        float oldyaxisright = yaxisright;
+
+        //get new axes
         xaxisleft = Input.GetAxis("Left Horizontal");
         yaxisleft = Input.GetAxis("Left Vertical");
         xaxisright = Input.GetAxis("Right Horizontal");
         yaxisright = Input.GetAxis("Right Vertical");
 
+        //map axes to simplified if necessary
         if (useSimplifiedControls) mapSimplifiedControls();
         Debug.Log("SIMP Y Axis Left: " + yaxisleft);
         Debug.Log("SIMP Y Axis Right: " + yaxisright);
+
+        //smooth input axes
+        xaxisleft = oldxaxisleft * 0.8f + xaxisleft * 0.2f;
+        yaxisleft = oldyaxisleft * 0.8f + yaxisleft * 0.2f;
+        xaxisright = oldxaxisright * 0.8f + xaxisright * 0.2f;
+        yaxisright = oldyaxisright * 0.8f + yaxisright * 0.2f;
     }
 
     /*
@@ -71,7 +85,7 @@ public class PlayerController : MonoBehaviour
         float pitch = yaxisleft; //adds to Y axes to impart pitch
         simplifiedYAxisLeft += pitch;
         simplifiedYAxisRight += pitch;
-        /*
+
         //Right axes
         float yaw = xaxisright; //adds to X axes to impart yaw
         simplifiedXAxisLeft += yaw;
@@ -79,7 +93,7 @@ public class PlayerController : MonoBehaviour
         float thrust = yaxisright; //adds to X axes to impart thrust
         simplifiedXAxisLeft += thrust;
         simplifiedXAxisRight -= thrust;
-        */
+
         //cap simplified axes to 1
         simplifiedXAxisLeft = Mathf.Min (simplifiedXAxisLeft, 1f);
         simplifiedYAxisLeft = Mathf.Min (simplifiedYAxisLeft, 1f);
