@@ -76,7 +76,7 @@ public class UIManager : MonoBehaviour
             case UIType.OPTIONS:
                 OPTIONSUI.SetActive(true);
                 activeUI = UIType.OPTIONS;
-                OPTIONSUI.transform.FindChild("Menu Button").GetComponent<Button>().Select();
+                OPTIONSUI.transform.FindChild("Options Area").FindChild("Options").FindChild("Simplified Controls").GetComponent<Toggle>().Select();
                 break;
             case UIType.CREDITS:
                 CREDITSUI.SetActive(true);
