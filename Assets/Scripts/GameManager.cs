@@ -2,6 +2,7 @@
 using System.Collections;
 using System.IO;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour {
     public static GameManager instance;
@@ -40,6 +41,8 @@ public class GameManager : MonoBehaviour {
             File.WriteAllText(highscoresPath, File.ReadAllText(Path.Combine(Application.dataPath, "defaulthighscores.xml")));
         }
         highscores = Highscores.Load(highscoresPath);
+
+        LoadPreferences();
     }
 	
 	void Update ()
@@ -182,5 +185,31 @@ public class GameManager : MonoBehaviour {
         if (activeSegment != null) activeSegment.nextCheckpoint.GetComponent<AudioSource>().UnPause();
         else Field.instance.UnPause();
         BGM.instance.UnPause();
+    }
+
+    void LoadPreferences()
+    {
+        //Simplified Controls
+        GameObject optionsUI = UIManager.instance.OPTIONSUI;
+        GameObject simplifiedToggle = optionsUI.transform.FindChild("Options Area").FindChild("Options").FindChild("Simplified Controls").gameObject;
+        bool simplified = false;
+        if (PlayerPrefs.GetInt("Simplified Controls") == 1) simplified = true;
+        simplifiedToggle.GetComponent<Toggle>().isOn = simplified;
+
+        //Invert Vertical Controls
+        GameObject invertToggle = optionsUI.transform.FindChild("Options Area").FindChild("Options").FindChild("Invert Vertical Controls").gameObject;
+        bool invert = false;
+        if (PlayerPrefs.GetInt("Invert Vertical Controls") == 1) invert = true;
+        invertToggle.GetComponent<Toggle>().isOn = invert;
+
+        //Music Volume
+        GameObject musicSlider = optionsUI.transform.FindChild("Options Area").FindChild("Options").FindChild("Music Volume").gameObject;
+        float musicVolume = PlayerPrefs.GetFloat("Music Volume");
+        musicSlider.GetComponent<Slider>().value = musicVolume;
+
+        //Effects Volume
+        GameObject effectsSlider = optionsUI.transform.FindChild("Options Area").FindChild("Options").FindChild("Effects Volume").gameObject;
+        float effectsVolume = PlayerPrefs.GetFloat("Effects Volume");
+        effectsSlider.GetComponent<Slider>().value = effectsVolume;
     }
 }
