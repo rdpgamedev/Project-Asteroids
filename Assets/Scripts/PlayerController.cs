@@ -71,9 +71,16 @@ public class PlayerController : MonoBehaviour
         yaxisright = oldyaxisright * smoothfactor + yaxisright * (1 - smoothfactor);
     }
 
-    public void SetUseSimplifiedControls (bool setting)
+    public void ToggleUseSimplifiedControls ()
     {
-        useSimplifiedControls = setting;
+        useSimplifiedControls = !useSimplifiedControls;
+        Debug.Log(useSimplifiedControls);
+    }
+
+    public void ToggleInvertVertical ()
+    {
+        invertVertical = !invertVertical;
+        Debug.Log(invertVertical);
     }
 
     /*
