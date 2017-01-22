@@ -10,6 +10,7 @@ using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
+    public static PlayerController instance;
     public static float xaxisleft;
     public static float yaxisleft;
     public static float xaxisright;
@@ -21,6 +22,11 @@ public class PlayerController : MonoBehaviour
     private KeyCode[] keys;
     private PlayerShip player;
     private BGM musicPlayer;
+
+    void Awake()
+    {
+        instance = this;
+    }
 
     void Start ()
     {

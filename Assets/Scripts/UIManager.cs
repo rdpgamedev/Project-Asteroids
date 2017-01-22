@@ -108,6 +108,19 @@ public class UIManager : MonoBehaviour
                 SCORESUI.SetActive(false);
                 break;
             case UIType.OPTIONS:
+                //Save Preferences
+                int simplified = 0;
+                if (PlayerController.instance.useSimplifiedControls) simplified = 1;
+                PlayerPrefs.SetInt("Simplified Controls", simplified);
+                int invert = 0;
+                if (PlayerController.instance.invertVertical) invert = 1;
+                PlayerPrefs.SetInt("Invert Vertical Controls", invert);
+                GameObject musicSlider = OPTIONSUI.transform.FindChild("Options Area").FindChild("Options").FindChild("Music Volume").gameObject;
+                float musicVolume = musicSlider.GetComponent<Slider>().value;
+                PlayerPrefs.SetFloat("Music Volume", musicVolume);
+                GameObject effectsSlider = OPTIONSUI.transform.FindChild("Options Area").FindChild("Options").FindChild("Effects Volume").gameObject;
+                float effectsVolume = effectsSlider.GetComponent<Slider>().value;
+                PlayerPrefs.SetFloat("Effects Volume", effectsVolume);
                 OPTIONSUI.SetActive(false);
                 break;
             case UIType.CREDITS:
