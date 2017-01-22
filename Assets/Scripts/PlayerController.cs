@@ -71,6 +71,11 @@ public class PlayerController : MonoBehaviour
         yaxisright = oldyaxisright * smoothfactor + yaxisright * (1 - smoothfactor);
     }
 
+    public void SetUseSimplifiedControls (bool setting)
+    {
+        useSimplifiedControls = setting;
+    }
+
     /*
      * Map horizontal and vertical axes of both sets of input
      * to a simplified version.
