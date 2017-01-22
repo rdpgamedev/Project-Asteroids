@@ -148,6 +148,7 @@ public class FieldSegment : MonoBehaviour
                     Vector3 normal = curve.GetNormal(0.5f);
                     normal.Normalize();
                     landmarkpoint += normal * Random.Range(800f, 1000f);
+                    Debug.Log("Normal: " + normal + " for Landmark at " + (landmarkpoint - transform.position));
                     GameObject landmark = SpawnLandmark(landmarkpoint);
                     landmark.transform.parent = transform;
                     landmarks.Add(landmark);
