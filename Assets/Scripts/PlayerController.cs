@@ -80,13 +80,11 @@ public class PlayerController : MonoBehaviour
     public void ToggleUseSimplifiedControls ()
     {
         useSimplifiedControls = !useSimplifiedControls;
-        Debug.Log(useSimplifiedControls);
     }
 
     public void ToggleInvertVertical ()
     {
         invertVertical = !invertVertical;
-        Debug.Log(invertVertical);
     }
 
     /*
