@@ -18,7 +18,7 @@ public class BGM : MonoBehaviour {
 
 	void Start () {
         musicPlayer = GetComponent<AudioSource>();
-        musicPlayer.volume = 0.3f;
+        musicPlayer.volume *= 0.3f;
         PlaySong();
     }
 	
@@ -29,7 +29,7 @@ public class BGM : MonoBehaviour {
     public void Activate()
     {
         musicPlayer.Stop();
-        musicPlayer.volume = 1f;
+        musicPlayer.volume *= 1f/0.3f;
         musicPlayer.PlayOneShot(startSong);
     }
 

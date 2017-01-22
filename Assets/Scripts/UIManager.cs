@@ -11,9 +11,10 @@ public class UIManager : MonoBehaviour
     public GameObject PAUSEUI;
     public GameObject HIGHSCOREUI;
     public GameObject SCORESUI;
+    public GameObject OPTIONSUI;
     public GameObject CREDITSUI;
 
-    public enum UIType { MENU, GAME, PAUSE, HIGHSCORE, SCORES, CREDITS};
+    public enum UIType { MENU, GAME, PAUSE, HIGHSCORE, SCORES, OPTIONS, CREDITS};
 
     private UIType activeUI;
 
@@ -72,6 +73,11 @@ public class UIManager : MonoBehaviour
                 activeUI = UIType.SCORES;
                 SCORESUI.transform.FindChild("Menu Button").GetComponent<Button>().Select();
                 break;
+            case UIType.OPTIONS:
+                OPTIONSUI.SetActive(true);
+                activeUI = UIType.OPTIONS;
+                OPTIONSUI.transform.FindChild("Options Area").FindChild("Options").FindChild("Simplified Controls").GetComponent<Toggle>().Select();
+                break;
             case UIType.CREDITS:
                 CREDITSUI.SetActive(true);
                 activeUI = UIType.CREDITS;
@@ -100,6 +106,9 @@ public class UIManager : MonoBehaviour
                 break;
             case UIType.SCORES:
                 SCORESUI.SetActive(false);
+                break;
+            case UIType.OPTIONS:
+                OPTIONSUI.SetActive(false);
                 break;
             case UIType.CREDITS:
                 CREDITSUI.SetActive(false);

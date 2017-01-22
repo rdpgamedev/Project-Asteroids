@@ -133,6 +133,11 @@ public class GameManager : MonoBehaviour {
         UIManager.instance.ActivateUI(UIManager.UIType.SCORES);
     }
 
+    public void OptionsScreen()
+    {
+        UIManager.instance.ActivateUI(UIManager.UIType.OPTIONS);
+    }
+
     public void CreditsScreen()
     {
         UIManager.instance.ActivateUI(UIManager.UIType.CREDITS);
