@@ -57,6 +57,12 @@ public class AsteroidCollision : MonoBehaviour {
                     //change color to asteroid's color
                     var particlesMain = dustParticles.GetComponent<ParticleSystem>().main;
                     particlesMain.startColor = newAsteroid.GetComponent<MeshRenderer>().material.color;
+                    //change shell particles
+                    GameObject shellParticles = dustParticles.transform.FindChild("ShellParticles").gameObject;
+                    var shellParticlesMain = shellParticles.GetComponent<ParticleSystem>().main;
+                    shellParticlesMain.startColor = newAsteroid.GetComponent<MeshRenderer>().material.color;
+                    var shellParticlesShape = shellParticles.GetComponent<ParticleSystem>().shape;
+                    shellParticlesShape.mesh = newAsteroid.GetComponent<MeshFilter>().sharedMesh;
                 }
                 Destroy(gameObject);
                 --segment.asteroidCount;
