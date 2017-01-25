@@ -78,53 +78,55 @@ public class FieldSegment : MonoBehaviour
         {
             case TrackType.STRAIGHT:
                 {
-                    //NOTE USE Random.onUnitSphere
-                    p1 = p0 + forward * length / 3;
-                    p2 = p0 + forward * length * 2 / 3;
-                    p2 = RandomlyOffset(p2, height);
-                    p3 = p0 + forward * length;
-                    p3 = RandomlyOffset(p3, height);
+                    //create end vector between 5 and 30 degrees of forward
+                    float theta = Random.Range(Mathf.PI / 36f, Mathf.PI / 6f);
+                    Vector3 backDirection = RandomlyOffset(-forward, 0.05f, 0.1f);
+                    Vector3 end = Vector3.RotateTowards(forward, backDirection, theta, 0f);
+                    end.Normalize();
+                    Vector3 segmentDirection = (forward + end) / 2f;
+                    p1 = p0 + forward * length / 3f;
+                    p3 = p0 + segmentDirection * length;
+                    p2 = p3 - end * length / 3f;
                     break;
                 }
             case TrackType.CURVE:
                 {
-                    //CREATE END VECTOR between 30 and 90 DEGREES OF FORWARD
+                    //create end vector between 30 and 90 degrees of forward
                     float theta = Random.Range(Mathf.PI / 6f, Mathf.PI / 2f);
-                    Vector3 endDirection = RandomlyOffset(-forward, 0.05f, 0.1f);
+                    Vector3 backDirection = RandomlyOffset(-forward, 0.05f, 0.1f);
                     Vector3 end = Vector3.RotateTowards(
-                        forward, endDirection, theta, 0f);
+                        forward, backDirection, theta, 0f);
                     end.Normalize();
-                    p1 = p0 + forward * length / 3;
-                    p2 = p0 + forward * length / 2 + end * length / 6;
-                    p2 = RandomlyOffset(p2, height);
-                    p3 = p2 + end * length / 3;
+                    Vector3 segmentDirection = (forward + end) / 2f;
+                    p1 = p0 + forward * length / 3f;
+                    p3 = p0 + segmentDirection * length;
+                    p2 = p3 - end * length / 3f;
                     break;
                 }
             case TrackType.SLALOM:
                 {
+                    //create segment direction between 15 and 45 degrees of forward
+                    float theta = Random.Range(Mathf.PI / 12f, Mathf.PI / 4f);
                     Vector3 backDirection = RandomlyOffset(-forward, 0.05f, 0.1f);
-                    Vector3 approxNormal = Vector3.RotateTowards(forward, backDirection, Mathf.PI / 2f, 0f);
-                    approxNormal.Normalize();
-                    p1 = p0 + forward * length / 3;
-                    p2 = p0 + forward * length * 2 / 3 + approxNormal * length / 6;
-                    p2 = RandomlyOffset(p2, height);
-                    p3 = p0 + forward * length - approxNormal * length / 6;
-                    p3 = RandomlyOffset(p3, height);
+                    Vector3 segmentDirection = Vector3.RotateTowards(forward, backDirection, theta, 0f);
+                    segmentDirection.Normalize();
+                    p1 = p0 + forward * length / 3f;
+                    p3 = p0 + segmentDirection * length;
+                    p2 = p3 - forward * length / 3f;
                     break;
                 }
             case TrackType.HAIRPIN:
                 {
-                    //CREATE END VECTOR WITHIN 90 and 135 DEGREES OF FORWARD
-                    float theta = Random.Range(Mathf.PI / 2f, 3f * Mathf.PI / 4f);
-                    Vector3 endDirection = RandomlyOffset(
-                        -forward, 0.05f, 0.1f);
+                    //CREATE END VECTOR WITHIN 90 and 180 DEGREES OF FORWARD
+                    float theta = Random.Range(Mathf.PI / 2f, Mathf.PI);
+                    Vector3 backDirection = RandomlyOffset(-forward, 0.05f, 0.1f);
                     Vector3 end = Vector3.RotateTowards(
-                        forward, endDirection, theta, 0f);
+                        forward, backDirection, theta, 0f);
                     end.Normalize();
+                    Vector3 segmentDirection = (forward + end) / 2f;
                     p1 = p0 + forward * length / 3;
-                    p2 = p0 + forward * length / 2 + end * length / 6;
-                    p2 = RandomlyOffset(p2, height);
-                    p3 = p2 + end * length / 3;
+                    p3 = p0 + segmentDirection * length;
+                    p2 = p3 - end * length / 3;
                     pointdensity *= 0.7f;
                     break;
                 }
