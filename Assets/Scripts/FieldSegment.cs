@@ -78,6 +78,7 @@ public class FieldSegment : MonoBehaviour
         {
             case TrackType.STRAIGHT:
                 {
+                    //NOTE USE Random.onUnitSphere
                     p1 = p0 + forward * length / 3;
                     p2 = p0 + forward * length * 2 / 3;
                     p2 = RandomlyOffset(p2, height);
@@ -167,8 +168,8 @@ public class FieldSegment : MonoBehaviour
         }
         //Spawn Asteroids
         int unspawnedAsteroids = Mathf.Min(
-            Field.instance.MINASTEROIDS + Field.instance.checkpointsMade * 3,
-            100);
+            Field.instance.MINASTEROIDS + Field.instance.checkpointsMade * 2,
+            60);
         for (int i = 0; i < (unspawnedAsteroids); ++i)
         {
             Vector3 point = curve.GetPoint((float)i / (float)unspawnedAsteroids);
@@ -179,10 +180,11 @@ public class FieldSegment : MonoBehaviour
                 {
                     GameObject asteroid = SpawnAsteroid(point);
                     bool collided = true; //tracking if collided with a landmark
-                    asteroid.transform.forward = curve.GetFirstDeriv((float)i / 100f);
+                    asteroid.transform.forward = curve.GetFirstDeriv((float)i / (float)unspawnedAsteroids);
                     while (collided)
                     {
-                        Vector3 offset = RandomlyOffsetXY(point, 500f) - point;
+
+                        Vector2 offset = Random.insideUnitCircle * 300f;
                         asteroid.transform.position = point;
                         asteroid.transform.position += asteroid.transform.right.normalized * offset.x;
                         asteroid.transform.position += asteroid.transform.up.normalized * offset.y;
@@ -260,10 +262,8 @@ public class FieldSegment : MonoBehaviour
         float scale;
         asteroid.transform.localScale *= scale = Random.Range(30f, 45f);
         asteroid.GetComponent<Rigidbody>().mass *= scale * scale * scale;
-        asteroid.GetComponent<Rigidbody>().velocity =
-            new Vector3(Random.Range(-10f, 10f),
-                        Random.Range(-10f, 10f),
-                        Random.Range(-10f, 10f));
+        asteroid.GetComponent<Rigidbody>().velocity = Random.onUnitSphere;
+        asteroid.GetComponent<Rigidbody>().velocity *= Random.Range(5f, 40f);
         asteroid.transform.position = position;
         asteroid.GetComponent<AsteroidCollision>().segment = this;
         asteroid.transform.parent = transform;
