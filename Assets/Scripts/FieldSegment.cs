@@ -364,6 +364,13 @@ public class FieldSegment : MonoBehaviour
         return curve.GetPoint(0.5f);
     }
 
+    public bool IsSegmentAdjacent(GameObject segment)
+    {
+        FieldSegment fieldSegment = segment.GetComponent<FieldSegment>();
+        if (segment == null) return false;
+        return (fieldSegment == prevSegment || fieldSegment == nextSegment);
+    }
+
     private Vector3 FindClosestPoint (List<Vector3> points)
     {
         Vector3 center = GetCurveCenter();

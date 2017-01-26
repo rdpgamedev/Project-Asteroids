@@ -88,6 +88,31 @@ public class Field : MonoBehaviour
         segments.Remove(segment);
     }
 
+    public GameObject FindClosestSegment (GameObject segment, bool ignoreAdjacent)
+    {
+        if (segments.Count == 0) return null;
+        Vector3 segmentCenter = segment.GetComponent<FieldSegment>().GetCurveCenter();
+        float minDist = 9999f;
+        GameObject firstSegment = segments[0];
+        GameObject closestSegment = null;
+        if ((!ignoreAdjacent || segment.GetComponent<FieldSegment>().IsSegmentAdjacent(firstSegment)) && !(segment == segments[0]))
+        {
+            minDist = (segmentCenter - segments[0].GetComponent<FieldSegment>().GetCurveCenter()).magnitude;
+            closestSegment = segments[0];
+        }
+        for (int i = 1; i < segments.Count; ++i)
+        {
+            if ((ignoreAdjacent && segment.GetComponent<FieldSegment>().IsSegmentAdjacent(segments[i])) || (segment == segments[i])) continue;
+            Vector3 center = segments[i].GetComponent<FieldSegment>().GetCurveCenter();
+            if ((segmentCenter - center).magnitude < minDist)
+            {
+                minDist = (segmentCenter - center).magnitude;
+                closestSegment = segments[i];
+            }
+        }
+        return closestSegment;
+    }
+
     void AddSegment ()
     {
         GameObject segment = Instantiate<GameObject>(FIELDSEGMENT);
