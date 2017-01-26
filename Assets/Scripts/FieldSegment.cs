@@ -6,9 +6,10 @@ using TrackType = Field.TrackType;
 
 public class FieldSegment : MonoBehaviour
 {
-    public static float MAXLENGTH = 1200f;
-    public static float MINLENGTH = 1000f;
+    public static float MAXLENGTH = 1800f;
+    public static float MINLENGTH = 1500f;
     public static float MAXHEIGHT = 300f;
+    public static float LENGTHMULTIPLIER = 1.5f;
     public float linePointOffset;
     public GameObject LINEPOINT;
     public GameObject ASTEROID;
@@ -64,7 +65,7 @@ public class FieldSegment : MonoBehaviour
         generateTime = Time.time;
         fieldtype = _fieldtype;
         tracktype = _tracktype;
-        length = Random.Range(MINLENGTH, MAXLENGTH);
+        length = Random.Range(MINLENGTH, MAXLENGTH) * (GameManager.instance.difficulty * LENGTHMULTIPLIER  + 1f) ;
         height = Random.Range(0f, MAXHEIGHT);
         Vector3 closestSegmentCenter = FindClosestPoint(Field.instance.SegmentMidpoints());
 
