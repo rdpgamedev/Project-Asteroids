@@ -18,6 +18,8 @@ public class FieldSegment : MonoBehaviour
     public GameObject fieldParticles;
     public bool isGenerating;
     public GameObject nextCheckpoint;
+    public FieldSegment nextSegment;
+    public FieldSegment prevSegment;
 
     private FieldType fieldtype;
     private TrackType tracktype;
@@ -179,7 +181,7 @@ public class FieldSegment : MonoBehaviour
             if ((point - PlayerShip.instance.transform.position).magnitude > MAXLENGTH * 2 || !Field.instance.activated)
             {
                 //check segment overlap (if asteroid is too close to closest segments' center)
-                if ((point - closestSegmentCenter).magnitude > MINLENGTH/4f)
+                if ((point - closestSegmentCenter).magnitude > MINLENGTH * 10f)
                 {
                     GameObject asteroid = SpawnAsteroid(point);
                     bool collided = true; //tracking if collided with a landmark

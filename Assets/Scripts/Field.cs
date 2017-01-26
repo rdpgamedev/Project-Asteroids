@@ -109,6 +109,9 @@ public class Field : MonoBehaviour
         fieldSegment.GenerateSegment((FieldType)Random.Range(0, 2), 
                                       RandomTrackType(GameManager.instance.difficulty), 
                                       lastControlPoint);
+        GameObject previousSegment = segments[segments.Count - 1];
+        previousSegment.GetComponent<FieldSegment>().nextSegment = fieldSegment;
+        fieldSegment.prevSegment = previousSegment.GetComponent<FieldSegment>();
         segments.Add(segment);
         Vector3 lastBezierPoint = curve.GetControlPoint(0);
         GameObject checkpoint = Instantiate<GameObject>(CHECKPOINT);
@@ -128,6 +131,7 @@ public class Field : MonoBehaviour
 
     TrackType RandomTrackType(float difficulty)
     {
+        return TrackType.HAIRPIN;
         if (difficulty > 1f) difficulty = 1f;
         if (difficulty < 0f) difficulty = 0f;
         float choice = Random.Range(0f, Mathf.Min(difficulty + 0.4f, 1f));
