@@ -68,7 +68,6 @@ public class GameManager : MonoBehaviour {
         level = 1;
         score = 0;
         time = STARTTIME;
-        difficulty = 0f;
         field = GameObject.Instantiate<GameObject>(FIELDOBJ);
     }
 

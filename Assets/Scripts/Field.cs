@@ -160,10 +160,11 @@ public class Field : MonoBehaviour
 
     TrackType RandomTrackType(float difficulty)
     {
+        return TrackType.STRAIGHT;
         if (difficulty > 1f) difficulty = 1f;
         if (difficulty < 0f) difficulty = 0f;
         float choice = Random.Range(0f, Mathf.Min(difficulty + 0.4f, 1f));
-        if (choice < 0.3f)
+        if (choice < 0.2f)
         {
             return TrackType.STRAIGHT;
         }
@@ -180,5 +181,4 @@ public class Field : MonoBehaviour
             return TrackType.HAIRPIN;
         }
     }
-
 }

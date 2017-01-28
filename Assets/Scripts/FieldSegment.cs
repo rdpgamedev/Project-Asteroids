@@ -6,8 +6,8 @@ using TrackType = Field.TrackType;
 
 public class FieldSegment : MonoBehaviour
 {
-    public static float MAXLENGTH = 1800f;
-    public static float MINLENGTH = 1500f;
+    public static float MAXLENGTH = 1200f;
+    public static float MINLENGTH = 1000f;
     public static float MAXHEIGHT = 300f;
     public static float LENGTHMULTIPLIER = 1.5f;
     public float linePointOffset;
@@ -139,8 +139,8 @@ public class FieldSegment : MonoBehaviour
                 break;
                 }
         }
-        p2.y /= 3;
-        p3.y /= 3;
+        //p2.y /= 3;
+        //p3.y /= 3;
         curve.SetPoints(p0, p1, p2, p3);
         length = curve.ArcLength();
         numpoints = (int)(length / pointdensity);
