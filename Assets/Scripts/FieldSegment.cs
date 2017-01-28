@@ -69,6 +69,7 @@ public class FieldSegment : MonoBehaviour
         tracktype = _tracktype;
         length = Random.Range(MINLENGTH, MAXLENGTH) * (GameManager.instance.difficulty * LENGTHMULTIPLIER  + 1f) ;
         height = Random.Range(0f, MAXHEIGHT);
+        GameObject closestSegment = Field.instance.FindClosestSegment(this.gameObject, true);
         Vector3 closestSegmentCenter = FindClosestPoint(Field.instance.SegmentMidpoints());
 
         //Create Bezier curve
@@ -180,30 +181,37 @@ public class FieldSegment : MonoBehaviour
             Vector3 point = curve.GetPoint((float)i / (float)unspawnedAsteroids);
             if ((point - PlayerShip.instance.transform.position).magnitude > MAXLENGTH * 2 || !Field.instance.activated)
             {
-                //check segment overlap (if asteroid is too close to closest segments' center)
-                if ((point - closestSegmentCenter).magnitude > MINLENGTH * 10f)
+                GameObject asteroid = SpawnAsteroid(point);
+                bool collided = true; //tracking if collided with a landmark
+                asteroid.transform.forward = curve.GetFirstDeriv((float)i / (float)unspawnedAsteroids);
+                while (collided)
                 {
-                    GameObject asteroid = SpawnAsteroid(point);
-                    bool collided = true; //tracking if collided with a landmark
-                    asteroid.transform.forward = curve.GetFirstDeriv((float)i / (float)unspawnedAsteroids);
-                    while (collided)
+                    Vector2 offset = Random.insideUnitCircle * 300f;
+                    asteroid.transform.position = point;
+                    asteroid.transform.position += asteroid.transform.right.normalized * offset.x;
+                    asteroid.transform.position += asteroid.transform.up.normalized * offset.y;
+                    collided = false;
+                    foreach (GameObject lm in landmarks)
                     {
-
-                        Vector2 offset = Random.insideUnitCircle * 300f;
-                        asteroid.transform.position = point;
-                        asteroid.transform.position += asteroid.transform.right.normalized * offset.x;
-                        asteroid.transform.position += asteroid.transform.up.normalized * offset.y;
-                        collided = false;
-                        foreach (GameObject lm in landmarks)
+                        if (lm.GetComponent<MeshCollider>().bounds.Intersects(
+                            asteroid.GetComponent<MeshCollider>().bounds))
                         {
-                            if (lm.GetComponent<MeshCollider>().bounds.Intersects(
-                                asteroid.GetComponent<MeshCollider>().bounds))
-                            {
-                                collided = true;
-                                break;
-                            }
+                            collided = true;
+                            break;
                         }
                     }
+                }
+                //check for overlap and destroy asteroid if necessary
+                if (closestSegment != null)
+                {
+                    Bezier closestCurve = closestSegment.GetComponent<FieldSegment>().curve;
+                    Vector3 asteroidPos = asteroid.transform.position;
+                    float approxDistanceToCurve = Mathf.Min((asteroidPos-closestCurve.GetPoint(0f)).magnitude,
+                                                            (asteroidPos-closestCurve.GetPoint(0.2f)).magnitude,
+                                                            (asteroidPos-closestCurve.GetPoint(0.4f)).magnitude,
+                                                            (asteroidPos-closestCurve.GetPoint(0.6f)).magnitude,
+                                                            (asteroidPos-closestCurve.GetPoint(0.8f)).magnitude,
+                                                            (asteroidPos-closestCurve.GetPoint(1f)).magnitude);
                 }
             }
         }

@@ -122,4 +122,17 @@ public class Bezier : MonoBehaviour
         point = (point > 3 ? 3 : point);
         return points[point];
     }
+
+    //finds approximate closest distance to this bezier curve through polling iterations number of points on curve
+    //iterations minimum is 2, default is 5
+    public float ClosestDistToCurve(Vector3 pos, int iterations = 5)
+    {
+        if (iterations < 2) iterations = 2;
+        float[] distances = new float[iterations];
+        for (int i = 0; i <= iterations - 1; ++i)
+        {
+            distances[i] = (pos - GetPoint((float)i / (float)(iterations - 1))).magnitude;
+        }
+        return Mathf.Min(distances);
+    }
 }
