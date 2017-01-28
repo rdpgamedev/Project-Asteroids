@@ -206,12 +206,11 @@ public class FieldSegment : MonoBehaviour
                 {
                     Bezier closestCurve = closestSegment.GetComponent<FieldSegment>().curve;
                     Vector3 asteroidPos = asteroid.transform.position;
-                    float approxDistanceToCurve = Mathf.Min((asteroidPos-closestCurve.GetPoint(0f)).magnitude,
-                                                            (asteroidPos-closestCurve.GetPoint(0.2f)).magnitude,
-                                                            (asteroidPos-closestCurve.GetPoint(0.4f)).magnitude,
-                                                            (asteroidPos-closestCurve.GetPoint(0.6f)).magnitude,
-                                                            (asteroidPos-closestCurve.GetPoint(0.8f)).magnitude,
-                                                            (asteroidPos-closestCurve.GetPoint(1f)).magnitude);
+                    float approxDistanceToCurve = closestCurve.ClosestDistToCurve(asteroidPos, 5);
+                    if (approxDistanceToCurve < 500f)
+                    {
+                        Destroy(asteroid);
+                    }
                 }
             }
         }
