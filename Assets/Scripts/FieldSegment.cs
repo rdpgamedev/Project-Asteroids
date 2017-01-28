@@ -88,6 +88,8 @@ public class FieldSegment : MonoBehaviour
                     Vector3 end = Vector3.RotateTowards(forward, backDirection, theta, 0f);
                     end.Normalize();
                     Vector3 segmentDirection = (forward + end) / 2f;
+                    Vector3 playerDirection = p0 - PlayerShip.instance.transform.position;
+                    segmentDirection = (2f*segmentDirection.normalized + playerDirection.normalized).normalized;
                     p1 = p0 + forward * length / 3f;
                     p3 = p0 + segmentDirection * length;
                     p2 = p3 - end * length / 3f;
@@ -102,6 +104,8 @@ public class FieldSegment : MonoBehaviour
                         forward, backDirection, theta, 0f);
                     end.Normalize();
                     Vector3 segmentDirection = (forward + end) / 2f;
+                    Vector3 playerDirection = p0 - PlayerShip.instance.transform.position;
+                    segmentDirection = (2f*segmentDirection.normalized + playerDirection.normalized).normalized;
                     p1 = p0 + forward * length / 3f;
                     p3 = p0 + segmentDirection * length;
                     p2 = p3 - end * length / 3f;
@@ -114,6 +118,8 @@ public class FieldSegment : MonoBehaviour
                     Vector3 backDirection = RandomlyOffset(-forward, 0.05f, 0.1f);
                     Vector3 segmentDirection = Vector3.RotateTowards(forward, backDirection, theta, 0f);
                     segmentDirection.Normalize();
+                    Vector3 playerDirection = p0 - PlayerShip.instance.transform.position;
+                    segmentDirection = (2f*segmentDirection.normalized + playerDirection.normalized).normalized;
                     p1 = p0 + forward * length / 3f;
                     p3 = p0 + segmentDirection * length;
                     p2 = p3 - forward * length / 3f;
@@ -128,6 +134,8 @@ public class FieldSegment : MonoBehaviour
                         forward, backDirection, theta, 0f);
                     end.Normalize();
                     Vector3 segmentDirection = (forward + end) / 2f;
+                    Vector3 playerDirection = p0 - PlayerShip.instance.transform.position;
+                    segmentDirection = (2f*segmentDirection.normalized + playerDirection.normalized).normalized;
                     p1 = p0 + forward * length / 3;
                     p3 = p0 + segmentDirection * length;
                     p2 = p3 - end * length / 3;
