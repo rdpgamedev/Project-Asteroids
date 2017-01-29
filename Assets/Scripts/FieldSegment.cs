@@ -99,8 +99,8 @@ public class FieldSegment : MonoBehaviour
                 }
             case TrackType.CURVE:
                 {
-                    //create end vector between 30 and 90 degrees of forward
-                    float theta = Random.Range(Mathf.PI / 6f, Mathf.PI / 2f);
+                    //create end vector between 60 and 90 degrees of forward
+                    float theta = Random.Range(Mathf.PI / 3f, Mathf.PI / 2f);
                     Vector3 backDirection = RandomlyOffset(-forward, 0.05f, 0.1f);
                     Vector3 end = Vector3.RotateTowards(
                         forward, backDirection, theta, 0f);
@@ -108,9 +108,9 @@ public class FieldSegment : MonoBehaviour
                     Vector3 segmentDirection = (forward + end) / 2f;
                     Vector3 playerDirection = p0 - PlayerShip.instance.transform.position;
                     segmentDirection = (2f*segmentDirection.normalized + playerDirection.normalized).normalized;
-                    p1 = p0 + forward * length / 3f;
+                    p1 = p0 + forward * length / 2f;
                     p3 = p0 + segmentDirection * length;
-                    p2 = p3 - end * length / 3f;
+                    p2 = p3 - end * length / 2f;
                     break;
                 }
             case TrackType.SLALOM:
