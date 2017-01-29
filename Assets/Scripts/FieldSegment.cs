@@ -137,10 +137,10 @@ public class FieldSegment : MonoBehaviour
                     end.Normalize();
                     Vector3 segmentDirection = (forward + end) / 2f;
                     Vector3 playerDirection = p0 - PlayerShip.instance.transform.position;
-                    segmentDirection = (2f*segmentDirection.normalized + playerDirection.normalized).normalized;
-                    p1 = p0 + forward * length / 3;
-                    p3 = p0 + segmentDirection * length;
-                    p2 = p3 - end * length / 3;
+                    segmentDirection = (1.5f*segmentDirection.normalized + playerDirection.normalized).normalized;
+                    p1 = p0 + forward * length / 2f;
+                    p3 = p0 + segmentDirection * length / 2f;
+                    p2 = p3 - end * length / 2f;
                     pointdensity *= 0.7f;
                     break;
                 }
