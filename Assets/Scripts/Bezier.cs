@@ -64,10 +64,10 @@ public class Bezier : MonoBehaviour
 
     public Vector3 GetNormal (float t)
     {
-        if (t >= 1) t = 1f - 0.0001f;
+        if (t >= 1) t = 1f - 0.01f;
         if (t < 0) t = 0f;
         Vector3 tangent1 = GetFirstDeriv(t).normalized;
-        Vector3 tangent2 = GetFirstDeriv(t + 0.0001f).normalized;
+        Vector3 tangent2 = GetFirstDeriv(t + 0.01f).normalized;
         Vector3 rotationAxis = Vector3.Cross(tangent2, tangent1);
         return (Quaternion.AngleAxis(90f, rotationAxis) * tangent1);
     }

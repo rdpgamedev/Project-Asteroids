@@ -26,6 +26,7 @@ public class Field : MonoBehaviour
 
 	void Start ()
     {
+        Debug.Log("Starting Field");
         segments = new List<GameObject>();
         for (int i = 0; i < 5; ++i)
         {
@@ -142,10 +143,10 @@ public class Field : MonoBehaviour
             fieldSegment.prevSegment = previousSegment.GetComponent<FieldSegment>();
         }
         segments.Add(segment);
-        Vector3 lastBezierPoint = curve.GetControlPoint(0);
+        Vector3 firstBezierPoint = curve.GetControlPoint(0);
         GameObject checkpoint = Instantiate<GameObject>(CHECKPOINT);
         checkpoint.transform.parent = segment.transform;
-        checkpoint.transform.position = lastBezierPoint;
+        checkpoint.transform.position = firstBezierPoint;
         Vector3 forward = curve.GetFirstDeriv(0f);
         Vector3 up = -curve.GetNormal(0f);
         checkpoint.transform.rotation = Quaternion.LookRotation(forward, up);
@@ -160,7 +161,7 @@ public class Field : MonoBehaviour
 
     TrackType RandomTrackType(float difficulty)
     {
-        return TrackType.CURVE;
+        return TrackType.SLALOM;
         if (difficulty > 1f) difficulty = 1f;
         if (difficulty < 0f) difficulty = 0f;
         float choice = Random.Range(0f, Mathf.Min(difficulty + 0.4f, 1f));

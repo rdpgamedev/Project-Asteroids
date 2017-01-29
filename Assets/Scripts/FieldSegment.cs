@@ -43,6 +43,7 @@ public class FieldSegment : MonoBehaviour
 
     void Start ()
     {
+        Debug.Log("Starting FieldSegment");
         fieldRad = MAXLENGTH * 4f;
 	}
 	
@@ -63,6 +64,7 @@ public class FieldSegment : MonoBehaviour
 
     public void GenerateSegment(FieldType _fieldtype, TrackType _tracktype, Vector3 lastControlPoint)
     {
+        Debug.Log("Generating Segment");
         isGenerating = true;
         generateTime = Time.time;
         fieldtype = _fieldtype;
@@ -119,7 +121,7 @@ public class FieldSegment : MonoBehaviour
                     Vector3 segmentDirection = Vector3.RotateTowards(forward, backDirection, theta, 0f);
                     segmentDirection.Normalize();
                     Vector3 playerDirection = p0 - PlayerShip.instance.transform.position;
-                    segmentDirection = (2f*segmentDirection.normalized + playerDirection.normalized).normalized;
+                    segmentDirection = (2f*segmentDirection + playerDirection.normalized).normalized;
                     p1 = p0 + forward * length / 3f;
                     p3 = p0 + segmentDirection * length;
                     p2 = p3 - forward * length / 3f;
@@ -152,7 +154,7 @@ public class FieldSegment : MonoBehaviour
         curve.SetPoints(p0, p1, p2, p3);
         length = curve.ArcLength();
         numpoints = (int)(length / pointdensity);
-        //Spawn Landmarks
+        //Spawn Landmark
         if (Random.Range(0, 5) > 3)
         { 
             Vector3 landmarkpoint = curve.GetPoint(0.5f);
@@ -192,12 +194,14 @@ public class FieldSegment : MonoBehaviour
                 GameObject asteroid = SpawnAsteroid(point);
                 bool collided = true; //tracking if collided with a landmark
                 asteroid.transform.forward = curve.GetFirstDeriv((float)i / (float)unspawnedAsteroids);
+                Vector2 offset = Random.insideUnitCircle * 300f;
+                asteroid.transform.position = point;
+                asteroid.transform.position += asteroid.transform.right.normalized * offset.x;
+                asteroid.transform.position += asteroid.transform.up.normalized * offset.y;
+                Vector3 asteroidLandmarkOffset = new Vector3();
                 while (collided)
                 {
-                    Vector2 offset = Random.insideUnitCircle * 300f;
-                    asteroid.transform.position = point;
-                    asteroid.transform.position += asteroid.transform.right.normalized * offset.x;
-                    asteroid.transform.position += asteroid.transform.up.normalized * offset.y;
+                    asteroid.transform.position += asteroidLandmarkOffset.normalized * 5f;
                     collided = false;
                     foreach (GameObject lm in landmarks)
                     {
@@ -205,6 +209,7 @@ public class FieldSegment : MonoBehaviour
                             asteroid.GetComponent<MeshCollider>().bounds))
                         {
                             collided = true;
+                            asteroidLandmarkOffset = asteroid.transform.position - lm.transform.position;
                             break;
                         }
                     }
