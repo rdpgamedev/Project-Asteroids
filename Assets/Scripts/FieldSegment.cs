@@ -115,16 +115,16 @@ public class FieldSegment : MonoBehaviour
                 }
             case TrackType.SLALOM:
                 {
-                    //create segment direction between 15 and 45 degrees of forward
-                    float theta = Random.Range(Mathf.PI / 12f, Mathf.PI / 4f);
+                    //create segment direction between 30 and 90 degrees of forward
+                    float theta = Random.Range(Mathf.PI / 6f, Mathf.PI / 2f);
                     Vector3 backDirection = RandomlyOffset(-forward, 0.05f, 0.1f);
                     Vector3 segmentDirection = Vector3.RotateTowards(forward, backDirection, theta, 0f);
                     segmentDirection.Normalize();
                     Vector3 playerDirection = p0 - PlayerShip.instance.transform.position;
                     segmentDirection = (2f*segmentDirection + playerDirection.normalized).normalized;
-                    p1 = p0 + forward * length / 3f;
+                    p1 = p0 + forward * length;
                     p3 = p0 + segmentDirection * length;
-                    p2 = p3 - forward * length / 3f;
+                    p2 = p3 - forward * length;
                     break;
                 }
             case TrackType.HAIRPIN:
