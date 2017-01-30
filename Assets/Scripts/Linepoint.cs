@@ -17,22 +17,17 @@ public class Linepoint : MonoBehaviour {
 	void Update ()
     {
         if (!GameManager.instance.isPlaying) return;
-        bool active = false;
-        if (fieldSegment != null) active = fieldSegment.isActive;
-        if ((fieldSegment == null) || (active))
+        if (CloseToPlayer(CLOSEDISTANCE))
         {
-            if (CloseToPlayer(CLOSEDISTANCE))
+            if (CloseToPlayer(PICKUPDISTANCE))
             {
-                if (CloseToPlayer(PICKUPDISTANCE))
-                {
-                    Destroy(this.gameObject);
-                    GameManager.instance.IncreaseScore();
-                }
-                Gravitate();
-                Scale();
+                Destroy(this.gameObject);
+                GameManager.instance.IncreaseScore();
             }
+            Gravitate();
+            Scale();
         }
-	}
+    }
 
     void Gravitate ()
     {

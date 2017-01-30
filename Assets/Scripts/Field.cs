@@ -88,6 +88,31 @@ public class Field : MonoBehaviour
         segments.Remove(segment);
     }
 
+    public GameObject FindClosestSegment (GameObject segment, bool ignoreAdjacent)
+    {
+        if (segments.Count == 0) return null;
+        Vector3 segmentCenter = segment.GetComponent<FieldSegment>().GetCurveCenter();
+        float minDist = 9999f;
+        GameObject firstSegment = segments[0];
+        GameObject closestSegment = null;
+        if ((!ignoreAdjacent || segment.GetComponent<FieldSegment>().IsSegmentAdjacent(firstSegment)) && !(segment == segments[0]))
+        {
+            minDist = (segmentCenter - segments[0].GetComponent<FieldSegment>().GetCurveCenter()).magnitude;
+            closestSegment = segments[0];
+        }
+        for (int i = 1; i < segments.Count; ++i)
+        {
+            if ((ignoreAdjacent && segment.GetComponent<FieldSegment>().IsSegmentAdjacent(segments[i])) || (segment == segments[i])) continue;
+            Vector3 center = segments[i].GetComponent<FieldSegment>().GetCurveCenter();
+            if ((segmentCenter - center).magnitude < minDist)
+            {
+                minDist = (segmentCenter - center).magnitude;
+                closestSegment = segments[i];
+            }
+        }
+        return closestSegment;
+    }
+
     void AddSegment ()
     {
         GameObject segment = Instantiate<GameObject>(FIELDSEGMENT);
@@ -109,11 +134,18 @@ public class Field : MonoBehaviour
         fieldSegment.GenerateSegment((FieldType)Random.Range(0, 2), 
                                       RandomTrackType(GameManager.instance.difficulty), 
                                       lastControlPoint);
+        GameObject previousSegment = null;
+        if (segments.Count > 0)
+        {
+            previousSegment = segments[segments.Count - 1];
+            previousSegment.GetComponent<FieldSegment>().nextSegment = fieldSegment;
+            fieldSegment.prevSegment = previousSegment.GetComponent<FieldSegment>();
+        }
         segments.Add(segment);
-        Vector3 lastBezierPoint = curve.GetControlPoint(0);
+        Vector3 firstBezierPoint = curve.GetControlPoint(0);
         GameObject checkpoint = Instantiate<GameObject>(CHECKPOINT);
         checkpoint.transform.parent = segment.transform;
-        checkpoint.transform.position = lastBezierPoint;
+        checkpoint.transform.position = firstBezierPoint;
         Vector3 forward = curve.GetFirstDeriv(0f);
         Vector3 up = -curve.GetNormal(0f);
         checkpoint.transform.rotation = Quaternion.LookRotation(forward, up);
@@ -131,7 +163,7 @@ public class Field : MonoBehaviour
         if (difficulty > 1f) difficulty = 1f;
         if (difficulty < 0f) difficulty = 0f;
         float choice = Random.Range(0f, Mathf.Min(difficulty + 0.4f, 1f));
-        if (choice < 0.3f)
+        if (choice < 0.2f)
         {
             return TrackType.STRAIGHT;
         }
@@ -148,5 +180,4 @@ public class Field : MonoBehaviour
             return TrackType.HAIRPIN;
         }
     }
-
 }

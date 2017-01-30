@@ -49,6 +49,7 @@ public class AsteroidCollision : MonoBehaviour {
                     newAsteroid.transform.localScale = transform.localScale * (float)System.Math.Pow(asteroidCount, (-1 / 3));
                     newAsteroid.transform.localScale *= 0.5f;
                     newAsteroid.GetComponent<Rigidbody>().velocity = GetComponent<Rigidbody>().velocity * 2;
+                    newAsteroid.GetComponent<Rigidbody>().maxDepenetrationVelocity = 40f;
                     newAsteroid.GetComponent<AsteroidCollision>().isChild = true;
                     GameObject dustParticles = Instantiate<GameObject>(AsteroidChildParticles);
                     dustParticles.transform.parent = newAsteroid.transform;
