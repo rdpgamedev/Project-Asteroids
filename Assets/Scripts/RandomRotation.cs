@@ -4,7 +4,7 @@ using System.Collections;
 public class RandomRotation : MonoBehaviour
 {
     //Tweakable variables from editor
-    public float MAXIMUM_SPEED = 0.1f;
+    public float MAXIMUM_SPEED;
 
     //Remaining variables for the script
     float deltaAngleX, deltaAngleY, deltaAngleZ;
