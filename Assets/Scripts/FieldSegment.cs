@@ -63,7 +63,6 @@ public class FieldSegment : MonoBehaviour
 
     public void GenerateSegment(FieldType _fieldtype, TrackType _tracktype, Vector3 lastControlPoint)
     {
-        Debug.Log("Generating Segment");
         isGenerating = true;
         generateTime = Time.time;
         fieldtype = _fieldtype;
