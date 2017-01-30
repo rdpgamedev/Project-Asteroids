@@ -33,7 +33,7 @@ public class PlayerController : MonoBehaviour
         //keys to check for player input
         keys = new KeyCode[] {
              KeyCode.Escape, KeyCode.P, KeyCode.R,
-             KeyCode.Period, KeyCode.Comma
+             KeyCode.Period, KeyCode.Comma, KeyCode.JoystickButton7
             };
         player = PlayerShip.instance;
         musicPlayer = BGM.instance;
@@ -172,7 +172,29 @@ public class PlayerController : MonoBehaviour
                 break;
             case KeyCode.P:
                 //Pause game
-                if (GameManager.instance.isPlaying) GameManager.instance.Pause();
+                if (GameManager.instance.isPlaying && !GameManager.instance.paused)
+                {
+                    GameManager.instance.Pause();
+                    GameManager.instance.paused = true;
+                }
+                else if (!GameManager.instance.isPlaying && GameManager.instance.paused)
+                {
+                    GameManager.instance.Resume();
+                    GameManager.instance.paused = false;
+                }
+                break;
+            case KeyCode.JoystickButton7:
+                //Pause game
+                if (GameManager.instance.isPlaying && !GameManager.instance.paused)
+                {
+                    GameManager.instance.Pause();
+                    GameManager.instance.paused = true;
+                }
+                else if (!GameManager.instance.isPlaying && GameManager.instance.paused)
+                {
+                    GameManager.instance.Resume();
+                    GameManager.instance.paused = false;
+                }
                 break;
             case KeyCode.Period:
                 //Play next song
