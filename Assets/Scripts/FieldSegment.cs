@@ -43,7 +43,6 @@ public class FieldSegment : MonoBehaviour
 
     void Start ()
     {
-        Debug.Log("Starting FieldSegment");
         fieldRad = MAXLENGTH * 4f;
 	}
 	

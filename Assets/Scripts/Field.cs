@@ -26,7 +26,6 @@ public class Field : MonoBehaviour
 
 	void Start ()
     {
-        Debug.Log("Starting Field");
         segments = new List<GameObject>();
         for (int i = 0; i < 5; ++i)
         {
