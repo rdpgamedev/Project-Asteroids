@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour {
     public GameObject cameraObj;
     public float STARTTIME = 9.99f;
     public bool isPlaying = false;
+    public bool paused = false;
     public int level = 1;
     public int score = 0;
     public float time;
@@ -113,6 +114,7 @@ public class GameManager : MonoBehaviour {
     {
         Time.timeScale = 1f;
         isPlaying = true;
+        paused = false;
         UnPauseAudio();
         UIManager.instance.ActivateUI(UIManager.UIType.GAME);
     }
