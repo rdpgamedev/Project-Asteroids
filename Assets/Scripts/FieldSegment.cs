@@ -220,7 +220,7 @@ public class FieldSegment : MonoBehaviour
                     Bezier closestCurve = closestSegment.GetComponent<FieldSegment>().curve;
                     Vector3 asteroidPos = asteroid.transform.position;
                     float approxDistanceToCurve = closestCurve.ClosestDistToCurve(asteroidPos, 5);
-                    if (approxDistanceToCurve < 500f)
+                    if (approxDistanceToCurve < 600f)
                     {
                         Destroy(asteroid);
                     }
