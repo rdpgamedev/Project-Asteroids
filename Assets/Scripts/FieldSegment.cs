@@ -194,7 +194,7 @@ public class FieldSegment : MonoBehaviour
                 GameObject asteroid = SpawnAsteroid(point);
                 bool collided = true; //tracking if collided with a landmark
                 asteroid.transform.forward = curve.GetFirstDeriv((float)i / (float)unspawnedAsteroids);
-                Vector2 offset = Random.insideUnitCircle * 300f;
+                Vector2 offset = Random.insideUnitCircle * 250f;
                 asteroid.transform.position = point;
                 asteroid.transform.position += asteroid.transform.right.normalized * offset.x;
                 asteroid.transform.position += asteroid.transform.up.normalized * offset.y;
@@ -288,7 +288,7 @@ public class FieldSegment : MonoBehaviour
         asteroid.transform.localScale *= scale = Random.Range(30f, 45f);
         asteroid.GetComponent<Rigidbody>().mass *= scale * scale * scale;
         asteroid.GetComponent<Rigidbody>().velocity = Random.onUnitSphere;
-        asteroid.GetComponent<Rigidbody>().velocity *= Random.Range(5f, 40f);
+        asteroid.GetComponent<Rigidbody>().velocity *= Random.Range(0f, 30f);
         asteroid.transform.position = position;
         asteroid.GetComponent<AsteroidCollision>().segment = this;
         asteroid.transform.parent = transform;
