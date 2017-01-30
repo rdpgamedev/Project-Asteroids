@@ -93,7 +93,6 @@ public class GameManager : MonoBehaviour {
 
     public void Play ()
     {
-        Debug.Log("Playing");
         BGM.instance.Activate();
         cameraObj.GetComponent<MoveTo>().enabled = true;
         cameraObj.GetComponent<LookAt>().enabled = true;
@@ -120,7 +119,6 @@ public class GameManager : MonoBehaviour {
 
     public void Restart()
     {
-        Debug.Log("Restarting");
         Destroy(field);
         ship.Restart();
         cameraObj.GetComponent<CameraManager>().Restart();
