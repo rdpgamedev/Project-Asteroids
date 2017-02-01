@@ -368,6 +368,7 @@ public class FieldSegment : MonoBehaviour
         {
             nextCheckpoint.GetComponent<Animator>().enabled = true;
             nextCheckpoint.GetComponent<AudioSource>().PlayDelayed(1f);
+            nextCheckpoint.transform.FindChild("Checkpoint Particles").gameObject.SetActive(true);
         }
     }
 
