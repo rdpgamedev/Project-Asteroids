@@ -269,7 +269,7 @@ public class FieldSegment : MonoBehaviour
             }
             else
             {
-                particlesMain.maxParticles = 55;
+                particlesMain.maxParticles = 500;
             }
         }
     }
