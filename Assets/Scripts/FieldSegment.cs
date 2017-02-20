@@ -243,33 +243,33 @@ public class FieldSegment : MonoBehaviour
         int oldMaxParticles;
         if (lastSegment == null)
         {
-            oldMaxParticles = 5000;
+            oldMaxParticles = 3000;
         }
         else
         {
             GameObject oldParticles = lastSegment.transform.FindChild("Field Particles").gameObject;
             oldMaxParticles = oldParticles.GetComponent<ParticleSystem>().main.maxParticles;
         }
-        if (oldMaxParticles == 2000)
+        if (oldMaxParticles == 500)
         {
             if (Random.Range(0f, 1f) < 0.6f)
             {
-                particlesMain.maxParticles = 2000;
+                particlesMain.maxParticles = 500;
             }
             else
             {
-                particlesMain.maxParticles = oldMaxParticles + Random.Range(-oldMaxParticles + 2000, 10000 - oldMaxParticles + 2000) / 3;
+                particlesMain.maxParticles = oldMaxParticles + Random.Range(-oldMaxParticles + 500, 6000 - oldMaxParticles + 500) / 3;
             }
         }
         else
         {
             if (Random.Range(0f, 1f) < 0.6f)
             {
-                particlesMain.maxParticles = oldMaxParticles + Random.Range(-oldMaxParticles + 2000, 10000 - oldMaxParticles + 2000) / 3;
+                particlesMain.maxParticles = oldMaxParticles + Random.Range(-oldMaxParticles + 500, 6000 - oldMaxParticles + 500) / 3;
             }
             else
             {
-                particlesMain.maxParticles = 2000;
+                particlesMain.maxParticles = 500;
             }
         }
     }
