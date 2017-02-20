@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class UIManager : MonoBehaviour
 {
@@ -89,6 +90,8 @@ public class UIManager : MonoBehaviour
 
     private void DeactivateUI(UIType ui)
     {
+        EventSystem eventSystem = GameObject.Find("EventSystem").GetComponent<EventSystem>();
+        eventSystem.SetSelectedGameObject(null);
         switch (ui)
         {
             case UIType.MENU:
