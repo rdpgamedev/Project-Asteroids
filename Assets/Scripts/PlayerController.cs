@@ -168,7 +168,7 @@ public class PlayerController : MonoBehaviour
                 break;
             case KeyCode.R:
                 //Restart game
-                GameManager.instance.Restart();
+                //GameManager.instance.Restart();
                 break;
             case KeyCode.P:
                 //Pause game
