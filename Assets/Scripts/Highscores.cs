@@ -5,7 +5,8 @@ using System.Xml.Serialization;
 using UnityEngine;
 
 [XmlRoot("Highscores")]
-public class Highscores{
+public class Highscores
+{
     [XmlArray("Scores")]
     [XmlArrayItem("Score")]
     public List<Score> Scores = new List<Score>(); //sorted descending
@@ -58,6 +59,24 @@ public class Highscores{
     {
         var serializer = new XmlSerializer(typeof(Highscores));
         return serializer.Deserialize(new StringReader(text)) as Highscores;
+    }
+
+    public static Highscores CreateDefault()
+    {
+        Highscores highscores = new global::Highscores();
+        List<Score> Scores = highscores.Scores;
+        Scores.Add(new Score("RDP", 10));
+        Scores.Add(new Score("J9",  9));
+        Scores.Add(new Score("OLI", 8));
+        Scores.Add(new Score("MIK", 7));
+        Scores.Add(new Score("COL", 6));
+        Scores.Add(new Score("ALX", 5));
+        Scores.Add(new Score("GAB", 4));
+        Scores.Add(new Score("VEG", 3));
+        Scores.Add(new Score("FLY", 2));
+        Scores.Add(new Score("ORE", 1));
+        highscores.Save(Path.Combine(Application.persistentDataPath, "highscores.xml"));
+        return highscores;
     }
 
 }

@@ -35,14 +35,8 @@ public class GameManager : MonoBehaviour {
         ship = PlayerShip.instance;
         Startup();
         string highscoresPath = Path.Combine(Application.persistentDataPath, "highscores.xml");
-        if (!File.Exists(highscoresPath))
-        {
-            FileStream stream = File.Create(highscoresPath);
-            stream.Close();
-            File.WriteAllText(highscoresPath, File.ReadAllText(Path.Combine(Application.dataPath, "defaulthighscores.xml")));
-        }
-        highscores = Highscores.Load(highscoresPath);
-
+        if (File.Exists(highscoresPath)) highscores = Highscores.Load(highscoresPath);
+        else highscores = Highscores.CreateDefault();
         LoadPreferences();
     }
 	
