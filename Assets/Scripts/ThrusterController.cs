@@ -7,8 +7,9 @@ public class ThrusterController : MonoBehaviour
     public float BOOST_THRESHOLD = 0.9f;
     public bool isLeft = false;
     public bool active = false;
+    public float boostScale = 1f;
 
-    private float TRIM = 0.6f; //pitch trim
+    private float TRIM = 0.2f; //pitch trim
     private float maxXRotation = 12f;
     private float maxYRotation = 10f;
     private float thrust = 4f/6f; //initial thrust before activation
@@ -32,7 +33,7 @@ public class ThrusterController : MonoBehaviour
         Rigidbody shipbody = ship.GetComponent<Rigidbody>();
         Vector3 direction = transform.forward;
         Vector3 force = direction * thrust * thrustScale;
-        if (thrust > BOOST_THRESHOLD) force *= 1.2f;
+        force *= boostScale;
         if (!GameManager.instance.isPlaying) force *= 0f;
         //use point between thruster and ship as application point
         Vector3 thrusterpos = this.transform.position;
@@ -56,6 +57,11 @@ public class ThrusterController : MonoBehaviour
     {
         transform.localEulerAngles = new Vector3(TRIM, 0, 0);
         thrust = 4f / 6f;
+    }
+
+    public bool isBoosting ()
+    {
+        return thrust > BOOST_THRESHOLD;
     }
 
     void RotateThruster()
