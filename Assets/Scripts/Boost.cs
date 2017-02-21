@@ -20,13 +20,13 @@ public class Boost : MonoBehaviour {
         instance = this;
     }
 
-	void Start () {
+    void Start () {
         leftControl = leftThruster.GetComponent<ThrusterController>();
         rightControl = rightThruster.GetComponent<ThrusterController>();
-	}
-	
-	void Update () {
-		if (ThrustersBoosting() && !boosting)
+    }
+
+    void Update () {
+        if (ThrustersBoosting() && !boosting)
         {
             StartBoosting();
         }
@@ -34,7 +34,7 @@ public class Boost : MonoBehaviour {
         {
             EndBoosting();
         }
-	}
+    }
 
     bool ThrustersBoosting ()
     {
