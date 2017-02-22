@@ -8,10 +8,11 @@ public class ThrusterController : MonoBehaviour
     public bool isLeft = false;
     public bool active = false;
     public float boostScale = 1f;
+    public float constrainFactor = 2f;
 
     private float TRIM = 0.2f; //pitch trim
     private float maxXRotation = 12f;
-    private float maxYRotation = 10f;
+    private float maxYRotation = 6f;
     private float thrust = 4f/6f; //initial thrust before activation
     private float xaxis;
     private float yaxis;
@@ -90,5 +91,17 @@ public class ThrusterController : MonoBehaviour
     {
         //thrust ranges from 2/3 to 1
         return (yaxis + 1f) / 6f + (2f / 3f);
+    }
+
+    public void ConstrainRotation ()
+    {
+        maxXRotation /= constrainFactor;
+        maxYRotation /= constrainFactor;
+    }
+
+    public void ReleaseRotation ()
+    {
+        maxXRotation *= constrainFactor;
+        maxYRotation *= constrainFactor;
     }
 }

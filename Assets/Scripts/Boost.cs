@@ -49,6 +49,8 @@ public class Boost : MonoBehaviour {
         //increase speed
         leftControl.boostScale = boostScale;
         rightControl.boostScale = boostScale;
+        leftControl.ConstrainRotation();
+        rightControl.ConstrainRotation();
         //increase camera shake
         oldCameraShake = cameraObj.GetComponent<Shake>().scale;
         cameraObj.GetComponent<Shake>().scale = boostCameraShake;
@@ -64,6 +66,8 @@ public class Boost : MonoBehaviour {
         //reset speed
         leftControl.boostScale = 1f;
         rightControl.boostScale = 1f;
+        leftControl.ReleaseRotation();
+        rightControl.ReleaseRotation();
         //reset camera shake
         cameraObj.GetComponent<Shake>().scale = oldCameraShake;
         //reset flame color
