@@ -13,7 +13,7 @@ public class Shake : MonoBehaviour {
         
     }
 
-    void FixedUpdate ()
+    void Update ()
     {
         if (counter == 0)
         {
