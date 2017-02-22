@@ -57,6 +57,7 @@ public class Boost : MonoBehaviour {
         //activate particles
         boostParticles.GetComponent<ParticleSystem>().Play();
         //audio effects
+        boostParticles.GetComponent<AudioSource>().Play();
     }
 
     void EndBoosting ()
@@ -74,6 +75,8 @@ public class Boost : MonoBehaviour {
         PlayerShip.instance.GetComponent<Animator>().SetBool("thrusterBoosting", false);
         //reset particles
         boostParticles.GetComponent<ParticleSystem>().Stop();
+        //end audio
+        boostParticles.GetComponent<AudioSource>().Stop();
     }
 
     void IncreaseShake()
