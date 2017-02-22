@@ -7,10 +7,11 @@ public class Shake : MonoBehaviour {
     public int MAX_COUNTER = 2;
 
     private int counter = 0;
+    private float initialScale;
 
     void Start ()
     {
-        
+        initialScale = scale;
     }
 
     void Update ()
@@ -22,5 +23,10 @@ public class Shake : MonoBehaviour {
         }
         ++counter;
         if (counter > MAX_COUNTER) counter = 0;
+    }
+
+    public void Reset()
+    {
+        scale = initialScale;
     }
 }
