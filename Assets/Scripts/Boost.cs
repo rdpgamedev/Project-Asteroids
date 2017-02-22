@@ -7,7 +7,8 @@ public class Boost : MonoBehaviour {
 
     public GameObject leftThruster;
     public GameObject rightThruster;
-    public GameObject camera;
+    public GameObject cameraObj;
+    public GameObject boostParticles;
     public float boostScale = 1.2f;
     public float boostCameraShake = 1f;
 
@@ -49,11 +50,12 @@ public class Boost : MonoBehaviour {
         leftControl.boostScale = boostScale;
         rightControl.boostScale = boostScale;
         //increase camera shake
-        oldCameraShake = camera.GetComponent<Shake>().scale;
-        camera.GetComponent<Shake>().scale = boostCameraShake;
+        oldCameraShake = cameraObj.GetComponent<Shake>().scale;
+        cameraObj.GetComponent<Shake>().scale = boostCameraShake;
         //change flame color
         PlayerShip.instance.GetComponent<Animator>().SetBool("thrusterBoosting", true);
         //activate particles
+        boostParticles.GetComponent<ParticleSystem>().Play();
     }
 
     void EndBoosting ()
@@ -63,9 +65,10 @@ public class Boost : MonoBehaviour {
         leftControl.boostScale = 1f;
         rightControl.boostScale = 1f;
         //reset camera shake
-        camera.GetComponent<Shake>().scale = oldCameraShake;
+        cameraObj.GetComponent<Shake>().scale = oldCameraShake;
         //reset flame color
         PlayerShip.instance.GetComponent<Animator>().SetBool("thrusterBoosting", false);
         //reset particles
+        boostParticles.GetComponent<ParticleSystem>().Stop();
     }
 }
