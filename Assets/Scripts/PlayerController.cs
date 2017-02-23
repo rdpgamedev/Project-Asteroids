@@ -172,12 +172,12 @@ public class PlayerController : MonoBehaviour
                 break;
             case KeyCode.P:
                 //Pause game
-                if (GameManager.instance.isPlaying && !GameManager.instance.paused)
+                if (GameManager.instance.isPlaying && !GameManager.instance.paused && !PlayerShip.instance.isDead)
                 {
                     GameManager.instance.Pause();
                     GameManager.instance.paused = true;
                 }
-                else if (!GameManager.instance.isPlaying && GameManager.instance.paused)
+                else if (!GameManager.instance.isPlaying && GameManager.instance.paused && !PlayerShip.instance.isDead)
                 {
                     GameManager.instance.Resume();
                     GameManager.instance.paused = false;
