@@ -3,13 +3,12 @@ using System.Collections;
 
 public class AsteroidCollision : MonoBehaviour {
     public int MAXCHILDRENASTEROIDS = 3;
-    public int MAXDIVISIONS = 4;
+    public int MAXDIVISIONS = 2;
     public int colliders;
     public FieldSegment segment;
     public GameObject AsteroidParticleSystem;
     public GameObject AsteroidChildParticles;
-
-    private int divisions = 0;
+    public int divisions = 0;
 
 	void Start () {
 
@@ -21,12 +20,15 @@ public class AsteroidCollision : MonoBehaviour {
 
     public void ExplodeDelayed (float time)
     {
-        Invoke("Explode", time);
+        if (time == 0f) Explode();
+        else Invoke("Explode", time);
     }
 
     public void Explode()
     {
-        if (divisions >= MAXDIVISIONS) return;
+        ++divisions;
+        if (divisions > MAXDIVISIONS) return;
+        Debug.Log(divisions);
         if (segment != null) --segment.asteroidCount;
         GameObject particleSystem = Instantiate<GameObject>(AsteroidParticleSystem);
         particleSystem.transform.parent = segment.transform;
@@ -39,19 +41,20 @@ public class AsteroidCollision : MonoBehaviour {
             particlesMain.startColor = iceBlue;
         }
         //spawn smaller asteroids
-        int asteroidCount = Random.Range(2, MAXCHILDRENASTEROIDS);
+        int asteroidCount = Random.Range(2, MAXCHILDRENASTEROIDS + 1);
         for (int i = 0; i < asteroidCount; ++i)
         {
             GameObject newAsteroid = segment.SpawnAsteroid(transform.position);
+            newAsteroid.transform.position += Random.onUnitSphere * 2f;
             newAsteroid.transform.localScale = transform.localScale * (float)System.Math.Pow(asteroidCount, (-1 / 3));
             newAsteroid.transform.localScale *= 0.5f;
             newAsteroid.GetComponent<Rigidbody>().velocity = GetComponent<Rigidbody>().velocity * 2;
             newAsteroid.GetComponent<Rigidbody>().maxDepenetrationVelocity = 40f;
-            newAsteroid.GetComponent<AsteroidCollision>().divisions = ++divisions;
+            newAsteroid.GetComponent<AsteroidCollision>().divisions = divisions;
             GameObject dustParticles = Instantiate<GameObject>(AsteroidChildParticles);
             dustParticles.transform.parent = newAsteroid.transform;
-            dustParticles.transform.localPosition = new Vector3();
-            dustParticles.transform.localScale = new Vector3(1f, 1f, 1f);
+            dustParticles.transform.localPosition = Vector3.zero;
+            dustParticles.transform.localScale = Vector3.one;
             //change color to asteroid's color
             var particlesMain = dustParticles.GetComponent<ParticleSystem>().main;
             particlesMain.startColor = newAsteroid.GetComponent<MeshRenderer>().material.color;
@@ -77,7 +80,7 @@ public class AsteroidCollision : MonoBehaviour {
             GameObject oldAsteroid = collision.gameObject;
             if (GetComponent<Rigidbody>().mass < oldAsteroid.GetComponent<Rigidbody>().mass)
             {
-                ExplodeDelayed(0.5f);
+                Explode();
             }
             else
             {
