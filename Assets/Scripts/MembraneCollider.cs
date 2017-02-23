@@ -3,6 +3,7 @@ using System.Collections;
 
 public class MembraneCollider : MonoBehaviour {
     public GameObject CHECKPOINT;
+    public GameObject EXPLOSION_TRIGGER;
 
     private GameManager gameManager;
     private PlayerShip ship;
@@ -21,19 +22,27 @@ public class MembraneCollider : MonoBehaviour {
         {
             GameObject fieldSegment = CHECKPOINT.transform.parent.gameObject;
             FieldSegment segment = fieldSegment.GetComponent<FieldSegment>();
+            //game logic
             gameManager.SetActiveSegment(segment);
             gameManager.difficulty += 0.025f;
             ++(gameManager.level);
-            gameManager.ResetTime();
+            //ship logic
             ship.thrustScale += 30f;
+            ship.ActivateThrusters();
+            ship.GetComponent<Rigidbody>().freezeRotation = false;
+            //visual effects
             cameraPos.CheckpointZoom();
             fieldSegment.GetComponent<BezierLineRenderer>().Activate();
             ship.gameObject.GetComponent<Animator>().SetTrigger("boost");
             GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Animator>().SetTrigger("boost");
-            ship.ActivateThrusters();
-            ship.GetComponent<Rigidbody>().freezeRotation = false;
+            //explosion
             CHECKPOINT.transform.FindChild("CheckpointExplosion").GetComponent<ParticleSystem>().Play();
+            GameObject explosionTrigger = Instantiate(EXPLOSION_TRIGGER, CHECKPOINT.transform);
+            explosionTrigger.transform.localPosition = Vector3.zero;
+            explosionTrigger.transform.localRotation = Quaternion.identity;
+            //timer
             gameManager.TIMEPARTICLES.GetComponent<ParticleSystem>().Play();
+            gameManager.ResetTime();
         }
     }
 }
