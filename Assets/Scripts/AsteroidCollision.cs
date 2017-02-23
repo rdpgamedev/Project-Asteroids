@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class AsteroidCollision : MonoBehaviour {
-    public int MAXCHILDRENASTEROIDS = 4;
+    public int MAXCHILDRENASTEROIDS = 3;
     public int MAXDIVISIONS = 4;
     public int colliders;
     public FieldSegment segment;
