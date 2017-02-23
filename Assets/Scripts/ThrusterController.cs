@@ -4,12 +4,15 @@ using System.Collections;
 public class ThrusterController : MonoBehaviour
 {
     public static float MAXTHRUST;
+    public float BOOST_THRESHOLD = 0.9f;
     public bool isLeft = false;
     public bool active = false;
+    public float boostScale = 1f;
+    public float constrainFactor = 2f;
 
-    private float TRIM = 0.6f; //pitch trim
+    private float TRIM = 0.2f; //pitch trim
     private float maxXRotation = 12f;
-    private float maxYRotation = 10f;
+    private float maxYRotation = 6f;
     private float thrust = 4f/6f; //initial thrust before activation
     private float xaxis;
     private float yaxis;
@@ -31,17 +34,20 @@ public class ThrusterController : MonoBehaviour
         Rigidbody shipbody = ship.GetComponent<Rigidbody>();
         Vector3 direction = transform.forward;
         Vector3 force = direction * thrust * thrustScale;
+        force *= boostScale;
         if (!GameManager.instance.isPlaying) force *= 0f;
         //use point between thruster and ship as application point
         Vector3 thrusterpos = this.transform.position;
-        Vector3 offset = ship.transform.position - thrusterpos;
+        Vector3 offset = ship.GetComponent<Rigidbody>().worldCenterOfMass - thrusterpos;
         float offsetMin = PlayerShip.instance.THRUSTER_OFFSET_MIN;
         if (offsetMin > 0.5f) offsetMin = 0.5f;
         if (offsetMin < 0f) offsetMin = 0f;
-        offset *= thrust / 2 + offsetMin;
+        offset *= thrust / 4f + offsetMin;
         Vector3 forcepos = thrusterpos + offset;
         shipbody.AddForceAtPosition(force, forcepos);
-
+        Debug.DrawLine(forcepos, forcepos+force);
+        Debug.DrawLine(transform.position, transform.position+direction*5f, Color.green);
+        Debug.DrawLine(ship.GetComponent<Rigidbody>().worldCenterOfMass, ship.GetComponent<Rigidbody>().worldCenterOfMass + direction * 5f, Color.red);
         ParticleSystem thrusterParticles = 
             transform.FindChild("Thruster_Particles").GetComponent<ParticleSystem>();
         ParticleSystem.EmissionModule emission = thrusterParticles.emission;
@@ -52,6 +58,11 @@ public class ThrusterController : MonoBehaviour
     {
         transform.localEulerAngles = new Vector3(TRIM, 0, 0);
         thrust = 4f / 6f;
+    }
+
+    public bool isBoosting ()
+    {
+        return thrust > BOOST_THRESHOLD;
     }
 
     void RotateThruster()
@@ -78,6 +89,19 @@ public class ThrusterController : MonoBehaviour
     // (e.g. when the left stick is pushed to the right)
     float ThrustCalculation (float yaxis, float xaxis)
     {
-        return (yaxis + 1f) / 6f + (2f / 3f) - Mathf.Abs(xaxis) / 8f;
+        //thrust ranges from 2/3 to 1
+        return (yaxis + 1f) / 6f + (2f / 3f);
+    }
+
+    public void ConstrainRotation ()
+    {
+        maxXRotation /= constrainFactor;
+        maxYRotation /= constrainFactor;
+    }
+
+    public void ReleaseRotation ()
+    {
+        maxXRotation *= constrainFactor;
+        maxYRotation *= constrainFactor;
     }
 }

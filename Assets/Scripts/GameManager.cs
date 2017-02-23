@@ -100,6 +100,8 @@ public class GameManager : MonoBehaviour {
     {
         Time.timeScale = 0f;
         isPlaying = false;
+        cameraObj.GetComponent<Shake>().enabled = false;
+        paused = true;
         PauseAudio();
         UIManager.instance.ActivateUI(UIManager.UIType.PAUSE);
     } 
@@ -108,6 +110,7 @@ public class GameManager : MonoBehaviour {
     {
         Time.timeScale = 1f;
         isPlaying = true;
+        cameraObj.GetComponent<Shake>().enabled = true;
         paused = false;
         UnPauseAudio();
         UIManager.instance.ActivateUI(UIManager.UIType.GAME);

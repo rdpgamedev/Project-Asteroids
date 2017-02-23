@@ -141,6 +141,7 @@ public class PlayerShip : MonoBehaviour
         Invoke("HideVisualParts", 0.1f);
         cameraObj.GetComponent<LookAt>().enabled = false;
         cameraObj.GetComponent<MoveTo>().enabled = false;
+        cameraObj.GetComponent<Shake>().enabled = false;
         BGM.instance.SetVolume(0.3f);
     }
 
