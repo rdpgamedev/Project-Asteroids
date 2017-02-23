@@ -2,22 +2,72 @@
 using System.Collections;
 
 public class AsteroidCollision : MonoBehaviour {
-    public int MAXCHILDRENASTEROIDS = 4;
+    public int MAXCHILDRENASTEROIDS = 3;
+    public int MAXDIVISIONS = 2;
     public int colliders;
     public FieldSegment segment;
-    public bool isChild = false;
     public GameObject AsteroidParticleSystem;
     public GameObject AsteroidChildParticles;
+    public int divisions = 0;
 
-	// Use this for initialization
 	void Start () {
 
 	}
 	
-	// Update is called once per frame
 	void Update () {
 	
 	}
+
+    public void ExplodeDelayed (float time)
+    {
+        if (time == 0f) Explode();
+        else Invoke("Explode", time);
+    }
+
+    public void Explode()
+    {
+        ++divisions;
+        if (divisions > MAXDIVISIONS) return;
+        Debug.Log(divisions);
+        if (segment != null) --segment.asteroidCount;
+        GameObject particleSystem = Instantiate<GameObject>(AsteroidParticleSystem);
+        particleSystem.transform.parent = segment.transform;
+        particleSystem.transform.position = transform.position;
+        //change to ice particles if ice asteroid
+        if (GetComponent<MeshRenderer>().material.name.Contains("Ice"))
+        {
+            Color iceBlue = new Color(60f / 255f, 75f / 255f, 75f / 255f, 0.2f);
+            var particlesMain = particleSystem.GetComponent<ParticleSystem>().main;
+            particlesMain.startColor = iceBlue;
+        }
+        //spawn smaller asteroids
+        int asteroidCount = Random.Range(2, MAXCHILDRENASTEROIDS + 1);
+        for (int i = 0; i < asteroidCount; ++i)
+        {
+            GameObject newAsteroid = segment.SpawnAsteroid(transform.position);
+            newAsteroid.transform.position += Random.onUnitSphere * 2f;
+            newAsteroid.transform.localScale = transform.localScale * (float)System.Math.Pow(asteroidCount, (-1 / 3));
+            newAsteroid.transform.localScale *= 0.5f;
+            newAsteroid.GetComponent<Rigidbody>().velocity = GetComponent<Rigidbody>().velocity * 2;
+            newAsteroid.GetComponent<Rigidbody>().maxDepenetrationVelocity = 40f;
+            newAsteroid.GetComponent<AsteroidCollision>().divisions = divisions;
+            GameObject dustParticles = Instantiate<GameObject>(AsteroidChildParticles);
+            dustParticles.transform.parent = newAsteroid.transform;
+            dustParticles.transform.localPosition = Vector3.zero;
+            dustParticles.transform.localScale = Vector3.one;
+            //change color to asteroid's color
+            var particlesMain = dustParticles.GetComponent<ParticleSystem>().main;
+            particlesMain.startColor = newAsteroid.GetComponent<MeshRenderer>().material.color;
+            //change shell particles
+            GameObject shellParticles = dustParticles.transform.FindChild("ShellParticles").gameObject;
+            var shellParticlesMain = shellParticles.GetComponent<ParticleSystem>().main;
+            shellParticlesMain.startColor = newAsteroid.GetComponent<MeshRenderer>().material.color;
+            var shellParticlesShape = shellParticles.GetComponent<ParticleSystem>().shape;
+            shellParticlesShape.mesh = newAsteroid.GetComponent<MeshFilter>().sharedMesh;
+        }
+        Destroy(gameObject);
+        --segment.asteroidCount;
+    }
 
     void OnCollisionEnter (Collision collision)
     {
@@ -25,48 +75,12 @@ public class AsteroidCollision : MonoBehaviour {
         {
             segment.RepositionAsteroid(gameObject);
         }
-        else if (collision.gameObject.name.Contains("Asteroid") && !isChild && !name.Contains("Landmark"))
+        else if (collision.gameObject.name.Contains("Asteroid") && !name.Contains("Landmark"))
         {
             GameObject oldAsteroid = collision.gameObject;
             if (GetComponent<Rigidbody>().mass < oldAsteroid.GetComponent<Rigidbody>().mass)
             {
-                if (segment != null) --segment.asteroidCount;
-                GameObject particleSystem = Instantiate<GameObject>(AsteroidParticleSystem);
-                particleSystem.transform.parent = segment.transform;
-                particleSystem.transform.position = transform.position;
-                //change to ice particles if ice asteroid
-                if (GetComponent<MeshRenderer>().material.name.Contains("Ice"))
-                {
-                    Color iceBlue = new Color(60f / 255f, 75f / 255f, 75f / 255f, 0.2f);
-                    var particlesMain = particleSystem.GetComponent<ParticleSystem>().main;
-                    particlesMain.startColor = iceBlue;
-                }
-                //spawn smaller asteroids
-                int asteroidCount = Random.Range(2, MAXCHILDRENASTEROIDS);
-                for (int i = 0; i < asteroidCount; ++i)
-                {
-                    GameObject newAsteroid = segment.SpawnAsteroid(transform.position);
-                    newAsteroid.transform.localScale = transform.localScale * (float)System.Math.Pow(asteroidCount, (-1 / 3));
-                    newAsteroid.transform.localScale *= 0.5f;
-                    newAsteroid.GetComponent<Rigidbody>().velocity = GetComponent<Rigidbody>().velocity * 2;
-                    newAsteroid.GetComponent<Rigidbody>().maxDepenetrationVelocity = 40f;
-                    newAsteroid.GetComponent<AsteroidCollision>().isChild = true;
-                    GameObject dustParticles = Instantiate<GameObject>(AsteroidChildParticles);
-                    dustParticles.transform.parent = newAsteroid.transform;
-                    dustParticles.transform.localPosition = new Vector3();
-                    dustParticles.transform.localScale = new Vector3(1f, 1f, 1f);
-                    //change color to asteroid's color
-                    var particlesMain = dustParticles.GetComponent<ParticleSystem>().main;
-                    particlesMain.startColor = newAsteroid.GetComponent<MeshRenderer>().material.color;
-                    //change shell particles
-                    GameObject shellParticles = dustParticles.transform.FindChild("ShellParticles").gameObject;
-                    var shellParticlesMain = shellParticles.GetComponent<ParticleSystem>().main;
-                    shellParticlesMain.startColor = newAsteroid.GetComponent<MeshRenderer>().material.color;
-                    var shellParticlesShape = shellParticles.GetComponent<ParticleSystem>().shape;
-                    shellParticlesShape.mesh = newAsteroid.GetComponent<MeshFilter>().sharedMesh;
-                }
-                Destroy(gameObject);
-                --segment.asteroidCount;
+                Explode();
             }
             else
             {
