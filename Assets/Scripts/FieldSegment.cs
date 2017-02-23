@@ -43,7 +43,7 @@ public class FieldSegment : MonoBehaviour
 
     void Start ()
     {
-        fieldRad = MAXLENGTH * 4f;
+        fieldRad = MAXLENGTH * 2f;
 	}
 	
 	void Update ()
@@ -183,7 +183,7 @@ public class FieldSegment : MonoBehaviour
         //Spawn Asteroids
         int unspawnedAsteroids = Mathf.Min(
             Field.instance.MINASTEROIDS + Field.instance.checkpointsMade * 2,
-            60);
+            30);
         for (int i = 0; i < (unspawnedAsteroids); ++i)
         {
             Vector3 point = curve.GetPoint((float)i / (float)unspawnedAsteroids);
