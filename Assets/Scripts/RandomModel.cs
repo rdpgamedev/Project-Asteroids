@@ -17,7 +17,19 @@ public class RandomModel : MonoBehaviour
 
     public void ChooseAsteroid(FieldType type)
     {
-        GetComponent<MeshFilter>().sharedMesh = meshes[Random.Range(0, meshes.Length)];
+        ChooseAsteroid(type, false);
+    }
+
+    public void ChooseAsteroid(FieldType type, bool landmark)
+    {
+        if (landmark)
+        {
+            GetComponent<MeshFilter>().sharedMesh = meshes[Random.Range(4, meshes.Length)];
+        }
+        else
+        {
+            GetComponent<MeshFilter>().sharedMesh = meshes[Random.Range(0, 4)];
+        }
         GetComponent<MeshRenderer>().material = materials[Random.Range((int)type * 4, 4 + (int)type * 4)];
         GetComponent<MeshCollider>().sharedMesh = GetComponent<MeshFilter>().sharedMesh;
     }
