@@ -27,6 +27,10 @@ ModelImporter:
     100038: Asteroid_C_4_Rock
     100040: //RootNode
     100042: Camera_Target
+    100044: Redux_Asteroid_B_1_Ice
+    100046: Redux_Asteroid_B_2_Ice
+    100048: Redux_Asteroid_B_3_Ice
+    100050: Redux_Asteroid_B_4_Ice
     400000: Asteroid_B_1_Ice
     400002: Asteroid_B_1_Rock
     400004: Asteroid_B_2_Ice
@@ -49,6 +53,10 @@ ModelImporter:
     400038: Asteroid_C_4_Rock
     400040: //RootNode
     400042: Camera_Target
+    400044: Redux_Asteroid_B_1_Ice
+    400046: Redux_Asteroid_B_2_Ice
+    400048: Redux_Asteroid_B_3_Ice
+    400050: Redux_Asteroid_B_4_Ice
     2300000: Asteroid_B_1_Ice
     2300002: Asteroid_B_1_Rock
     2300004: Asteroid_B_2_Ice
@@ -69,6 +77,10 @@ ModelImporter:
     2300034: Asteroid_C_4_Collider
     2300036: Asteroid_C_4_Ice
     2300038: Asteroid_C_4_Rock
+    2300040: Redux_Asteroid_B_1_Ice
+    2300042: Redux_Asteroid_B_2_Ice
+    2300044: Redux_Asteroid_B_3_Ice
+    2300046: Redux_Asteroid_B_4_Ice
     3300000: Asteroid_B_1_Ice
     3300002: Asteroid_B_1_Rock
     3300004: Asteroid_B_2_Ice
@@ -89,6 +101,10 @@ ModelImporter:
     3300034: Asteroid_C_4_Collider
     3300036: Asteroid_C_4_Ice
     3300038: Asteroid_C_4_Rock
+    3300040: Redux_Asteroid_B_1_Ice
+    3300042: Redux_Asteroid_B_2_Ice
+    3300044: Redux_Asteroid_B_3_Ice
+    3300046: Redux_Asteroid_B_4_Ice
     4300000: Asteroid_C_4_Collider
     4300002: Asteroid_C_3_Collider
     4300004: Asteroid_C_2_Collider
@@ -109,6 +125,10 @@ ModelImporter:
     4300034: Asteroid_B_3_Rock
     4300036: Asteroid_B_2_Rock
     4300038: Asteroid_B_1_Rock
+    4300040: Redux_Asteroid_B_4_Ice
+    4300042: Redux_Asteroid_B_3_Ice
+    4300044: Redux_Asteroid_B_2_Ice
+    4300046: Redux_Asteroid_B_1_Ice
     7400000: Default Take
     9500000: //RootNode
   materials:
@@ -157,6 +177,7 @@ ModelImporter:
   importAnimation: 1
   copyAvatar: 0
   humanDescription:
+    serializedVersion: 2
     human: []
     skeleton: []
     armTwist: 0.5
@@ -167,7 +188,10 @@ ModelImporter:
     legStretch: 0.05
     feetSpacing: 0
     rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   animationType: 2
   humanoidOversampling: 1

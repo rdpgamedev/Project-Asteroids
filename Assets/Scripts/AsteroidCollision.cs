@@ -3,7 +3,7 @@ using System.Collections;
 
 public class AsteroidCollision : MonoBehaviour {
     public int MAXCHILDRENASTEROIDS = 3;
-    public int MAXDIVISIONS = 2;
+    public int MAXDIVISIONS = 4;
     public int colliders;
     public FieldSegment segment;
     public GameObject AsteroidParticleSystem;
@@ -27,8 +27,7 @@ public class AsteroidCollision : MonoBehaviour {
     public void Explode()
     {
         ++divisions;
-        if (divisions > MAXDIVISIONS) return;
-        Debug.Log(divisions);
+        if (divisions > MAXDIVISIONS || (transform.position - PlayerShip.instance.transform.position).magnitude > 1200f) return;
         if (segment != null) --segment.asteroidCount;
         GameObject particleSystem = Instantiate<GameObject>(AsteroidParticleSystem);
         particleSystem.transform.parent = segment.transform;

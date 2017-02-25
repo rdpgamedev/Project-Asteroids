@@ -282,7 +282,7 @@ public class FieldSegment : MonoBehaviour
     public GameObject SpawnAsteroid (Vector3 position)
     {
         GameObject asteroid = Instantiate<GameObject>(ASTEROID);
-        asteroid.GetComponent<RandomModel>().ChooseAsteroid(fieldtype);
+        asteroid.GetComponent<RandomModel>().ChooseAsteroid(fieldtype, false);
         float scale;
         asteroid.transform.localScale *= scale = Random.Range(30f, 45f);
         asteroid.GetComponent<Rigidbody>().mass *= scale * scale * scale;
@@ -303,7 +303,7 @@ public class FieldSegment : MonoBehaviour
     {
         GameObject landmark = Instantiate<GameObject>(ASTEROID);
         landmark.transform.position = position;
-        landmark.GetComponent<RandomModel>().ChooseAsteroid(fieldtype);
+        landmark.GetComponent<RandomModel>().ChooseAsteroid(fieldtype, true);
         landmark.transform.localScale *= Random.Range(300f, 450f);
         landmark.GetComponent<Rigidbody>().isKinematic = true;
         landmark.GetComponent<MeshCollider>().convex = false;
