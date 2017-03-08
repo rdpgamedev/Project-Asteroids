@@ -145,6 +145,11 @@ public class GameManager : MonoBehaviour {
         UIManager.instance.ActivateUI(UIManager.UIType.CREDITS);
     }
 
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
+
     public void IncreaseScore ()
     {
         ++score;

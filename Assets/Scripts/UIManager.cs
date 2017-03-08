@@ -44,7 +44,7 @@ public class UIManager : MonoBehaviour
             case UIType.MENU:
                 MENUUI.SetActive(true);
                 activeUI = UIType.MENU;
-                MENUUI.transform.FindChild("Play Button").GetComponent<Button>().Select();
+                MENUUI.transform.FindChild("Buttons").FindChild("Play Button").GetComponent<Button>().Select();
                 break;
             case UIType.GAME:
                 GAMEUI.SetActive(true);
@@ -63,7 +63,7 @@ public class UIManager : MonoBehaviour
                 }
                 else
                 {
-                    PAUSEUI.transform.FindChild("Resume Button").GetComponent<Button>().Select();
+                    PAUSEUI.transform.FindChild("Buttons").FindChild("Resume Button").GetComponent<Button>().Select();
                 }
 
                 break;
@@ -104,7 +104,7 @@ public class UIManager : MonoBehaviour
                 GAMEUI.SetActive(false);
                 break;
             case UIType.PAUSE:
-                PAUSEUI.transform.FindChild("Resume Button").gameObject.SetActive(true);
+                PAUSEUI.transform.FindChild("Buttons").FindChild("Resume Button").gameObject.SetActive(true);
                 PAUSEUI.SetActive(false);
                 break;
             case UIType.HIGHSCORE:
