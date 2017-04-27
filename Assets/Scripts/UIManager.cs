@@ -58,8 +58,8 @@ public class UIManager : MonoBehaviour
                 pauseScoreText.text = scoreText.text;
                 if (PlayerShip.instance.isDead)
                 {
-                    PAUSEUI.transform.FindChild("Restart Button").GetComponent<Button>().Select();
-                    PAUSEUI.transform.FindChild("Resume Button").gameObject.SetActive(false);
+                    PAUSEUI.transform.FindChild("Buttons").FindChild("Restart Button").GetComponent<Button>().Select();
+                    PAUSEUI.transform.FindChild("Buttons").FindChild("Resume Button").gameObject.SetActive(false);
                 }
                 else
                 {
