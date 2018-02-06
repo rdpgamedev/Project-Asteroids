@@ -44,7 +44,7 @@ public class UIManager : MonoBehaviour
             case UIType.MENU:
                 MENUUI.SetActive(true);
                 activeUI = UIType.MENU;
-                MENUUI.transform.FindChild("Buttons").FindChild("Play Button").GetComponent<Button>().Select();
+                MENUUI.transform.Find("Buttons").Find("Play Button").GetComponent<Button>().Select();
                 break;
             case UIType.GAME:
                 GAMEUI.SetActive(true);
@@ -53,34 +53,34 @@ public class UIManager : MonoBehaviour
             case UIType.PAUSE:
                 PAUSEUI.SetActive(true);
                 activeUI = UIType.PAUSE;
-                Text scoreText = GAMEUI.transform.FindChild("Score_Text").GetComponent<Text>();
-                Text pauseScoreText = PAUSEUI.transform.FindChild("Score_Text").GetComponent<Text>();
+                Text scoreText = GAMEUI.transform.Find("Score_Text").GetComponent<Text>();
+                Text pauseScoreText = PAUSEUI.transform.Find("Score_Text").GetComponent<Text>();
                 pauseScoreText.text = scoreText.text;
                 if (PlayerShip.instance.isDead)
                 {
-                    PAUSEUI.transform.FindChild("Buttons").FindChild("Restart Button").GetComponent<Button>().Select();
-                    PAUSEUI.transform.FindChild("Buttons").FindChild("Resume Button").gameObject.SetActive(false);
+                    PAUSEUI.transform.Find("Buttons").Find("Restart Button").GetComponent<Button>().Select();
+                    PAUSEUI.transform.Find("Buttons").Find("Resume Button").gameObject.SetActive(false);
                 }
                 else
                 {
-                    PAUSEUI.transform.FindChild("Buttons").FindChild("Resume Button").GetComponent<Button>().Select();
+                    PAUSEUI.transform.Find("Buttons").Find("Resume Button").GetComponent<Button>().Select();
                 }
 
                 break;
             case UIType.HIGHSCORE:
                 HIGHSCOREUI.SetActive(true);
                 activeUI = UIType.HIGHSCORE;
-                HIGHSCOREUI.transform.FindChild("Score Panel").FindChild("InputField").GetComponent<InputField>().Select();
+                HIGHSCOREUI.transform.Find("Score Panel").Find("InputField").GetComponent<InputField>().Select();
                 break;
             case UIType.SCORES:
                 SCORESUI.SetActive(true);
                 activeUI = UIType.SCORES;
-                SCORESUI.transform.FindChild("Menu Button").GetComponent<Button>().Select();
+                SCORESUI.transform.Find("Menu Button").GetComponent<Button>().Select();
                 break;
             case UIType.OPTIONS:
                 OPTIONSUI.SetActive(true);
                 activeUI = UIType.OPTIONS;
-                OPTIONSUI.transform.FindChild("Options Area").FindChild("Options").FindChild("Simplified Controls").GetComponent<Toggle>().Select();
+                OPTIONSUI.transform.Find("Options Area").Find("Options").Find("Simplified Controls").GetComponent<Toggle>().Select();
                 break;
             case UIType.CREDITS:
                 CREDITSUI.SetActive(true);
@@ -104,7 +104,7 @@ public class UIManager : MonoBehaviour
                 GAMEUI.SetActive(false);
                 break;
             case UIType.PAUSE:
-                PAUSEUI.transform.FindChild("Buttons").FindChild("Resume Button").gameObject.SetActive(true);
+                PAUSEUI.transform.Find("Buttons").Find("Resume Button").gameObject.SetActive(true);
                 PAUSEUI.SetActive(false);
                 break;
             case UIType.HIGHSCORE:
@@ -121,10 +121,10 @@ public class UIManager : MonoBehaviour
                 int invert = 0;
                 if (PlayerController.instance.invertVertical) invert = 1;
                 PlayerPrefs.SetInt("Invert Vertical Controls", invert);
-                GameObject musicSlider = OPTIONSUI.transform.FindChild("Options Area").FindChild("Options").FindChild("Music Volume").gameObject;
+                GameObject musicSlider = OPTIONSUI.transform.Find("Options Area").Find("Options").Find("Music Volume").gameObject;
                 float musicVolume = musicSlider.GetComponent<Slider>().value;
                 PlayerPrefs.SetFloat("Music Volume", musicVolume);
-                GameObject effectsSlider = OPTIONSUI.transform.FindChild("Options Area").FindChild("Options").FindChild("Effects Volume").gameObject;
+                GameObject effectsSlider = OPTIONSUI.transform.Find("Options Area").Find("Options").Find("Effects Volume").gameObject;
                 float effectsVolume = effectsSlider.GetComponent<Slider>().value;
                 PlayerPrefs.SetFloat("Effects Volume", effectsVolume);
                 OPTIONSUI.SetActive(false);

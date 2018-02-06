@@ -36,7 +36,7 @@ public class MembraneCollider : MonoBehaviour {
             ship.gameObject.GetComponent<Animator>().SetTrigger("boost");
             GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Animator>().SetTrigger("boost");
             //explosion
-            CHECKPOINT.transform.FindChild("CheckpointExplosion").GetComponent<ParticleSystem>().Play();
+            CHECKPOINT.transform.Find("CheckpointExplosion").GetComponent<ParticleSystem>().Play();
             GameObject explosionTrigger = Instantiate(EXPLOSION_TRIGGER, CHECKPOINT.transform);
             explosionTrigger.transform.localPosition = Vector3.zero;
             explosionTrigger.transform.localRotation = Quaternion.identity;

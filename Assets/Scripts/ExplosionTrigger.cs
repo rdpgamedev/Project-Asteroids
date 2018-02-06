@@ -15,7 +15,7 @@ public class ExplosionTrigger : MonoBehaviour {
 
     void Start () {
         yScale = transform.localScale.y;
-        explosionSystem = transform.parent.FindChild("CheckpointExplosion").FindChild("Particle System 2").gameObject.GetComponent<ParticleSystem>();
+        explosionSystem = transform.parent.Find("CheckpointExplosion").Find("Particle System 2").gameObject.GetComponent<ParticleSystem>();
     }
 
     void Update () {

@@ -49,7 +49,7 @@ public class ThrusterController : MonoBehaviour
         Debug.DrawLine(transform.position, transform.position+direction*5f, Color.green);
         Debug.DrawLine(ship.GetComponent<Rigidbody>().worldCenterOfMass, ship.GetComponent<Rigidbody>().worldCenterOfMass + direction * 5f, Color.red);
         ParticleSystem thrusterParticles = 
-            transform.FindChild("Thruster_Particles").GetComponent<ParticleSystem>();
+            transform.Find("Thruster_Particles").GetComponent<ParticleSystem>();
         ParticleSystem.EmissionModule emission = thrusterParticles.emission;
         emission.rateOverTime = 1000f * (thrust - (13f / 24f)) * 24f / 11f + 50f;
     }

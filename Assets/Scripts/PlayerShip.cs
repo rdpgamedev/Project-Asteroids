@@ -150,7 +150,7 @@ public class PlayerShip : MonoBehaviour
         shipModel.SetActive(false);
         leftthruster.SetActive(false);
         rightthruster.SetActive(false);
-        transform.FindChild("VelocityChevrons").gameObject.SetActive(false);
+        transform.Find("VelocityChevrons").gameObject.SetActive(false);
         GetComponent<AudioSource>().enabled = false;
     }
     
@@ -159,6 +159,6 @@ public class PlayerShip : MonoBehaviour
         shipModel.SetActive(true);
         leftthruster.SetActive(true);
         rightthruster.SetActive(true);
-        transform.FindChild("VelocityChevrons").gameObject.SetActive(true);
+        transform.Find("VelocityChevrons").gameObject.SetActive(true);
     }
 }

@@ -91,7 +91,7 @@ public class GameManager : MonoBehaviour {
         BGM.instance.Activate();
         cameraObj.GetComponent<MoveTo>().enabled = true;
         cameraObj.GetComponent<LookAt>().enabled = true;
-        cameraObj.transform.position = ship.transform.FindChild("DefaultCameraPos").position;
+        cameraObj.transform.position = ship.transform.Find("DefaultCameraPos").position;
         ship.GetComponent<AudioSource>().enabled = true;
         Resume();
     }
@@ -195,24 +195,24 @@ public class GameManager : MonoBehaviour {
     {
         //Simplified Controls
         GameObject optionsUI = UIManager.instance.OPTIONSUI;
-        GameObject simplifiedToggle = optionsUI.transform.FindChild("Options Area").FindChild("Options").FindChild("Simplified Controls").gameObject;
+        GameObject simplifiedToggle = optionsUI.transform.Find("Options Area").Find("Options").Find("Simplified Controls").gameObject;
         bool simplified = false;
         if (PlayerPrefs.GetInt("Simplified Controls") == 1) simplified = true;
         simplifiedToggle.GetComponent<Toggle>().isOn = simplified;
 
         //Invert Vertical Controls
-        GameObject invertToggle = optionsUI.transform.FindChild("Options Area").FindChild("Options").FindChild("Invert Vertical Controls").gameObject;
+        GameObject invertToggle = optionsUI.transform.Find("Options Area").Find("Options").Find("Invert Vertical Controls").gameObject;
         bool invert = false;
         if (PlayerPrefs.GetInt("Invert Vertical Controls") == 1) invert = true;
         invertToggle.GetComponent<Toggle>().isOn = invert;
 
         //Music Volume
-        GameObject musicSlider = optionsUI.transform.FindChild("Options Area").FindChild("Options").FindChild("Music Volume").gameObject;
+        GameObject musicSlider = optionsUI.transform.Find("Options Area").Find("Options").Find("Music Volume").gameObject;
         float musicVolume = PlayerPrefs.GetFloat("Music Volume");
         musicSlider.GetComponent<Slider>().value = musicVolume;
 
         //Effects Volume
-        GameObject effectsSlider = optionsUI.transform.FindChild("Options Area").FindChild("Options").FindChild("Effects Volume").gameObject;
+        GameObject effectsSlider = optionsUI.transform.Find("Options Area").Find("Options").Find("Effects Volume").gameObject;
         float effectsVolume = PlayerPrefs.GetFloat("Effects Volume");
         effectsSlider.GetComponent<Slider>().value = effectsVolume;
     }

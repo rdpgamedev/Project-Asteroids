@@ -247,7 +247,7 @@ public class FieldSegment : MonoBehaviour
         }
         else
         {
-            GameObject oldParticles = lastSegment.transform.FindChild("Field Particles").gameObject;
+            GameObject oldParticles = lastSegment.transform.Find("Field Particles").gameObject;
             oldMaxParticles = oldParticles.GetComponent<ParticleSystem>().main.maxParticles;
         }
         if (oldMaxParticles == 500)
@@ -368,7 +368,7 @@ public class FieldSegment : MonoBehaviour
         {
             nextCheckpoint.GetComponent<Animator>().enabled = true;
             nextCheckpoint.GetComponent<AudioSource>().PlayDelayed(1f);
-            nextCheckpoint.transform.FindChild("Checkpoint Particles").gameObject.SetActive(true);
+            nextCheckpoint.transform.Find("Checkpoint Particles").gameObject.SetActive(true);
         }
     }
 

@@ -54,7 +54,7 @@ public class Field : MonoBehaviour
         firstCheckpoint.GetComponent<Animator>().enabled = true;
         firstCheckpoint.GetComponent<Animator>().Play("Checkpoint");
         firstCheckpoint.GetComponent<AudioSource>().PlayDelayed(1f);
-        firstCheckpoint.transform.FindChild("Checkpoint Particles").gameObject.SetActive(true);
+        firstCheckpoint.transform.Find("Checkpoint Particles").gameObject.SetActive(true);
         activated = true;
     }
 
